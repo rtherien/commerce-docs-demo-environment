@@ -1,0 +1,34 @@
+{
+    "AddOrUpdate": [
+        {
+            "DocumentId": "product://007",
+            "FileExtension": ".html",
+            "ec_name": "Coveo golf driver",
+            "model": "Augusta",
+            "ec_brand": [
+                "Coveo"
+            ],
+            "ec_description": "<p>Find the fairway</p>",
+            "ec_item_group_id": "003",
+            "ec_product_id": "CVO-gfd-001",
+            "gender": "Men",
+            "ec_price": 499.00,
+            "price_list": {
+                "": 499.00,
+                "Canada": 499.00,
+                "Usa": 349.00,
+                "Eu": 299.00
+              },
+            "color": {
+                "": "black",
+                "Canada": "red",
+                "Usa": "blue",
+                "Eu": "orange"
+              },
+            "test": "test",
+            "ec_category": "Golf drivers",
+            "departement": "Golf",
+            "objecttype": "Product"
+        }
+    ]
+  }

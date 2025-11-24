@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shoes Commerce Search - Coveo Commerce</title>
+    <script type="module" src="https://static.cloud.coveo.com/atomic/v2/atomic.esm.js"></script>
+    <link rel="stylesheet" href="https://static.cloud.coveo.com/atomic/v2/themes/coveo.css" />
+</head>
+<body>
+    <atomic-commerce-interface
+        organization-id="rtherien0alc6wsn"
+        access-token="xx93d768b2-4d35-48de-9736-c2cd3ddec35e"
+        tracking-id="rtherien"
+        type="search"
+        search-hub="shoes"
+        language-assets-path="./lang"
+        icon-assets-path="./assets"
+    >
+        <atomic-commerce-layout>
+            <atomic-layout-section section="search">
+                <atomic-commerce-search-box></atomic-commerce-search-box>
+            </atomic-layout-section>
+            
+            <atomic-layout-section section="facets">
+                <atomic-commerce-facets></atomic-commerce-facets>
+            </atomic-layout-section>
+            
+            <atomic-layout-section section="main">
+                <atomic-layout-section section="status">
+                    <atomic-commerce-breadbox></atomic-commerce-breadbox>
+                    <atomic-commerce-query-summary></atomic-commerce-query-summary>
+                    <atomic-commerce-sort-dropdown></atomic-commerce-sort-dropdown>
+                    <atomic-commerce-refine-toggle></atomic-commerce-refine-toggle>
+                </atomic-layout-section>
+                
+                <atomic-layout-section section="products">
+                    <atomic-commerce-product-list
+                        display="grid"
+                        density="compact"
+                        image-size="small"
+                    >
+                        <atomic-product-template>
+                            <template>
+                                <atomic-product-section-name>
+                                    <atomic-product-link></atomic-product-link>
+                                </atomic-product-section-name>
+                                <atomic-product-section-visual>
+                                    <atomic-product-image field="ec_thumbnails"></atomic-product-image>
+                                </atomic-product-section-visual>
+                                <atomic-product-section-metadata>
+                                    <atomic-product-text field="ec_brand"></atomic-product-text>
+                                    <atomic-product-rating field="ec_rating"></atomic-product-rating>
+                                </atomic-product-section-metadata>
+                                <atomic-product-section-emphasized>
+                                    <atomic-product-price currency="USD"></atomic-product-price>
+                                </atomic-product-section-emphasized>
+                            </template>
+                        </atomic-product-template>
+                    </atomic-commerce-product-list>
+                    <atomic-commerce-query-error></atomic-commerce-query-error>
+                    <atomic-commerce-no-products></atomic-commerce-no-products>
+                </atomic-layout-section>
+                
+                <atomic-layout-section section="pagination">
+                    <atomic-commerce-load-more-products></atomic-commerce-load-more-products>
+                </atomic-layout-section>
+            </atomic-layout-section>
+        </atomic-commerce-layout>
+    </atomic-commerce-interface>
+
+    <script>
+        (async () => {
+            await customElements.whenDefined('atomic-commerce-interface');
+            
+            const commerceInterface = document.querySelector('atomic-commerce-interface');
+            
+            await commerceInterface.initialize({
+                accessToken: 'xx93d768b2-4d35-48de-9736-c2cd3ddec35e',
+                organizationId: 'rtherien0alc6wsn',
+                environment: 'dev',
+                organizationEndpoints: {
+                    search: 'https://rtherien0alc6wsn.orgdev.coveo.com',
+                    admin: 'https://rtherien0alc6wsn.orgdev.coveo.com',
+                    analytics: 'https://rtherien0alc6wsn.orgdev.coveo.com'
+                },
+                analytics: {
+                    trackingId: 'rtherien',
+                    clientId: 'b63d9269-6930-4229-af25-55aba7076495'
+                },
+                context: {
+                    language: 'en',
+                    country: 'US',
+                    currency: 'USD',
+                    view: {
+                        url: 'https://sports-store.com/shoes'
+                    },
+                    user: {
+                        userAgent: navigator.userAgent
+                    }
+                }
+            });
+
+            // Use executeFirstRequest for Commerce interfaces, even for search type
+            commerceInterface.executeFirstRequest();
+        })();
+    </script>
+</body>
+</html>

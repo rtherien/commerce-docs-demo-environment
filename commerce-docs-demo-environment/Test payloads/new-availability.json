@@ -1,0 +1,15 @@
+{
+    "AddOrUpdate": [
+        {
+            "DocumentId": "store://s000004",
+            "title": "Ottawa Store",
+            "lat": 45.4201,
+            "long": 75.7003,
+            "ec_available_items": [
+                "001-red-8_wide"
+            ],
+            "ec_availability_id": "s000004",
+            "objecttype": "Availability"
+        }
+    ]
+}

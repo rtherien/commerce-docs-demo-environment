@@ -1,0 +1,380 @@
+{
+    "addOrUpdate": [
+        {
+            "DocumentId": "product://001",
+            "FileExtension": ".html",
+            "ec_name": "Coveo Soccer Shoes - Red",
+            "model": "Authentic",
+            "ec_brand": [
+                "Coveo"
+            ],
+            "ec_description": "<p>The astonishing, the original, and always relevant Coveo style in red.</p>",
+            "ec_item_group_id": "001",
+            "ec_product_id": "CVO-scr-001",
+            "gender": "Men",
+            "price": 28.00,
+            "ec_images": [
+                "https://picsum.photos/200/300"
+            ],
+            "ec_thumbnails": [
+                "https://picsum.photos/200/300"
+            ],
+            "ec_in_stock": true,
+            "ec_category": "Soccer Shoes",
+            "department": "Shoes",
+            "objecttype": "Product"
+        },
+        {
+            "DocumentId": "product://002",
+            "FileExtension": ".html",
+            "ec_name": "Coveo Soccer Shoes - Blue",
+            "model": "Authentic",
+            "ec_brand": [
+                "Coveo"
+            ],
+            "ec_description": "<p>The astonishing, the original, and always relevant Coveo style in blue.</p>",
+            "ec_item_group_id": "001",
+            "ec_product_id": "CVO-scr-002",
+            "gender": "Men",
+            "price": 28.00,
+            "ec_images": [
+                "https://picsum.photos/200/300"
+            ],
+            "ec_thumbnails": [
+                "https://picsum.photos/200/300"
+            ],
+            "ec_category": "Soccer Shoes",
+            "department": "Shoes",
+            "objecttype": "Product"
+        },
+        {
+            "DocumentId": "product://003",
+            "FileExtension": ".html",
+            "ec_name": "Coveo Soccer Shoes - Yellow",
+            "model": "Authentic",
+            "ec_brand": [
+                "Coveo"
+            ],
+            "ec_description": "<p>The astonishing, the original, and always relevant Coveo style in Yellow.</p>",
+            "ec_item_group_id": "001",
+            "ec_product_id": "CVO-scr-003",
+            "gender": "Men",
+            "price": 28.00,
+            "ec_images": [
+                "https://picsum.photos/200/300"
+            ],
+            "ec_thumbnails": [
+                "https://picsum.photos/200/300"
+            ],
+            "ec_category": "Soccer Shoes",
+            "department": "Shoes",
+            "objecttype": "Product"
+        },
+        {
+            "DocumentId": "product://004",
+            "FileExtension": ".html",
+            "ec_name": "Coveo Soccer Shoes - Black",
+            "model": "Authentic",
+            "ec_brand": [
+                "Coveo"
+            ],
+            "ec_description": "<p>The astonishing, the original, and always relevant Coveo style in Black.</p>",
+            "ec_item_group_id": "001",
+            "ec_product_id": "CVO-scr-004",
+            "gender": "Men",
+            "price": 28.00,
+            "ec_images": [
+                "https://picsum.photos/200/300"
+            ],
+            "ec_thumbnails": [
+                "https://picsum.photos/200/300"
+            ],
+            "ec_category": "Soccer Shoes",
+            "department": "Shoes",
+            "objecttype": "Product"
+        },
+        {
+            "DocumentId": "product://005",
+            "FileExtension": ".html",
+            "ec_name": "Coveo hockey stick - Black",
+            "model": "krazy",
+            "ec_brand": [
+                "Coveo"
+            ],
+            "ec_description": "<p>Will help you score</p>",
+            "ec_item_group_id": "002",
+            "ec_product_id": "CVO-hcs-001",
+            "gender": "Men",
+            "price": 228.00,
+            "ec_images": [
+                "https://picsum.photos/200/300"
+            ],
+            "ec_thumbnails": [
+                "https://picsum.photos/200/300"
+            ],
+            "ec_category": "Hockey sticks",
+            "department": "Hockey",
+            "objecttype": "Product"
+        },
+        {
+            "DocumentId": "product://006",
+            "FileExtension": ".html",
+            "ec_name": "Coveo hockey stick - Red",
+            "model": "krazy",
+            "ec_brand": [
+                "Coveo"
+            ],
+            "ec_description": "<p>Will help you score</p>",
+            "ec_item_group_id": "002",
+            "ec_product_id": "CVO-hcs-001",
+            "gender": "Men",
+            "price": 228.00,
+            "ec_images": [
+                "https://picsum.photos/200/300"
+            ],
+            "ec_thumbnails": [
+                "https://picsum.photos/200/300"
+            ],
+            "ec_category": "Hockey sticks",
+            "department": "Hockey",
+            "objecttype": "Product"
+        },
+        {
+            "DocumentId": "product://007",
+            "FileExtension": ".html",
+            "ec_name": "Coveo golf driver",
+            "model": "Augusta",
+            "ec_brand": [
+                "Coveo"
+            ],
+            "ec_description": "<p>Find the fairway</p>",
+            "ec_item_group_id": "003",
+            "ec_product_id": "CVO-gfd-001",
+            "gender": "Men",
+            "price": 399.00,
+            "ec_images": [
+                "https://picsum.photos/200/300"
+            ],
+            "ec_thumbnails": [
+                "https://picsum.photos/200/300"
+            ],
+            "ec_category": "Golf drivers",
+            "department": "Golf",
+            "objecttype": "Product"
+        },
+        {
+            "DocumentId": "variant://001-red-8_wide",
+            "FileExtension": ".html",
+            "ec_name": "Coveo Soccer Shoes - Red / Size 8 - Wide",
+            "ec_product_id": "CVO-scr-001",
+            "productsize": "8",
+            "width": "wide",
+            "ec_variant_id": "001-red-8_wide",
+            "objecttype": "Variant"
+        },
+        {
+            "DocumentId": "variant://001-red-9_wide",
+            "FileExtension": ".html",
+            "ec_name": "Coveo Soccer Shoes - Red / Size 9 - Wide",
+            "ec_product_id": "CVO-scr-001",
+            "productsize": "9",
+            "width": "wide",
+            "ec_variant_id": "001-red-9_wide",
+            "objecttype": "Variant"
+        },
+        {
+            "DocumentId": "variant://001-red-10_wide",
+            "FileExtension": ".html",
+            "ec_name": "Coveo Soccer Shoes - Red / Size 10 - Wide",
+            "productsize": "10",
+            "width": "wide",
+            "ec_product_id": "CVO-scr-001",
+            "ec_variant_id": "001-red-10_wide",
+            "objecttype": "Variant"
+        },
+        {
+            "DocumentId": "variant://002-blue-8_wide",
+            "FileExtension": ".html",
+            "ec_name": "Coveo Soccer Shoes - Blue / Size 8 - Wide",
+            "productsize": "8",
+            "width": "wide",
+            "ec_product_id": "CVO-scr-002",
+            "ec_variant_id": "002-blue-8_wide",
+            "objecttype": "Variant"
+        },
+        {
+            "DocumentId": "variant://002-blue-9_wide",
+            "FileExtension": ".html",
+            "ec_name": "Coveo Soccer Shoes - Blue / Size 9 - Wide",
+            "productsize": "9",
+            "width": "wide",
+            "ec_product_id": "CVO-scr-002",
+            "ec_variant_id": "002-blue-9_wide",
+            "objecttype": "Variant"
+        },
+        {
+            "DocumentId": "variant://002-blue-10_wide",
+            "FileExtension": ".html",
+            "ec_name": "Coveo Soccer Shoes - Blue / Size 10 - Wide",
+            "productsize": "10",
+            "width": "wide",
+            "ec_product_id": "CVO-scr-002",
+            "ec_variant_id": "002-blue-10_wide",
+            "objecttype": "Variant"
+        },
+        {
+            "DocumentId": "variant://003-yellow-8_wide",
+            "FileExtension": ".html",
+            "ec_name": "Coveo Soccer Shoes - Yellow / Size 8 - Wide",
+            "productsize": "8",
+            "width": "wide",
+            "ec_product_id": "CVO-scr-003",
+            "ec_variant_id": "003-yellow-8_wide",
+            "objecttype": "Variant"
+        },
+        {
+            "DocumentId": "variant://003-yellow-9_wide",
+            "FileExtension": ".html",
+            "ec_name": "Coveo Soccer Shoes - Yellow / Size 9 - Wide",
+            "productsize": "9",
+            "width": "wide",
+            "ec_product_id": "CVO-scr-003",
+            "ec_variant_id": "003-yellow-9_wide",
+            "objecttype": "Variant"
+        },
+        {
+            "DocumentId": "variant://003-yellow-10_wide",
+            "FileExtension": ".html",
+            "ec_name": "Coveo Soccer Shoes - Yellow / Size 10 - Wide",
+            "productsize": "10",
+            "width": "wide",
+            "ec_product_id": "CVO-scr-003",
+            "ec_variant_id": "003-yellow-10_wide",
+            "objecttype": "Variant"
+        },
+        {
+            "DocumentId": "variant://004-black-8_wide",
+            "FileExtension": ".html",
+            "ec_name": "Coveo Soccer Shoes - Black / Size 8 - Wide",
+            "productsize": "8",
+            "width": "wide",
+            "ec_product_id": "CVO-scr-004",
+            "ec_variant_id": "004-black-8_wide",
+            "objecttype": "Variant"
+        },
+        {
+            "DocumentId": "variant://004-black-9_wide",
+            "FileExtension": ".html",
+            "ec_name": "Coveo Soccer Shoes - Black / Size 9 - Wide",
+            "productsize": "9",
+            "width": "wide",
+            "ec_product_id": "CVO-scr-004",
+            "ec_variant_id": "004-black-9_wide",
+            "objecttype": "Variant"
+        },
+        {
+            "DocumentId": "variant://004-black-10_wide",
+            "FileExtension": ".html",
+            "ec_name": "Coveo Soccer Shoes - Black / Size 10 - Wide",
+            "productsize": "10",
+            "width": "wide",
+            "ec_product_id": "CVO-scr-004",
+            "ec_variant_id": "004-black-10_wide",
+            "objecttype": "Variant"
+        },
+                {
+            "DocumentId": "variant://005-75",
+            "FileExtension": ".html",
+            "ec_name": "Coveo hockey stick - black - flex 75",
+            "ec_product_id": "CVO-hcs-001",
+            "flex": "75",
+            "ec_variant_id": "005-75",
+            "objecttype": "Variant"
+        },
+        {
+            "DocumentId": "variant://005-85",
+            "FileExtension": ".html",
+            "ec_name": "Coveo hockey stick - black - flex 85",
+            "ec_product_id": "CVO-hcs-001",
+            "flex": "85",
+            "ec_variant_id": "005-85",
+            "objecttype": "Variant"
+        },
+        {
+            "DocumentId": "variant://006-75",
+            "FileExtension": ".html",
+            "ec_name": "Coveo hockey stick - red - flex 75",
+            "ec_product_id": "CVO-hcs-001",
+            "flex": "75",
+            "ec_variant_id": "006-75",
+            "objecttype": "Variant"
+        },
+        {
+            "DocumentId": "variant://006-85",
+            "FileExtension": ".html",
+            "ec_name": "Coveo hockey stick - red - flex 85",
+            "ec_product_id": "CVO-hcs-001",
+            "flex": "85",
+            "ec_variant_id": "006-85",
+            "objecttype": "Variant"
+        },
+        {
+            "DocumentId": "variant://007-stiff",
+            "FileExtension": ".html",
+            "ec_name": "Coveo golf driver - Stiff",
+            "ec_product_id": "CVO-gfd-001",
+            "stiffness": "stiff",
+            "ec_variant_id": "007-stiff",
+            "objecttype": "Variant"
+        },
+        {
+            "DocumentId": "variant://007-regular",
+            "FileExtension": ".html",
+            "ec_name": "Coveo golf driver - Regular",
+            "ec_product_id": "CVO-gfd-001",
+            "stiffness": "regular",
+            "ec_variant_id": "007-regular",
+            "objecttype": "Variant"
+        },
+        {
+            "DocumentId": "store://s000002",
+            "title": "Montreal Store",
+            "lat": 45.4975,
+            "long": -73.5687,
+            "ec_available_items": [
+                "001-red-8_wide",
+                "001-red-9_wide",
+                "001-red-10_wide",
+                "002-blue-10_wide",
+                "003-yellow-9_wide",
+                "007-stiff",
+                "007-regular",
+                "005-75",
+                "005-85",
+                "006-75"
+            ],
+            "ec_availability_id": "s000002",
+            "objecttype": "Availability"
+        },
+        {
+            "DocumentId": "store://s000003",
+            "title": "Quebec Store",
+            "lat": 46.8131,
+            "long": 71.2075,
+            "ec_available_items": [
+                "001-red-8_wide",
+                "001-red-9_wide",
+                "001-red-10_wide",
+                "002-blue-10_wide",
+                "003-yellow-9_wide",
+                "007-stiff",
+                "007-regular",
+                "005-75",
+                "005-85",
+                "006-75"
+            ],
+            "ec_availability_id": "s000003",
+            "objecttype": "Availability"
+        }
+    ]
+}

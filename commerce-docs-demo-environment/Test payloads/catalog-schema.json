@@ -1,0 +1,32 @@
+{
+  "name": "rtherienSchema",
+  "objectTypes": [
+    {
+      "name": "PRODUCT",
+      "customFields": [
+        {
+          "name": "model",
+          "type": {
+            "dataType": "STRING",
+            "multiValue": false
+          }
+        },
+        {
+          "name": "gender",
+          "type": {
+            "dataType": "STRING",
+            "multiValue": false
+          }
+        },
+        {
+          "name": "departement",
+          "type": {
+            "dataType": "STRING",
+            "multiValue": false
+          }
+        }
+      ]
+    }
+  ],
+  "schemaType": "CATALOG"
+}
