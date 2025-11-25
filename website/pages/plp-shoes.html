@@ -88,7 +88,12 @@
                                         <atomic-product-link class="product-link"></atomic-product-link>
                                     </atomic-product-section-name>
                                     <atomic-product-section-visual>
-                                        <atomic-product-image field="ec_thumbnails,ec_images,ec_image"></atomic-product-image>
+                                        <atomic-product-image 
+                                            field="ec_images,ec_thumbnails,ec_image,images,thumbnails"
+                                            fallback="https://via.placeholder.com/300x300/cccccc/666666?text=No+Image"
+                                            enable-alt-text="true"
+                                            image-size="large"
+                                        ></atomic-product-image>
                                     </atomic-product-section-visual>
                                     <atomic-product-section-metadata>
                                         <atomic-product-text field="ec_brand" class="product-brand"></atomic-product-text>

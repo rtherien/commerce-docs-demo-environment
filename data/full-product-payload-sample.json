@@ -36,7 +36,7 @@
             "ec_item_group_id": "001",
             "ec_product_id": "CVO-scr-002",
             "gender": "Men",
-            "price": 28.0,
+            "ec_price": 28.0,
             "ec_images": [
                 "https://raw.githubusercontent.com/rtherien/commerce-docs-demo-environment/main/website/assets/images/blue-soccer-shoes.png"
             ],
@@ -59,7 +59,7 @@
             "ec_item_group_id": "001",
             "ec_product_id": "CVO-scr-003",
             "gender": "Men",
-            "price": 28.0,
+            "ec_price": 28.0,
             "ec_images": [
                 "https://raw.githubusercontent.com/rtherien/commerce-docs-demo-environment/main/website/assets/images/yellow-soccer-shoes.jpg"
             ],
@@ -82,7 +82,7 @@
             "ec_item_group_id": "001",
             "ec_product_id": "CVO-scr-004",
             "gender": "Men",
-            "price": 28.0,
+            "ec_price": 28.0,
             "ec_images": [
                 "https://raw.githubusercontent.com/rtherien/commerce-docs-demo-environment/main/website/assets/images/black-soccer-shoes.jpg"
             ],
@@ -151,7 +151,7 @@
             "ec_item_group_id": "003",
             "ec_product_id": "CVO-gfd-001",
             "gender": "Men",
-            "price": 399.0,
+            "ec_price": 399.0,
             "ec_images": [
                 "https://raw.githubusercontent.com/rtherien/commerce-docs-demo-environment/main/website/assets/images/golf-driver.jpg"
             ],
