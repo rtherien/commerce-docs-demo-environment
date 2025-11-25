@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sports Store - Hockey</title>
+    <script type="module" src="https://static.cloud.coveo.com/atomic/v3/atomic.esm.js"></script>
+    <link rel="stylesheet" href="https://static.cloud.coveo.com/atomic/v3/themes/coveo.css">
+    <link rel="stylesheet" href="../styles/main.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>Sports Store - Hockey</h1>
+            <nav class="nav">
+                <a href="simple-search.html">Search</a>
+                <a href="simple-plp-shoes.html">Shoes</a>
+                <a href="simple-plp-hockey.html">Hockey</a>
+                <a href="simple-plp-golf.html">Golf</a>
+            </nav>
+        </header>
+
+        <main class="main-content">
+            <atomic-commerce-interface
+                organization-id="coveodocumentationtest"
+                tracking-id="commerce-docs-demo"
+                type="product-listing"
+            >
+                <atomic-commerce-layout>
+                    <atomic-layout-section section="facets">
+                        <atomic-commerce-facets></atomic-commerce-facets>
+                    </atomic-layout-section>
+                    
+                    <atomic-layout-section section="main">
+                        <atomic-layout-section section="status">
+                            <atomic-commerce-query-summary></atomic-commerce-query-summary>
+                            <atomic-commerce-sort-dropdown></atomic-commerce-sort-dropdown>
+                        </atomic-layout-section>
+                        
+                        <atomic-layout-section section="results">
+                            <atomic-commerce-product-list>
+                                <atomic-product-template>
+                                    <template>
+                                        <atomic-product-section-name>
+                                            <atomic-product-link></atomic-product-link>
+                                        </atomic-product-section-name>
+                                        <atomic-product-section-visual>
+                                            <atomic-product-image field="ec_images"></atomic-product-image>
+                                        </atomic-product-section-visual>
+                                        <atomic-product-section-metadata>
+                                            <atomic-product-text field="ec_brand"></atomic-product-text>
+                                            <atomic-product-text field="ec_category"></atomic-product-text>
+                                        </atomic-product-section-metadata>
+                                        <atomic-product-section-emphasized>
+                                            <atomic-product-price currency="CAD"></atomic-product-price>
+                                        </atomic-product-section-emphasized>
+                                    </template>
+                                </atomic-product-template>
+                            </atomic-commerce-product-list>
+                        </atomic-layout-section>
+                        
+                        <atomic-layout-section section="pagination">
+                            <atomic-commerce-pager></atomic-commerce-pager>
+                        </atomic-layout-section>
+                    </atomic-layout-section>
+                </atomic-commerce-layout>
+            </atomic-commerce-interface>
+        </main>
+    </div>
+
+    <script>
+        (async () => {
+            await customElements.whenDefined('atomic-commerce-interface');
+            
+            const commerceInterface = document.querySelector('atomic-commerce-interface');
+            
+            await commerceInterface.initialize({
+                accessToken: 'xxd749992c-d0b5-475f-95e6-671793e6c94a',
+                organizationId: 'coveodocumentationtest',
+                environment: 'prod',
+                analytics: {
+                    trackingId: 'commerce-docs-demo'
+                },
+                context: {
+                    language: 'en',
+                    country: 'CA',
+                    currency: 'CAD',
+                    view: {
+                        url: 'https://sports-store.com/hockey'
+                    }
+                }
+            });
+
+            // Execute first request for hockey
+            await commerceInterface.executeFirstRequest({
+                q: 'hockey'
+            });
+
+            // Debug response
+            commerceInterface.addEventListener('responseReceived', (event) => {
+                console.log('SIMPLE HOCKEY PLP - Products found:', event.detail?.response?.products?.length || 0);
+            });
+        })();
+    </script>
+</body>
+</html>
