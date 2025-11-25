@@ -45,18 +45,49 @@ class CoveoLoader:
             raise ValueError(f"Missing required configuration keys: {missing_keys}")
     
     def _load_config(self, config_path: str) -> Dict[str, Any]:
-        """Load configuration from JSON file."""
+        """Load configuration from JSON file with environment variable support."""
+        config = {}
+        
+        # Try to load from file first
         try:
             with open(config_path, 'r') as f:
-                return json.load(f)
+                config = json.load(f)
         except FileNotFoundError:
-            print(f"Configuration file '{config_path}' not found.")
-            print("Please create a config.json file with your Coveo settings.")
-            print("See config.template.json for an example.")
-            sys.exit(1)
+            print(f"⚠️  Configuration file '{config_path}' not found.")
+            print("Will try to load from environment variables...")
         except json.JSONDecodeError as e:
-            print(f"Error parsing configuration file: {e}")
+            print(f"❌ Error parsing configuration file: {e}")
             sys.exit(1)
+        
+        # Override with environment variables (more secure)
+        env_mapping = {
+            "organization_id": "COVEO_ORGANIZATION_ID",
+            "source_id": "COVEO_SOURCE_ID", 
+            "access_token": "COVEO_ACCESS_TOKEN",
+            "image_base_url": "COVEO_IMAGE_BASE_URL"
+        }
+        
+        env_loaded = False
+        for config_key, env_key in env_mapping.items():
+            env_value = os.getenv(env_key)
+            if env_value:
+                config[config_key] = env_value
+                env_loaded = True
+        
+        if env_loaded:
+            print("✅ Loaded credentials from environment variables (secure)")
+        
+        # Check if we have any configuration at all
+        if not config:
+            print("❌ No configuration found!")
+            print("Please either:")
+            print("  1. Create a config.json file (see config.template.json)")
+            print("  2. Set environment variables:")
+            for config_key, env_key in env_mapping.items():
+                print(f"     export {env_key}=<your-{config_key.replace('_', '-')}>")
+            sys.exit(1)
+        
+        return config
     
     def _get_headers(self, content_type: str = "application/json") -> Dict[str, str]:
         """Get standard headers for API requests."""

@@ -5,14 +5,14 @@ A Python tool for loading catalog data into Coveo Commerce sources using the Cov
 ## Quick Start
 
 ```bash
-# Setup
+# Setup (secure)
 git clone <your-repo-url>
 cd commerce-docs-demo-environment
-./scripts/setup.sh
+./scripts/setup-secure.sh
 
-# Configure
-cp config.template.json config.json
-# Edit config.json with your Coveo credentials
+# Configure with environment variables (secure)
+cp .env.example .env
+# Edit .env with your Coveo credentials
 
 # Use
 source coveo-env/bin/activate
@@ -33,17 +33,31 @@ source coveo-env/bin/activate
 
 ## Configuration
 
-Edit `config.json`:
+### Secure Setup (Recommended)
 
-```json
-{
-  "organization_id": "your-org-id-here",
-  "source_id": "your-source-id-here",
-  "access_token": "your-api-key-here"
-}
+For security, use environment variables:
+
+```bash
+# Set environment variables
+export COVEO_ORGANIZATION_ID="your-org-id"
+export COVEO_SOURCE_ID="your-source-id"
+export COVEO_ACCESS_TOKEN="your-api-key"
+
+# Or use .env file
+cp .env.example .env
+# Edit .env with your credentials
 ```
 
-Find these values in the [Coveo Administration Console](https://platform.cloud.coveo.com/).
+### Alternative: Local Config File
+
+```bash
+cp config.template.json config.json
+# Edit config.json with your credentials
+```
+
+⚠️ **Security Note**: Never commit API keys to version control! The loader prioritizes environment variables for security.
+
+Find your credentials in the [Coveo Administration Console](https://platform.cloud.coveo.com/).
 
 ## Operation Types
 
@@ -65,6 +79,7 @@ Find these values in the [Coveo Administration Console](https://platform.cloud.c
 
 - [Getting Started](docs/getting-started.md)
 - [Troubleshooting](docs/troubleshooting.md)
+- [🔐 Security Guide](SECURITY.md) - **Important: Securing API credentials**
 
 ## Support
 
