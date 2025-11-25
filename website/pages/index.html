@@ -3,24 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hockey Equipment - Sports Store</title>
+    <title>Sports Store - Search & Shop</title>
     <script type="module" src="https://static.cloud.coveo.com/atomic/v2/atomic.esm.js"></script>
     <link rel="stylesheet" href="https://static.cloud.coveo.com/atomic/v2/themes/coveo.css" />
-    <link rel="stylesheet" href="./styles/main.css" />
+    <link rel="stylesheet" href="../styles/main.css" />
 </head>
 <body>
     <!-- Navigation Header -->
     <header class="main-header">
         <div class="header-content">
             <div class="logo">
-                <h1><a href="/">Sports Store</a></h1>
+                <h1><a href="./index.html">Sports Store</a></h1>
             </div>
             <nav class="main-nav">
                 <div class="nav-dropdown">
                     <button class="nav-dropdown-btn">Shop Categories ▼</button>
                     <div class="nav-dropdown-content">
                         <a href="./plp-golf.html">Golf Equipment</a>
-                        <a href="./plp-hockey.html" class="active">Hockey Equipment</a>
+                        <a href="./plp-hockey.html">Hockey Equipment</a>
                         <a href="./plp-shoes.html">Athletic Shoes</a>
                     </div>
                 </div>
@@ -50,24 +50,29 @@
         </div>
     </div>
 
-    <!-- Main Content -->
+    <!-- Main Search Interface -->
     <main class="main-content">
         <div class="search-hero">
-            <h2>Hockey Equipment</h2>
-            <p>Professional hockey gear for players of all levels</p>
+            <h2>Find Your Perfect Sports Equipment</h2>
+            <p>Search through thousands of products from top brands</p>
         </div>
 
         <atomic-commerce-interface
             organization-id="coveodocumentationtest"
             tracking-id="commerce-docs-demo"
-            type="product-listing"
+            type="search"
             language-assets-path="./lang"
             icon-assets-path="./assets"
         >
             <atomic-commerce-layout>
+                <atomic-layout-section section="search">
+                    <atomic-commerce-search-box placeholder="Search for sports equipment..."></atomic-commerce-search-box>
+                </atomic-layout-section>
+                
                 <atomic-layout-section section="facets">
                     <atomic-commerce-facets></atomic-commerce-facets>
                 </atomic-layout-section>
+                
                 <atomic-layout-section section="main">
                     <atomic-layout-section section="status">
                         <atomic-commerce-breadbox></atomic-commerce-breadbox>
@@ -75,6 +80,7 @@
                         <atomic-commerce-sort-dropdown></atomic-commerce-sort-dropdown>
                         <atomic-commerce-refine-toggle></atomic-commerce-refine-toggle>
                     </atomic-layout-section>
+                    
                     <atomic-layout-section section="products">
                         <atomic-commerce-product-list
                             display="grid"
@@ -105,6 +111,7 @@
                         <atomic-commerce-query-error></atomic-commerce-query-error>
                         <atomic-commerce-no-products></atomic-commerce-no-products>
                     </atomic-layout-section>
+                    
                     <atomic-layout-section section="pagination">
                         <atomic-commerce-load-more-products></atomic-commerce-load-more-products>
                     </atomic-layout-section>
@@ -113,8 +120,8 @@
         </atomic-commerce-interface>
     </main>
 
-    <script src="./js/cart.js"></script>
-    <script src="./js/coveo-analytics.js"></script>
+    <script src="../js/cart.js"></script>
+    <script src="../js/coveo-analytics.js"></script>
     <script>
         (async () => {
             await customElements.whenDefined('atomic-commerce-interface');
@@ -135,7 +142,7 @@
                     country: 'CA',
                     currency: 'CAD',
                     view: {
-                        url: 'https://sports-store.com/hockey'
+                        url: 'https://sports-store.com/search'
                     },
                     user: {
                         userAgent: navigator.userAgent
@@ -143,15 +150,11 @@
                 }
             });
 
-            // Initialize cart and analytics
+            // Initialize cart functionality
             initializeCart(commerceInterface);
-            initializeCoveoAnalytics(commerceInterface);
             
-            // Setup product link clicks
+            // Setup product link clicks to go to PDP
             setupProductLinks();
-
-            // Track page view
-            trackPageViewEvent('product-listing', window.location.href);
 
             commerceInterface.executeFirstRequest();
         })();
@@ -174,6 +177,7 @@
         function getProductDataFromElement(element) {
             const productContainer = element.closest('atomic-product-template').parentElement;
             try {
+                // Get product data from the result object
                 const productElement = productContainer.querySelector('atomic-product-template');
                 if (productElement && productElement.product) {
                     return {
@@ -195,8 +199,11 @@
             const productData = getProductDataFromElement(button);
             if (productData) {
                 addProductToCart(productData);
+                
+                // Track add to cart event
                 trackAddToCartEvent(productData);
                 
+                // Visual feedback
                 button.textContent = 'Added!';
                 setTimeout(() => {
                     button.textContent = 'Add to Cart';

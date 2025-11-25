@@ -9,11 +9,11 @@ import sys
 import os
 from pathlib import Path
 
-# Add src directory to path for imports
-src_path = Path(__file__).parent / "src"
-sys.path.insert(0, str(src_path))
+# Add tools directory to path for imports
+tools_path = Path(__file__).parent / "tools"
+sys.path.insert(0, str(tools_path))
 
-from loader import main
+from data_loader.loader import main
 
 if __name__ == "__main__":
     main()

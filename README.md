@@ -72,7 +72,7 @@ python -m http.server 8000
 npx serve .
 ```
 
-Open `http://localhost:8000` in your browser.
+Open `http://localhost:8000` in your browser. You'll be redirected to the sports store demo.
 
 ---
 
@@ -109,7 +109,7 @@ Place your product data files (JSON format) in the `data/` folder. See `data/ful
 
 ## 🛒 E-commerce Website Features
 
-### 🏠 Homepage Search (`index.html`)
+### 🏠 Homepage Search (`website/pages/index.html`)
 
 - Global search functionality across all products
 - Advanced faceting and filtering capabilities
@@ -120,11 +120,11 @@ Place your product data files (JSON format) in the `data/` folder. See `data/ful
 
 Navigate through product categories via dropdown menu:
 
-- **Golf Equipment** (`plp-golf.html`)
-- **Hockey Equipment** (`plp-hockey.html`)
-- **Athletic Shoes** (`plp-shoes.html`)
+- **Golf Equipment** (`website/pages/plp-golf.html`)
+- **Hockey Equipment** (`website/pages/plp-hockey.html`)
+- **Athletic Shoes** (`website/pages/plp-shoes.html`)
 
-### 🔍 Product Detail Pages (`pdp.html`)
+### 🔍 Product Detail Pages (`website/pages/pdp.html`)
 
 - Dynamic URL-based product lookup (`pdp.html?id=PRODUCT_ID`)
 - Full product information and images
@@ -155,27 +155,33 @@ The website tracks comprehensive e-commerce events:
 ## 📁 Repository Structure
 
 ```
-├── index.html                 # Main search homepage
-├── pdp.html                  # Product detail page template
-├── plp-golf.html             # Golf equipment listing
-├── plp-hockey.html           # Hockey equipment listing
-├── plp-shoes.html            # Athletic shoes listing
-├── coveo-loader              # Data upload tool
-├── requirements.txt          # Python dependencies
-├── .env.example              # Environment configuration template
-├── styles/
-│   └── main.css              # Complete website styling
-├── js/
-│   ├── cart.js               # Shopping cart functionality
-│   └── coveo-analytics.js    # Analytics tracking
+├── index.html                    # Landing page with auto-redirect
+├── coveo-loader                  # Data upload CLI tool
+├── requirements.txt              # Python dependencies
+├── .env.example                  # Environment configuration template
+├── website/                      # Complete e-commerce website
+│   ├── pages/
+│   │   ├── index.html           # Main search homepage
+│   │   ├── pdp.html             # Product detail page template
+│   │   ├── plp-golf.html        # Golf equipment listing
+│   │   ├── plp-hockey.html      # Hockey equipment listing
+│   │   └── plp-shoes.html       # Athletic shoes listing
+│   ├── styles/
+│   │   └── main.css             # Complete website styling
+│   ├── js/
+│   │   ├── cart.js              # Shopping cart functionality
+│   │   └── coveo-analytics.js   # Analytics tracking
+│   └── assets/
+│       └── images/              # Product images and assets
+├── tools/                        # Development and data tools
+│   └── data_loader/
+│       └── loader.py            # Python data loader implementation
 ├── data/
-│   └── *.json               # Product data files
+│   └── *.json                   # Product data files
 ├── scripts/
-│   ├── setup.sh             # Basic setup script
-│   └── setup-secure.sh      # Secure setup with virtual env
-├── docs/                     # Documentation files
-├── src/                      # Python loader source code
-└── assets/                   # Static assets and images
+│   ├── setup.sh                 # Basic setup script
+│   └── setup-secure.sh          # Secure setup with virtual env
+└── docs/                        # Documentation files
 ```
 
 ---

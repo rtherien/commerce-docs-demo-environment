@@ -3,25 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Athletic Shoes - Sports Store</title>
+    <title>Hockey Equipment - Sports Store</title>
     <script type="module" src="https://static.cloud.coveo.com/atomic/v2/atomic.esm.js"></script>
     <link rel="stylesheet" href="https://static.cloud.coveo.com/atomic/v2/themes/coveo.css" />
-    <link rel="stylesheet" href="./styles/main.css" />
+    <link rel="stylesheet" href="../styles/main.css" />
 </head>
 <body>
     <!-- Navigation Header -->
     <header class="main-header">
         <div class="header-content">
             <div class="logo">
-                <h1><a href="/">Sports Store</a></h1>
+                <h1><a href="./index.html">Sports Store</a></h1>
             </div>
             <nav class="main-nav">
                 <div class="nav-dropdown">
                     <button class="nav-dropdown-btn">Shop Categories ▼</button>
                     <div class="nav-dropdown-content">
                         <a href="./plp-golf.html">Golf Equipment</a>
-                        <a href="./plp-hockey.html">Hockey Equipment</a>
-                        <a href="./plp-shoes.html" class="active">Athletic Shoes</a>
+                        <a href="./plp-hockey.html" class="active">Hockey Equipment</a>
+                        <a href="./plp-shoes.html">Athletic Shoes</a>
                     </div>
                 </div>
                 <div class="cart-container">
@@ -53,15 +53,14 @@
     <!-- Main Content -->
     <main class="main-content">
         <div class="search-hero">
-            <h2>Athletic Shoes</h2>
-            <p>High-performance footwear for every sport</p>
+            <h2>Hockey Equipment</h2>
+            <p>Professional hockey gear for players of all levels</p>
         </div>
 
         <atomic-commerce-interface
             organization-id="coveodocumentationtest"
             tracking-id="commerce-docs-demo"
             type="product-listing"
-            search-hub="shoes"
             language-assets-path="./lang"
             icon-assets-path="./assets"
         >
@@ -114,8 +113,8 @@
         </atomic-commerce-interface>
     </main>
 
-    <script src="./js/cart.js"></script>
-    <script src="./js/coveo-analytics.js"></script>
+    <script src="../js/cart.js"></script>
+    <script src="../js/coveo-analytics.js"></script>
     <script>
         (async () => {
             await customElements.whenDefined('atomic-commerce-interface');
@@ -129,14 +128,14 @@
                 platform: 'cloud',
                 analytics: {
                     trackingId: 'commerce-docs-demo',
-                    clientId: 'b63d9269-6930-4229-af25-55aba7076495'
+                    analyticsMode: 'next'
                 },
                 context: {
                     language: 'en',
                     country: 'CA',
                     currency: 'CAD',
                     view: {
-                        url: 'https://sports-store.com/shoes'
+                        url: 'https://sports-store.com/hockey'
                     },
                     user: {
                         userAgent: navigator.userAgent
