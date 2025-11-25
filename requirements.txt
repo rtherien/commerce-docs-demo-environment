@@ -1,0 +1,3 @@
+# Coveo Commerce API Loader Dependencies
+
+requests>=2.25.0
