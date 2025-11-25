@@ -62,10 +62,10 @@ COVEO_IMAGE_BASE_URL=../assets/images  # For local development
 
 ```bash
 source coveo-env/bin/activate
-./coveo-loader --file product-data-template.json --operation load
+./coveo-loader --file full-product-payload-sample.json --operation load
 ```
 
-> 💡 **New Template System**: We now use `product-data-template.json` which automatically uses your configured image URLs. No more manual URL updates needed!
+> 💡 **New Template System**: We now use `full-product-payload-sample.json` which automatically uses your configured image URLs. No more manual URL updates needed!
 
 ### 5. Run the Website
 

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sports Store - Search</title>
+    <title>Sports Store - Shoes</title>
     <script type="module" src="https://static.cloud.coveo.com/atomic/v3/atomic.esm.js"></script>
     <link rel="stylesheet" href="https://static.cloud.coveo.com/atomic/v3/themes/coveo.css">
     <link rel="stylesheet" href="../styles/main.css">
@@ -11,7 +11,7 @@
 <body>
     <div class="container">
         <header class="header">
-            <h1>Sports Store</h1>
+            <h1>Sports Store - Shoes</h1>
             <nav class="nav">
                 <a href="simple-search.html">Search</a>
                 <a href="simple-plp-shoes.html">Shoes</a>
@@ -24,13 +24,9 @@
             <atomic-commerce-interface
                 organization-id="coveodocumentationtest"
                 tracking-id="commerce-docs-demo"
-                type="search"
+                type="product-listing"
             >
                 <atomic-commerce-layout>
-                    <atomic-layout-section section="search">
-                        <atomic-commerce-search-box></atomic-commerce-search-box>
-                    </atomic-layout-section>
-                    
                     <atomic-layout-section section="facets">
                         <atomic-commerce-facets></atomic-commerce-facets>
                     </atomic-layout-section>
@@ -73,52 +69,37 @@
     </div>
 
     <script>
-        console.log('Starting simple search page...');
-        
         (async () => {
-            try {
-                console.log('Waiting for atomic-commerce-interface to be defined...');
-                await customElements.whenDefined('atomic-commerce-interface');
-                console.log('atomic-commerce-interface is now defined');
-                
-                const commerceInterface = document.querySelector('atomic-commerce-interface');
-                console.log('Commerce interface element:', commerceInterface);
-                
-                console.log('Initializing interface...');
-                await commerceInterface.initialize({
-                    accessToken: 'xxd749992c-d0b5-475f-95e6-671793e6c94a',
-                    organizationId: 'coveodocumentationtest',
-                    environment: 'prod',
-                    analytics: {
-                        trackingId: 'commerce-docs-demo'
-                    },
-                    context: {
-                        language: 'en',
-                        country: 'CA',
-                        currency: 'CAD',
-                        view: {
-                            url: 'https://sports-store.com/search'
-                        }
+            await customElements.whenDefined('atomic-commerce-interface');
+            
+            const commerceInterface = document.querySelector('atomic-commerce-interface');
+            
+            await commerceInterface.initialize({
+                accessToken: 'xxd749992c-d0b5-475f-95e6-671793e6c94a',
+                organizationId: 'coveodocumentationtest',
+                environment: 'prod',
+                analytics: {
+                    trackingId: 'commerce-docs-demo'
+                },
+                context: {
+                    language: 'en',
+                    country: 'CA',
+                    currency: 'CAD',
+                    view: {
+                        url: 'https://sports-store.com/shoes'
                     }
-                });
-                console.log('Interface initialized successfully');
+                }
+            });
 
-                // Add response listener
-                commerceInterface.addEventListener('responseReceived', (event) => {
-                    const products = event.detail?.response?.products || [];
-                    console.log(`Found ${products.length} products:`, products.map(p => p.ec_name));
-                });
+            // Execute first request for shoes
+            await commerceInterface.executeFirstRequest({
+                q: 'shoes'
+            });
 
-                // Execute initial search to show products by default
-                console.log('Executing initial search to show all products...');
-                await commerceInterface.executeFirstRequest();
-                console.log('Initial search completed');
-
-                console.log('Interface ready - you can now search for products');
-                
-            } catch (error) {
-                console.error('Error in simple search initialization:', error);
-            }
+            // Debug response
+            commerceInterface.addEventListener('responseReceived', (event) => {
+                console.log('SIMPLE SHOES PLP - Products found:', event.detail?.response?.products?.length || 0);
+            });
         })();
     </script>
 </body>
