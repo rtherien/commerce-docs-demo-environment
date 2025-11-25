@@ -14,10 +14,10 @@
             "gender": "Men",
             "price": 28.00,
             "ec_images": [
-                "https://drive.google.com/file/d/14U9PnY1QDLRr4kGcAO3T505jp5Y3D_ju/view?usp=drive_link"
+                "https://raw.githubusercontent.com/rtherien/commerce-docs-demo-environment/main/assets/red-soccer-shoes.png"
             ],
             "ec_thumbnails": [
-                "https://drive.google.com/file/d/14U9PnY1QDLRr4kGcAO3T505jp5Y3D_ju/view?usp=drive_link"
+                "https://raw.githubusercontent.com/rtherien/commerce-docs-demo-environment/main/assets/red-soccer-shoes.png"
             ],
             "ec_in_stock": true,
             "ec_category": "Soccer Shoes",
@@ -38,10 +38,10 @@
             "gender": "Men",
             "price": 28.00,
             "ec_images": [
-                "https://drive.google.com/file/d/1NRh423kOlPOkXDDcoRE0ThhA9vrdfHXQ/view?usp=drive_link"
+                "https://raw.githubusercontent.com/rtherien/commerce-docs-demo-environment/main/assets/blue-soccer-shoes.png"
             ],
             "ec_thumbnails": [
-                "https://drive.google.com/file/d/1NRh423kOlPOkXDDcoRE0ThhA9vrdfHXQ/view?usp=drive_link"
+                "https://raw.githubusercontent.com/rtherien/commerce-docs-demo-environment/main/assets/blue-soccer-shoes.png"
             ],
             "ec_category": "Soccer Shoes",
             "department": "Shoes",
@@ -61,10 +61,10 @@
             "gender": "Men",
             "price": 28.00,
             "ec_images": [
-                "https://drive.google.com/file/d/1cRb106wSvkDIrk1lAVt00UrsrD6QDiuu/view?usp=drive_link"
+                "https://raw.githubusercontent.com/rtherien/commerce-docs-demo-environment/main/assets/yellow-soccer-shoes.jpg"
             ],
             "ec_thumbnails": [
-                "https://drive.google.com/file/d/1cRb106wSvkDIrk1lAVt00UrsrD6QDiuu/view?usp=drive_link"
+                "https://raw.githubusercontent.com/rtherien/commerce-docs-demo-environment/main/assets/yellow-soccer-shoes.jpg"
             ],
             "ec_category": "Soccer Shoes",
             "department": "Shoes",
@@ -84,10 +84,10 @@
             "gender": "Men",
             "price": 28.00,
             "ec_images": [
-                "https://drive.google.com/file/d/1kK9Ldkhg_zWG6KhfrAYXm_aWzKbD6Fb4/view?usp=drive_link"
+                "https://raw.githubusercontent.com/rtherien/commerce-docs-demo-environment/main/assets/black-soccer-shoes.jpg"
             ],
             "ec_thumbnails": [
-                "https://drive.google.com/file/d/1kK9Ldkhg_zWG6KhfrAYXm_aWzKbD6Fb4/view?usp=drive_link"
+                "https://raw.githubusercontent.com/rtherien/commerce-docs-demo-environment/main/assets/black-soccer-shoes.jpg"
             ],
             "ec_category": "Soccer Shoes",
             "department": "Shoes",
@@ -107,10 +107,10 @@
             "gender": "Men",
             "price": 228.00,
             "ec_images": [
-                "https://drive.google.com/file/d/1zDWnvNym7J9ShAUn6BHJg7aUeR9y1O8w/view?usp=drive_link"
+                "https://raw.githubusercontent.com/rtherien/commerce-docs-demo-environment/main/assets/black-hockey-stick.jpg"
             ],
             "ec_thumbnails": [
-                "https://drive.google.com/file/d/1zDWnvNym7J9ShAUn6BHJg7aUeR9y1O8w/view?usp=drive_link"
+                "https://raw.githubusercontent.com/rtherien/commerce-docs-demo-environment/main/assets/black-hockey-stick.jpg"
             ],
             "ec_category": "Hockey sticks",
             "department": "Hockey",
@@ -130,10 +130,10 @@
             "gender": "Men",
             "price": 228.00,
             "ec_images": [
-                "https://drive.google.com/file/d/1BYooyRYdYulm0UUkHaJrT5F28ka1jxal/view?usp=drive_link"
+                "https://raw.githubusercontent.com/rtherien/commerce-docs-demo-environment/main/assets/red-hockey-stick.jpg"
             ],
             "ec_thumbnails": [
-                "https://drive.google.com/file/d/1BYooyRYdYulm0UUkHaJrT5F28ka1jxal/view?usp=drive_link"
+                "https://raw.githubusercontent.com/rtherien/commerce-docs-demo-environment/main/assets/red-hockey-stick.jpg"
             ],
             "ec_category": "Hockey sticks",
             "department": "Hockey",
@@ -153,10 +153,10 @@
             "gender": "Men",
             "price": 399.00,
             "ec_images": [
-                "https://drive.google.com/file/d/1cbX30PEKpjogvNaUZJ_-nvtmKFbqpUHm/view?usp=drive_link"
+                "https://raw.githubusercontent.com/rtherien/commerce-docs-demo-environment/main/assets/golf-driver.jpg"
             ],
             "ec_thumbnails": [
-                "https://drive.google.com/file/d/1cbX30PEKpjogvNaUZJ_-nvtmKFbqpUHm/view?usp=drive_link"
+                "https://raw.githubusercontent.com/rtherien/commerce-docs-demo-environment/main/assets/golf-driver.jpg"
             ],
             "ec_category": "Golf drivers",
             "department": "Golf",
