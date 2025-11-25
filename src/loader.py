@@ -24,9 +24,18 @@ class CoveoLoader:
     
     def __init__(self, config_path: str = "config.json"):
         """Initialize the loader with configuration."""
+        # Handle both relative and absolute paths for config
+        if not os.path.isabs(config_path):
+            # Look for config in project root
+            project_root = Path(__file__).parent.parent
+            config_path = project_root / config_path
+        
         self.config = self._load_config(config_path)
         self.base_url = "https://api.cloud.coveo.com/push/v1"
-        self.test_payloads_dir = Path("commerce-docs-demo-environment/Test payloads")
+        
+        # Set data directory relative to project root
+        project_root = Path(__file__).parent.parent
+        self.test_payloads_dir = project_root / "data"
         
         # Validate required configuration
         required_keys = ["organization_id", "source_id", "access_token"]
