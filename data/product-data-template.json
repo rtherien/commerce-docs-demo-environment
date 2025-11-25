@@ -12,7 +12,7 @@
             "ec_item_group_id": "001",
             "ec_product_id": "CVO-scr-001",
             "gender": "Men",
-            "price": 28.0,
+            "ec_price": 28.0,
             "ec_images": [
                 "{{IMAGE_BASE_URL}}/red-soccer-shoes.png"
             ],
@@ -36,7 +36,7 @@
             "ec_item_group_id": "002",
             "ec_product_id": "CVO-scb-002",
             "gender": "Men",
-            "price": 30.0,
+            "ec_price": 30.0,
             "ec_images": [
                 "{{IMAGE_BASE_URL}}/blue-soccer-shoes.png"
             ],
@@ -60,7 +60,7 @@
             "ec_item_group_id": "003",
             "ec_product_id": "CVO-scy-003",
             "gender": "Men",
-            "price": 32.0,
+            "ec_price": 32.0,
             "ec_images": [
                 "{{IMAGE_BASE_URL}}/yellow-soccer-shoes.jpg"
             ],
@@ -84,7 +84,7 @@
             "ec_item_group_id": "004",
             "ec_product_id": "CVO-scb-004",
             "gender": "Men",
-            "price": 28.0,
+            "ec_price": 28.0,
             "ec_images": [
                 "{{IMAGE_BASE_URL}}/black-soccer-shoes.jpg"
             ],
@@ -108,7 +108,7 @@
             "ec_item_group_id": "005",
             "ec_product_id": "CVO-hsb-005",
             "gender": "Unisex",
-            "price": 89.0,
+            "ec_price": 89.0,
             "ec_images": [
                 "{{IMAGE_BASE_URL}}/black-hockey-stick.jpg"
             ],
@@ -132,7 +132,7 @@
             "ec_item_group_id": "006",
             "ec_product_id": "CVO-hsr-006",
             "gender": "Unisex",
-            "price": 92.0,
+            "ec_price": 92.0,
             "ec_images": [
                 "{{IMAGE_BASE_URL}}/red-hockey-stick.jpg"
             ],
@@ -156,7 +156,7 @@
             "ec_item_group_id": "007",
             "ec_product_id": "CVO-gd-007",
             "gender": "Unisex",
-            "price": 299.0,
+            "ec_price": 299.0,
             "ec_images": [
                 "{{IMAGE_BASE_URL}}/golf-driver.jpg"
             ],
@@ -181,7 +181,7 @@
             "ec_product_id": "CVO-scr-001",
             "ec_variant_id": "CVO-scr-001-8",
             "gender": "Men",
-            "price": 28.0,
+            "ec_price": 28.0,
             "ec_images": [
                 "{{IMAGE_BASE_URL}}/red-soccer-shoes.png"
             ],
@@ -207,7 +207,7 @@
             "ec_product_id": "CVO-scr-001",
             "ec_variant_id": "CVO-scr-001-9",
             "gender": "Men",
-            "price": 28.0,
+            "ec_price": 28.0,
             "ec_images": [
                 "{{IMAGE_BASE_URL}}/red-soccer-shoes.png"
             ],
@@ -233,7 +233,7 @@
             "ec_product_id": "CVO-scr-001",
             "ec_variant_id": "CVO-scr-001-10",
             "gender": "Men",
-            "price": 28.0,
+            "ec_price": 28.0,
             "ec_images": [
                 "{{IMAGE_BASE_URL}}/red-soccer-shoes.png"
             ],
@@ -259,7 +259,7 @@
             "ec_product_id": "CVO-scb-002",
             "ec_variant_id": "CVO-scb-002-8",
             "gender": "Men",
-            "price": 30.0,
+            "ec_price": 30.0,
             "ec_images": [
                 "{{IMAGE_BASE_URL}}/blue-soccer-shoes.png"
             ],
@@ -285,7 +285,7 @@
             "ec_product_id": "CVO-scb-002",
             "ec_variant_id": "CVO-scb-002-9",
             "gender": "Men",
-            "price": 30.0,
+            "ec_price": 30.0,
             "ec_images": [
                 "{{IMAGE_BASE_URL}}/blue-soccer-shoes.png"
             ],
@@ -311,7 +311,7 @@
             "ec_product_id": "CVO-scb-002",
             "ec_variant_id": "CVO-scb-002-10",
             "gender": "Men",
-            "price": 30.0,
+            "ec_price": 30.0,
             "ec_images": [
                 "{{IMAGE_BASE_URL}}/blue-soccer-shoes.png"
             ],
@@ -337,7 +337,7 @@
             "ec_product_id": "CVO-scy-003",
             "ec_variant_id": "CVO-scy-003-8",
             "gender": "Men",
-            "price": 32.0,
+            "ec_price": 32.0,
             "ec_images": [
                 "{{IMAGE_BASE_URL}}/yellow-soccer-shoes.jpg"
             ],
@@ -363,7 +363,7 @@
             "ec_product_id": "CVO-scy-003",
             "ec_variant_id": "CVO-scy-003-9",
             "gender": "Men",
-            "price": 32.0,
+            "ec_price": 32.0,
             "ec_images": [
                 "{{IMAGE_BASE_URL}}/yellow-soccer-shoes.jpg"
             ],
@@ -389,7 +389,7 @@
             "ec_product_id": "CVO-scy-003",
             "ec_variant_id": "CVO-scy-003-10",
             "gender": "Men",
-            "price": 32.0,
+            "ec_price": 32.0,
             "ec_images": [
                 "{{IMAGE_BASE_URL}}/yellow-soccer-shoes.jpg"
             ],
@@ -415,7 +415,7 @@
             "ec_product_id": "CVO-scb-004",
             "ec_variant_id": "CVO-scb-004-8",
             "gender": "Men",
-            "price": 28.0,
+            "ec_price": 28.0,
             "ec_images": [
                 "{{IMAGE_BASE_URL}}/black-soccer-shoes.jpg"
             ],
@@ -441,7 +441,7 @@
             "ec_product_id": "CVO-scb-004",
             "ec_variant_id": "CVO-scb-004-9",
             "gender": "Men",
-            "price": 28.0,
+            "ec_price": 28.0,
             "ec_images": [
                 "{{IMAGE_BASE_URL}}/black-soccer-shoes.jpg"
             ],
@@ -467,7 +467,7 @@
             "ec_product_id": "CVO-scb-004",
             "ec_variant_id": "CVO-scb-004-10",
             "gender": "Men",
-            "price": 28.0,
+            "ec_price": 28.0,
             "ec_images": [
                 "{{IMAGE_BASE_URL}}/black-soccer-shoes.jpg"
             ],
@@ -493,7 +493,7 @@
             "ec_product_id": "CVO-hsb-005",
             "ec_variant_id": "CVO-hsb-005-reg",
             "gender": "Unisex",
-            "price": 89.0,
+            "ec_price": 89.0,
             "ec_images": [
                 "{{IMAGE_BASE_URL}}/black-hockey-stick.jpg"
             ],
@@ -519,7 +519,7 @@
             "ec_product_id": "CVO-hsb-005",
             "ec_variant_id": "CVO-hsb-005-stiff",
             "gender": "Unisex",
-            "price": 89.0,
+            "ec_price": 89.0,
             "ec_images": [
                 "{{IMAGE_BASE_URL}}/black-hockey-stick.jpg"
             ],
@@ -545,7 +545,7 @@
             "ec_product_id": "CVO-hsr-006",
             "ec_variant_id": "CVO-hsr-006-reg",
             "gender": "Unisex",
-            "price": 92.0,
+            "ec_price": 92.0,
             "ec_images": [
                 "{{IMAGE_BASE_URL}}/red-hockey-stick.jpg"
             ],
@@ -571,7 +571,7 @@
             "ec_product_id": "CVO-hsr-006",
             "ec_variant_id": "CVO-hsr-006-stiff",
             "gender": "Unisex",
-            "price": 92.0,
+            "ec_price": 92.0,
             "ec_images": [
                 "{{IMAGE_BASE_URL}}/red-hockey-stick.jpg"
             ],
@@ -597,7 +597,7 @@
             "ec_product_id": "CVO-gd-007",
             "ec_variant_id": "CVO-gd-007-rh",
             "gender": "Unisex",
-            "price": 299.0,
+            "ec_price": 299.0,
             "ec_images": [
                 "{{IMAGE_BASE_URL}}/golf-driver.jpg"
             ],
@@ -623,7 +623,7 @@
             "ec_product_id": "CVO-gd-007",
             "ec_variant_id": "CVO-gd-007-lh",
             "gender": "Unisex",
-            "price": 299.0,
+            "ec_price": 299.0,
             "ec_images": [
                 "{{IMAGE_BASE_URL}}/golf-driver.jpg"
             ],
@@ -649,7 +649,7 @@
             "ec_product_id": "CVO-gd-007",
             "ec_variant_id": "CVO-gd-007-reg",
             "gender": "Unisex",
-            "price": 299.0,
+            "ec_price": 299.0,
             "ec_images": [
                 "{{IMAGE_BASE_URL}}/golf-driver.jpg"
             ],

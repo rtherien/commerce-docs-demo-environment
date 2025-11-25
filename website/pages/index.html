@@ -70,14 +70,7 @@
                 </atomic-layout-section>
                 
                 <atomic-layout-section section="facets">
-                    <atomic-commerce-facets>
-                        <atomic-commerce-facet field="ec_category" label="Category"></atomic-commerce-facet>
-                        <atomic-commerce-facet field="ec_brand" label="Brand"></atomic-commerce-facet>
-                        <atomic-commerce-facet field="ec_price" label="Price" type="numericalRange"></atomic-commerce-facet>
-                        <atomic-commerce-facet field="ec_rating" label="Rating" type="numericalRange"></atomic-commerce-facet>
-                        <atomic-commerce-facet field="ec_color" label="Color"></atomic-commerce-facet>
-                        <atomic-commerce-facet field="ec_size" label="Size"></atomic-commerce-facet>
-                    </atomic-commerce-facets>
+                    <atomic-commerce-facets></atomic-commerce-facets>
                 </atomic-layout-section>
                 
                 <atomic-layout-section section="main">
@@ -135,14 +128,14 @@
             
             const commerceInterface = document.querySelector('atomic-commerce-interface');
             
+            // Basic initialization for v3
             await commerceInterface.initialize({
                 accessToken: 'xxd749992c-d0b5-475f-95e6-671793e6c94a',
                 organizationId: 'coveodocumentationtest',
                 environment: 'prod',
                 platform: 'cloud',
                 analytics: {
-                    trackingId: 'commerce-docs-demo',
-                    analyticsMode: 'next'
+                    trackingId: 'commerce-docs-demo'
                 },
                 context: {
                     language: 'en',
@@ -150,9 +143,6 @@
                     currency: 'CAD',
                     view: {
                         url: 'https://sports-store.com/search'
-                    },
-                    user: {
-                        userAgent: navigator.userAgent
                     }
                 }
             });
@@ -160,10 +150,45 @@
             // Initialize cart functionality
             initializeCart(commerceInterface);
             
-            // Setup product link clicks to go to PDP
+            // Setup product links to go to PDP
             setupProductLinks();
 
-            commerceInterface.executeFirstRequest();
+            // Add debugging for product loading
+            commerceInterface.addEventListener('firstRequestExecuted', (event) => {
+                console.log('First request executed, results:', event.detail);
+            });
+
+            commerceInterface.addEventListener('responseReceived', (event) => {
+                console.log('Response received:', event.detail);
+                const response = event.detail?.response;
+                if (response) {
+                    const products = response.products || response.results || [];
+                    console.log(`Found ${products.length} items`);
+                    console.log('Response structure:', Object.keys(response));
+                    console.log('Full response:', response);
+                } else {
+                    console.log('No response data received');
+                }
+            });
+
+            commerceInterface.addEventListener('queryError', (event) => {
+                console.error('Query error:', event.detail);
+            });
+
+            commerceInterface.addEventListener('requestSent', (event) => {
+                console.log('Request sent:', event.detail);
+            });
+
+            // Execute first request
+            try {
+                await commerceInterface.executeFirstRequest({
+                    q: '*',  // Search for all products
+                    numberOfResults: 20
+                });
+                console.log('First request completed');
+            } catch (error) {
+                console.error('Error executing first request:', error);
+            }
         })();
 
         // Function to handle product links to PDP
@@ -194,22 +219,20 @@
                 const result = productTemplate.result;
                 if (result) {
                     return {
-                        id: result.permanentid || result.uniqueId || result.raw.permanentid,
-                        name: result.title || result.raw.ec_name || result.raw.title,
-                        price: result.raw.ec_price || 0,
-                        image: result.raw.ec_thumbnails?.[0] || result.raw.ec_images?.[0] || result.raw.ec_image || result.raw.ec_thumbnail,
-                        brand: result.raw.ec_brand || '',
-                        description: result.raw.ec_description || result.excerpt || ''
+                        id: result.permanentid || result.uniqueId || result.raw?.permanentid,
+                        name: result.title || result.raw?.ec_name || result.raw?.title,
+                        price: result.raw?.ec_price || 0,
+                        image: result.raw?.ec_thumbnails?.[0] || result.raw?.ec_images?.[0] || result.raw?.ec_image || result.raw?.ec_thumbnail,
+                        brand: result.raw?.ec_brand || '',
+                        description: result.raw?.ec_description || result.excerpt || ''
                     };
                 }
 
                 // Fallback: try to get data from the commerce interface
                 const commerceInterface = document.querySelector('atomic-commerce-interface');
                 if (commerceInterface && commerceInterface.state && commerceInterface.state.products) {
-                    // Try to match by template position or other means
                     const products = commerceInterface.state.products;
                     if (products.length > 0) {
-                        // For now, return the first product as fallback
                         const product = products[0];
                         return {
                             id: product.permanentid || product.uniqueId,

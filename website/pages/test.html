@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test - Atomic v3 Minimal</title>
+    <script type="module" src="https://static.cloud.coveo.com/atomic/v3/atomic.esm.js"></script>
+    <link rel="stylesheet" href="https://static.cloud.coveo.com/atomic/v3/themes/coveo.css" />
+</head>
+<body>
+    <h1>Minimal Atomic v3 Test</h1>
+    
+    <atomic-commerce-interface
+        organization-id="coveodocumentationtest"
+        tracking-id="commerce-docs-demo"
+        type="search"
+    >
+        <atomic-commerce-layout>
+            <atomic-layout-section section="search">
+                <atomic-commerce-search-box placeholder="Search..."></atomic-commerce-search-box>
+            </atomic-layout-section>
+            
+            <atomic-layout-section section="facets">
+                <atomic-commerce-facets></atomic-commerce-facets>
+            </atomic-layout-section>
+            
+            <atomic-layout-section section="main">
+                <atomic-layout-section section="status">
+                    <atomic-commerce-query-summary></atomic-commerce-query-summary>
+                    <atomic-commerce-sort-dropdown></atomic-commerce-sort-dropdown>
+                </atomic-layout-section>
+                
+                <atomic-layout-section section="products">
+                    <atomic-commerce-product-list display="grid">
+                        <atomic-product-template>
+                            <template>
+                                <atomic-product-section-name>
+                                    <atomic-product-link></atomic-product-link>
+                                </atomic-product-section-name>
+                                <atomic-product-section-visual>
+                                    <atomic-product-image field="ec_thumbnails,ec_images,ec_image"></atomic-product-image>
+                                </atomic-product-section-visual>
+                                <atomic-product-section-metadata>
+                                    <atomic-product-text field="ec_brand"></atomic-product-text>
+                                    <atomic-product-price currency="CAD"></atomic-product-price>
+                                </atomic-product-section-metadata>
+                            </template>
+                        </atomic-product-template>
+                    </atomic-commerce-product-list>
+                    <atomic-commerce-query-error></atomic-commerce-query-error>
+                    <atomic-commerce-no-products></atomic-commerce-no-products>
+                </atomic-layout-section>
+                
+                <atomic-layout-section section="pagination">
+                    <atomic-commerce-load-more-products></atomic-commerce-load-more-products>
+                </atomic-layout-section>
+            </atomic-layout-section>
+        </atomic-commerce-layout>
+    </atomic-commerce-interface>
+
+    <script>
+        (async () => {
+            console.log('Starting minimal test...');
+            
+            await customElements.whenDefined('atomic-commerce-interface');
+            console.log('Custom elements defined');
+            
+            const commerceInterface = document.querySelector('atomic-commerce-interface');
+            console.log('Commerce interface found:', commerceInterface);
+            
+            try {
+                await commerceInterface.initialize({
+                    accessToken: 'xxd749992c-d0b5-475f-95e6-671793e6c94a',
+                    organizationId: 'coveodocumentationtest',
+                    environment: 'prod',
+                    context: {
+                        language: 'en',
+                        country: 'CA',
+                        currency: 'CAD',
+                        view: {
+                            url: 'https://sports-store.com/test'
+                        }
+                    }
+                });
+                console.log('Interface initialized successfully');
+                
+                // Add event listeners for debugging
+                commerceInterface.addEventListener('responseReceived', (event) => {
+                    console.log('Response received:', event.detail);
+                    const response = event.detail?.response;
+                    if (response) {
+                        const products = response.products || response.results || [];
+                        console.log(`Found ${products.length} items`);
+                        console.log('Response structure:', Object.keys(response));
+                    }
+                });
+                
+                commerceInterface.addEventListener('queryError', (error) => {
+                    console.error('Query error:', error);
+                });
+                
+                await commerceInterface.executeFirstRequest();
+                console.log('First request executed');
+                
+            } catch (error) {
+                console.error('Error during initialization or execution:', error);
+                console.error('Error details:', {
+                    message: error.message,
+                    stack: error.stack,
+                    name: error.name
+                });
+            }
+        })();
+    </script>
+</body>
+</html>

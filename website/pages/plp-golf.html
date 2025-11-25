@@ -66,13 +66,7 @@
         >
             <atomic-commerce-layout>
                 <atomic-layout-section section="facets">
-                    <atomic-commerce-facets>
-                        <atomic-commerce-facet field="ec_brand" label="Brand"></atomic-commerce-facet>
-                        <atomic-commerce-facet field="ec_price" label="Price" type="numericalRange"></atomic-commerce-facet>
-                        <atomic-commerce-facet field="ec_rating" label="Rating" type="numericalRange"></atomic-commerce-facet>
-                        <atomic-commerce-facet field="ec_color" label="Color"></atomic-commerce-facet>
-                        <atomic-commerce-facet field="ec_product_type" label="Product Type"></atomic-commerce-facet>
-                    </atomic-commerce-facets>
+                    <atomic-commerce-facets></atomic-commerce-facets>
                 </atomic-layout-section>
                 <atomic-layout-section section="main">
                     <atomic-layout-section section="status">
@@ -127,14 +121,14 @@
             
             const commerceInterface = document.querySelector('atomic-commerce-interface');
             
+            // Basic initialization for v3
             await commerceInterface.initialize({
                 accessToken: 'xxd749992c-d0b5-475f-95e6-671793e6c94a',
                 organizationId: 'coveodocumentationtest',
                 environment: 'prod',
                 platform: 'cloud',
                 analytics: {
-                    trackingId: 'commerce-docs-demo',
-                    analyticsMode: 'next'
+                    trackingId: 'commerce-docs-demo'
                 },
                 context: {
                     language: 'en',
@@ -142,9 +136,6 @@
                     currency: 'CAD',
                     view: {
                         url: 'https://sports-store.com/golf'
-                    },
-                    user: {
-                        userAgent: navigator.userAgent
                     }
                 }
             });
@@ -156,13 +147,29 @@
             // Setup product link clicks
             setupProductLinks();
 
+            // Add debugging
+            commerceInterface.addEventListener('firstRequestExecuted', (event) => {
+                console.log('Golf PLP - First request executed:', event.detail);
+            });
+
+            commerceInterface.addEventListener('responseReceived', (event) => {
+                console.log('Golf PLP - Response received:', event.detail);
+                const results = event.detail?.response?.products || event.detail?.response?.results || [];
+                console.log(`Golf PLP - Found ${results.length} products/results`);
+            });
+
             // Track page view
             trackPageViewEvent('product-listing', window.location.href);
 
-            // Execute with category filter for golf products
-            commerceInterface.executeFirstRequest({
-                aq: '@ec_category=="Golf" OR @ec_category=="golf" OR @ec_brand=="TaylorMade" OR @ec_brand=="Callaway" OR @ec_brand=="Nike Golf"'
-            });
+            // Execute first request
+            try {
+                await commerceInterface.executeFirstRequest({
+                    numberOfResults: 20
+                });
+                console.log('Golf PLP - First request completed');
+            } catch (error) {
+                console.error('Golf PLP - Error executing first request:', error);
+            }
         })();
 
         // Function to handle product links to PDP
