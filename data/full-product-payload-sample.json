@@ -12,12 +12,12 @@
             "ec_item_group_id": "001",
             "ec_product_id": "CVO-scr-001",
             "gender": "Men",
-            "price": 28.00,
+            "price": 28.0,
             "ec_images": [
-                "https://raw.githubusercontent.com/rtherien/commerce-docs-demo-environment/main/assets/red-soccer-shoes.png"
+                "https://cdn.jsdelivr.net/gh/rtherien/commerce-docs-demo-environment@main/assets/red-soccer-shoes.png"
             ],
             "ec_thumbnails": [
-                "https://raw.githubusercontent.com/rtherien/commerce-docs-demo-environment/main/assets/red-soccer-shoes.png"
+                "https://cdn.jsdelivr.net/gh/rtherien/commerce-docs-demo-environment@main/assets/red-soccer-shoes.png"
             ],
             "ec_in_stock": true,
             "ec_category": "Soccer Shoes",
@@ -36,12 +36,12 @@
             "ec_item_group_id": "001",
             "ec_product_id": "CVO-scr-002",
             "gender": "Men",
-            "price": 28.00,
+            "price": 28.0,
             "ec_images": [
-                "https://raw.githubusercontent.com/rtherien/commerce-docs-demo-environment/main/assets/blue-soccer-shoes.png"
+                "https://cdn.jsdelivr.net/gh/rtherien/commerce-docs-demo-environment@main/assets/blue-soccer-shoes.png"
             ],
             "ec_thumbnails": [
-                "https://raw.githubusercontent.com/rtherien/commerce-docs-demo-environment/main/assets/blue-soccer-shoes.png"
+                "https://cdn.jsdelivr.net/gh/rtherien/commerce-docs-demo-environment@main/assets/blue-soccer-shoes.png"
             ],
             "ec_category": "Soccer Shoes",
             "department": "Shoes",
@@ -59,12 +59,12 @@
             "ec_item_group_id": "001",
             "ec_product_id": "CVO-scr-003",
             "gender": "Men",
-            "price": 28.00,
+            "price": 28.0,
             "ec_images": [
-                "https://raw.githubusercontent.com/rtherien/commerce-docs-demo-environment/main/assets/yellow-soccer-shoes.jpg"
+                "https://cdn.jsdelivr.net/gh/rtherien/commerce-docs-demo-environment@main/assets/yellow-soccer-shoes.jpg"
             ],
             "ec_thumbnails": [
-                "https://raw.githubusercontent.com/rtherien/commerce-docs-demo-environment/main/assets/yellow-soccer-shoes.jpg"
+                "https://cdn.jsdelivr.net/gh/rtherien/commerce-docs-demo-environment@main/assets/yellow-soccer-shoes.jpg"
             ],
             "ec_category": "Soccer Shoes",
             "department": "Shoes",
@@ -82,12 +82,12 @@
             "ec_item_group_id": "001",
             "ec_product_id": "CVO-scr-004",
             "gender": "Men",
-            "price": 28.00,
+            "price": 28.0,
             "ec_images": [
-                "https://raw.githubusercontent.com/rtherien/commerce-docs-demo-environment/main/assets/black-soccer-shoes.jpg"
+                "https://cdn.jsdelivr.net/gh/rtherien/commerce-docs-demo-environment@main/assets/black-soccer-shoes.jpg"
             ],
             "ec_thumbnails": [
-                "https://raw.githubusercontent.com/rtherien/commerce-docs-demo-environment/main/assets/black-soccer-shoes.jpg"
+                "https://cdn.jsdelivr.net/gh/rtherien/commerce-docs-demo-environment@main/assets/black-soccer-shoes.jpg"
             ],
             "ec_category": "Soccer Shoes",
             "department": "Shoes",
@@ -105,12 +105,12 @@
             "ec_item_group_id": "002",
             "ec_product_id": "CVO-hcs-001",
             "gender": "Men",
-            "price": 228.00,
+            "price": 228.0,
             "ec_images": [
-                "https://raw.githubusercontent.com/rtherien/commerce-docs-demo-environment/main/assets/black-hockey-stick.jpg"
+                "https://cdn.jsdelivr.net/gh/rtherien/commerce-docs-demo-environment@main/assets/black-hockey-stick.jpg"
             ],
             "ec_thumbnails": [
-                "https://raw.githubusercontent.com/rtherien/commerce-docs-demo-environment/main/assets/black-hockey-stick.jpg"
+                "https://cdn.jsdelivr.net/gh/rtherien/commerce-docs-demo-environment@main/assets/black-hockey-stick.jpg"
             ],
             "ec_category": "Hockey sticks",
             "department": "Hockey",
@@ -128,12 +128,12 @@
             "ec_item_group_id": "002",
             "ec_product_id": "CVO-hcs-001",
             "gender": "Men",
-            "price": 228.00,
+            "price": 228.0,
             "ec_images": [
-                "https://raw.githubusercontent.com/rtherien/commerce-docs-demo-environment/main/assets/red-hockey-stick.jpg"
+                "https://cdn.jsdelivr.net/gh/rtherien/commerce-docs-demo-environment@main/assets/red-hockey-stick.jpg"
             ],
             "ec_thumbnails": [
-                "https://raw.githubusercontent.com/rtherien/commerce-docs-demo-environment/main/assets/red-hockey-stick.jpg"
+                "https://cdn.jsdelivr.net/gh/rtherien/commerce-docs-demo-environment@main/assets/red-hockey-stick.jpg"
             ],
             "ec_category": "Hockey sticks",
             "department": "Hockey",
@@ -151,12 +151,12 @@
             "ec_item_group_id": "003",
             "ec_product_id": "CVO-gfd-001",
             "gender": "Men",
-            "price": 399.00,
+            "price": 399.0,
             "ec_images": [
-                "https://raw.githubusercontent.com/rtherien/commerce-docs-demo-environment/main/assets/golf-driver.jpg"
+                "https://cdn.jsdelivr.net/gh/rtherien/commerce-docs-demo-environment@main/assets/golf-driver.jpg"
             ],
             "ec_thumbnails": [
-                "https://raw.githubusercontent.com/rtherien/commerce-docs-demo-environment/main/assets/golf-driver.jpg"
+                "https://cdn.jsdelivr.net/gh/rtherien/commerce-docs-demo-environment@main/assets/golf-driver.jpg"
             ],
             "ec_category": "Golf drivers",
             "department": "Golf",
@@ -282,7 +282,7 @@
             "ec_variant_id": "004-black-10_wide",
             "objecttype": "Variant"
         },
-                {
+        {
             "DocumentId": "variant://005-75",
             "FileExtension": ".html",
             "ec_name": "Coveo hockey stick - black - flex 75",

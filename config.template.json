@@ -2,5 +2,5 @@
   "organization_id": "your-organization-id-here",
   "source_id": "your-source-id-here",
   "access_token": "your-api-key-here",
-  "image_base_url": "https://raw.githubusercontent.com/rtherien/commerce-docs-demo-environment/main/assets"
+  "image_base_url": "https://cdn.jsdelivr.net/gh/YOUR-USERNAME/YOUR-REPO@main/assets"
 }
