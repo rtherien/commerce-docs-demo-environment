@@ -158,9 +158,26 @@ class CoveoLoader:
         if not file_path.exists():
             raise FileNotFoundError(f"Payload file not found: {file_path}")
         
+    def load_payload_file(self, filename: str) -> Dict[str, Any]:
+        """Load and validate a payload file."""
+        file_path = self.test_payloads_dir / filename
+        
+        if not file_path.exists():
+            raise FileNotFoundError(f"Payload file not found: {file_path}")
+        
         try:
             with open(file_path, 'r') as f:
-                data = json.load(f)
+                content = f.read()
+            
+            # Process templates - replace {{IMAGE_BASE_URL}} with configured base URL
+            if '{{IMAGE_BASE_URL}}' in content:
+                image_base_url = self.config.get('image_base_url', '../assets/images')
+                # Remove trailing slash if present to avoid double slashes
+                image_base_url = image_base_url.rstrip('/')
+                content = content.replace('{{IMAGE_BASE_URL}}', image_base_url)
+                print(f"🔧 Replaced image URLs with: {image_base_url}")
+            
+            data = json.loads(content)
             
             print(f"✅ Loaded payload file: {filename}")
             

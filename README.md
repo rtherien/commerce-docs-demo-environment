@@ -53,15 +53,19 @@ Your `.env` file should look like:
 COVEO_ORGANIZATION_ID=your-org-name
 COVEO_SOURCE_ID=your-source-id-here
 COVEO_ACCESS_TOKEN=your-api-key-here
-COVEO_IMAGE_BASE_URL=https://your-website.com/images
+COVEO_IMAGE_BASE_URL=../assets/images  # For local development
 ```
+
+> 💡 **Image Configuration**: The demo uses flexible image hosting. For local development, use `../assets/images`. For GitHub hosting, use `https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_REPO/main/website/assets/images`. See [Image Hosting Guide](docs/image-hosting.md) for details.
 
 ### 4. Load Sample Data
 
 ```bash
 source coveo-env/bin/activate
-./coveo-loader --file full-product-payload-sample.json --operation load
+./coveo-loader --file product-data-template.json --operation load
 ```
+
+> 💡 **New Template System**: We now use `product-data-template.json` which automatically uses your configured image URLs. No more manual URL updates needed!
 
 ### 5. Run the Website
 
