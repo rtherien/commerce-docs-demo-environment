@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Golf Equipment - Sports Store</title>
-    <script type="module" src="https://static.cloud.coveo.com/atomic/v2/atomic.esm.js"></script>
-    <link rel="stylesheet" href="https://static.cloud.coveo.com/atomic/v2/themes/coveo.css" />
+    <script type="module" src="https://static.cloud.coveo.com/atomic/v3/atomic.esm.js"></script>
+    <link rel="stylesheet" href="https://static.cloud.coveo.com/atomic/v3/themes/coveo.css" />
     <link rel="stylesheet" href="../styles/main.css" />
 </head>
 <body>
@@ -66,7 +66,13 @@
         >
             <atomic-commerce-layout>
                 <atomic-layout-section section="facets">
-                    <atomic-commerce-facets></atomic-commerce-facets>
+                    <atomic-commerce-facets>
+                        <atomic-commerce-facet field="ec_brand" label="Brand"></atomic-commerce-facet>
+                        <atomic-commerce-facet field="ec_price" label="Price" type="numericalRange"></atomic-commerce-facet>
+                        <atomic-commerce-facet field="ec_rating" label="Rating" type="numericalRange"></atomic-commerce-facet>
+                        <atomic-commerce-facet field="ec_color" label="Color"></atomic-commerce-facet>
+                        <atomic-commerce-facet field="ec_product_type" label="Product Type"></atomic-commerce-facet>
+                    </atomic-commerce-facets>
                 </atomic-layout-section>
                 <atomic-layout-section section="main">
                     <atomic-layout-section section="status">
@@ -87,7 +93,7 @@
                                         <atomic-product-link class="product-link"></atomic-product-link>
                                     </atomic-product-section-name>
                                     <atomic-product-section-visual>
-                                        <atomic-product-image field="ec_thumbnails"></atomic-product-image>
+                                        <atomic-product-image field="ec_thumbnails,ec_images,ec_image"></atomic-product-image>
                                     </atomic-product-section-visual>
                                     <atomic-product-section-metadata>
                                         <atomic-product-text field="ec_brand" class="product-brand"></atomic-product-text>
@@ -153,7 +159,10 @@
             // Track page view
             trackPageViewEvent('product-listing', window.location.href);
 
-            commerceInterface.executeFirstRequest();
+            // Execute with category filter for golf products
+            commerceInterface.executeFirstRequest({
+                aq: '@ec_category=="Golf" OR @ec_category=="golf" OR @ec_brand=="TaylorMade" OR @ec_brand=="Callaway" OR @ec_brand=="Nike Golf"'
+            });
         })();
 
         // Function to handle product links to PDP
@@ -172,17 +181,41 @@
 
         // Function to extract product data from DOM element
         function getProductDataFromElement(element) {
-            const productContainer = element.closest('atomic-product-template').parentElement;
             try {
-                const productElement = productContainer.querySelector('atomic-product-template');
-                if (productElement && productElement.product) {
+                // Find the closest atomic-product-template
+                const productTemplate = element.closest('atomic-product-template');
+                if (!productTemplate) {
+                    console.warn('No product template found');
+                    return null;
+                }
+
+                // Get product data from the template's result property
+                const result = productTemplate.result;
+                if (result) {
                     return {
-                        id: productElement.product.permanentid || productElement.product.uniqueId,
-                        name: productElement.product.ec_name || productElement.product.title,
-                        price: productElement.product.ec_price,
-                        image: productElement.product.ec_thumbnails?.[0],
-                        brand: productElement.product.ec_brand
+                        id: result.permanentid || result.uniqueId || result.raw.permanentid,
+                        name: result.title || result.raw.ec_name || result.raw.title,
+                        price: result.raw.ec_price || 0,
+                        image: result.raw.ec_thumbnails?.[0] || result.raw.ec_images?.[0] || result.raw.ec_image || result.raw.ec_thumbnail,
+                        brand: result.raw.ec_brand || '',
+                        description: result.raw.ec_description || result.excerpt || ''
                     };
+                }
+
+                // Fallback: try to get data from the commerce interface
+                const commerceInterface = document.querySelector('atomic-commerce-interface');
+                if (commerceInterface && commerceInterface.state && commerceInterface.state.products) {
+                    const products = commerceInterface.state.products;
+                    if (products.length > 0) {
+                        const product = products[0];
+                        return {
+                            id: product.permanentid || product.uniqueId,
+                            name: product.ec_name || product.title,
+                            price: product.ec_price || 0,
+                            image: product.ec_thumbnails || product.ec_image,
+                            brand: product.ec_brand || ''
+                        };
+                    }
                 }
             } catch (error) {
                 console.warn('Could not extract product data:', error);
@@ -193,14 +226,39 @@
         // Function to add product to cart
         window.addToCart = function(button) {
             const productData = getProductDataFromElement(button);
+            
             if (productData) {
+                console.log('Adding to cart:', productData);
                 addProductToCart(productData);
                 trackAddToCartEvent(productData);
                 
+                const originalText = button.textContent;
                 button.textContent = 'Added!';
+                button.style.backgroundColor = '#27ae60';
                 setTimeout(() => {
-                    button.textContent = 'Add to Cart';
-                }, 1500);
+                    button.textContent = originalText;
+                    button.style.backgroundColor = '';
+                }, 2000);
+            } else {
+                console.warn('Could not get product data for cart');
+                const template = button.closest('atomic-product-template');
+                if (template && template.result) {
+                    const fallbackData = {
+                        id: template.result.permanentid || 'unknown-' + Date.now(),
+                        name: template.result.title || 'Product',
+                        price: template.result.raw?.ec_price || 0,
+                        image: template.result.raw?.ec_thumbnails?.[0] || template.result.raw?.ec_image,
+                        brand: template.result.raw?.ec_brand || ''
+                    };
+                    addProductToCart(fallbackData);
+                    trackAddToCartEvent(fallbackData);
+                    
+                    const originalText = button.textContent;
+                    button.textContent = 'Added!';
+                    setTimeout(() => {
+                        button.textContent = originalText;
+                    }, 1500);
+                }
             }
         };
     </script>

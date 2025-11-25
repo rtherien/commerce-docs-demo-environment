@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Product Detail - Sports Store</title>
-    <script type="module" src="https://static.cloud.coveo.com/atomic/v2/atomic.esm.js"></script>
-    <link rel="stylesheet" href="https://static.cloud.coveo.com/atomic/v2/themes/coveo.css" />
+    <script type="module" src="https://static.cloud.coveo.com/atomic/v3/atomic.esm.js"></script>
+    <link rel="stylesheet" href="https://static.cloud.coveo.com/atomic/v3/themes/coveo.css" />
     <link rel="stylesheet" href="../styles/main.css" />
 </head>
 <body>
@@ -302,17 +302,41 @@
 
         // Extract product data from DOM element
         function getProductDataFromElement(element) {
-            const productContainer = element.closest('atomic-product-template').parentElement;
             try {
-                const productElement = productContainer.querySelector('atomic-product-template');
-                if (productElement && productElement.product) {
+                // Find the closest atomic-product-template
+                const productTemplate = element.closest('atomic-product-template');
+                if (!productTemplate) {
+                    console.warn('No product template found');
+                    return null;
+                }
+
+                // Get product data from the template's result property
+                const result = productTemplate.result;
+                if (result) {
                     return {
-                        id: productElement.product.permanentid || productElement.product.uniqueId,
-                        name: productElement.product.ec_name || productElement.product.title,
-                        price: productElement.product.ec_price,
-                        image: productElement.product.ec_thumbnails?.[0],
-                        brand: productElement.product.ec_brand
+                        id: result.permanentid || result.uniqueId || result.raw.permanentid,
+                        name: result.title || result.raw.ec_name || result.raw.title,
+                        price: result.raw.ec_price || 0,
+                        image: result.raw.ec_thumbnails?.[0] || result.raw.ec_images?.[0] || result.raw.ec_image || result.raw.ec_thumbnail,
+                        brand: result.raw.ec_brand || '',
+                        description: result.raw.ec_description || result.excerpt || ''
                     };
+                }
+
+                // Fallback: try to get data from the commerce interface
+                const commerceInterface = document.querySelector('atomic-commerce-interface');
+                if (commerceInterface && commerceInterface.state && commerceInterface.state.products) {
+                    const products = commerceInterface.state.products;
+                    if (products.length > 0) {
+                        const product = products[0];
+                        return {
+                            id: product.permanentid || product.uniqueId,
+                            name: product.ec_name || product.title,
+                            price: product.ec_price || 0,
+                            image: product.ec_thumbnails || product.ec_image,
+                            brand: product.ec_brand || ''
+                        };
+                    }
                 }
             } catch (error) {
                 console.warn('Could not extract product data:', error);
