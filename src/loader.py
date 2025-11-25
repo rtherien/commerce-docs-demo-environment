@@ -8,15 +8,16 @@ the Coveo Commerce API using payload files from the 'Test payloads' folder.
 Based on: https://docs.coveo.com/en/p4eb0129/coveo-for-commerce/full-catalog-data-updates
 """
 
+import argparse
 import json
 import os
 import sys
-import argparse
-import requests
 import time
 from pathlib import Path
-from typing import Dict, Any, Optional, List
+from typing import Any, Dict, List, Optional
 from urllib.parse import urljoin
+
+import requests
 
 
 class CoveoLoader:
@@ -152,14 +153,16 @@ class CoveoLoader:
         print("📋 Creating file container...")
         response = requests.post(url, headers=self._get_headers(), params=params)
         
-        try:
-            self._handle_api_error(response, "File container creation")
-        except requests.HTTPError:
+        if response.status_code in [200, 201]:
+            container_data = response.json()
+            print(f"✅ File container created with ID: {container_data['fileId']}")
+            return container_data
+        else:
+            try:
+                self._handle_api_error(response, "File container creation")
+            except requests.HTTPError:
+                pass
             return {}
-        
-        container_data = response.json()
-        print(f"✅ File container created with ID: {container_data['fileId']}")
-        return container_data
     
     def upload_to_container(self, container_data: Dict[str, Any], payload: Dict[str, Any]) -> bool:
         """Upload payload to the file container."""
@@ -173,11 +176,14 @@ class CoveoLoader:
         
         response = requests.put(upload_uri, data=payload_data, headers=required_headers)
         
-        try:
-            self._handle_api_error(response, "Payload upload")
+        if response.status_code in [200, 201]:
             print(f"✅ Payload uploaded successfully ({len(payload_data)} bytes)")
             return True
-        except requests.HTTPError:
+        else:
+            try:
+                self._handle_api_error(response, "Payload upload")
+            except requests.HTTPError:
+                pass
             return False
     
     def update_source(self, file_id: str) -> Optional[Dict[str, Any]]:
@@ -188,17 +194,18 @@ class CoveoLoader:
         print("🔄 Sending update to source...")
         response = requests.put(url, headers=self._get_headers(), params=params, json={})
         
-        try:
-            self._handle_api_error(response, "Source update")
-        except requests.HTTPError:
+        if response.status_code in [200, 201, 202]:
+            result = response.json()
+            print(f"✅ Update sent successfully!")
+            print(f"   📋 Request ID: {result.get('requestId', 'N/A')}")
+            print(f"   🔢 Ordering ID: {result.get('orderingId', 'N/A')}")
+            return result
+        else:
+            try:
+                self._handle_api_error(response, "Source update")
+            except requests.HTTPError:
+                pass
             return None
-        
-        result = response.json()
-        print(f"✅ Update sent successfully!")
-        print(f"   📋 Request ID: {result.get('requestId', 'N/A')}")
-        print(f"   🔢 Ordering ID: {result.get('orderingId', 'N/A')}")
-        
-        return result
     
     def delete_old_items(self, ordering_id: int) -> bool:
         """Delete items older than the specified ordering ID."""
@@ -207,11 +214,14 @@ class CoveoLoader:
         print("🗑️  Deleting old items...")
         response = requests.post(url, headers=self._get_headers())
         
-        try:
-            self._handle_api_error(response, "Delete old items")
+        if response.status_code in [200, 201, 202]:
             print("✅ Old items deletion request sent successfully!")
             return True
-        except requests.HTTPError:
+        else:
+            try:
+                self._handle_api_error(response, "Delete old items")
+            except requests.HTTPError:
+                pass
             return False
     
     def open_stream(self) -> Optional[Dict[str, Any]]:
@@ -221,14 +231,16 @@ class CoveoLoader:
         print("🔓 Opening stream...")
         response = requests.post(url, headers=self._get_headers())
         
-        try:
-            self._handle_api_error(response, "Stream open")
-        except requests.HTTPError:
+        if response.status_code in [200, 201]:
+            stream_data = response.json()
+            print(f"✅ Stream opened with ID: {stream_data['streamId']}")
+            return stream_data
+        else:
+            try:
+                self._handle_api_error(response, "Stream open")
+            except requests.HTTPError:
+                pass
             return None
-        
-        stream_data = response.json()
-        print(f"✅ Stream opened with ID: {stream_data['streamId']}")
-        return stream_data
     
     def upload_to_stream(self, stream_data: Dict[str, Any], payload: Dict[str, Any]) -> bool:
         """Upload payload to the open stream."""
@@ -242,11 +254,14 @@ class CoveoLoader:
         
         response = requests.put(upload_uri, data=payload_data, headers=required_headers)
         
-        try:
-            self._handle_api_error(response, "Stream upload")
+        if response.status_code in [200, 201]:
             print(f"✅ Payload uploaded to stream successfully ({len(payload_data)} bytes)")
             return True
-        except requests.HTTPError:
+        else:
+            try:
+                self._handle_api_error(response, "Stream upload")
+            except requests.HTTPError:
+                pass
             return False
     
     def close_stream(self, stream_id: str) -> Optional[Dict[str, Any]]:
@@ -256,17 +271,18 @@ class CoveoLoader:
         print("🔒 Closing stream...")
         response = requests.post(url, headers=self._get_headers())
         
-        try:
-            self._handle_api_error(response, "Stream close")
-        except requests.HTTPError:
+        if response.status_code in [200, 201]:
+            result = response.json()
+            print(f"✅ Stream closed successfully!")
+            print(f"   📋 Request ID: {result.get('requestId', 'N/A')}")
+            print(f"   🔢 Ordering ID: {result.get('orderingId', 'N/A')}")
+            return result
+        else:
+            try:
+                self._handle_api_error(response, "Stream close")
+            except requests.HTTPError:
+                pass
             return None
-        
-        result = response.json()
-        print(f"✅ Stream closed successfully!")
-        print(f"   📋 Request ID: {result.get('requestId', 'N/A')}")
-        print(f"   🔢 Ordering ID: {result.get('orderingId', 'N/A')}")
-        
-        return result
     
     def perform_update_operation(self, payload: Dict[str, Any], delete_old: bool = False) -> bool:
         """Perform a complete update operation."""
