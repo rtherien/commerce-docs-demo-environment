@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hockey Equipment - Sports Store</title>
+    <script type="module" src="https://static.cloud.coveo.com/atomic/v2/atomic.esm.js"></script>
+    <link rel="stylesheet" href="https://static.cloud.coveo.com/atomic/v2/themes/coveo.css" />
+    <link rel="stylesheet" href="./styles/main.css" />
+</head>
+<body>
+    <!-- Navigation Header -->
+    <header class="main-header">
+        <div class="header-content">
+            <div class="logo">
+                <h1><a href="/">Sports Store</a></h1>
+            </div>
+            <nav class="main-nav">
+                <div class="nav-dropdown">
+                    <button class="nav-dropdown-btn">Shop Categories ▼</button>
+                    <div class="nav-dropdown-content">
+                        <a href="./plp-golf.html">Golf Equipment</a>
+                        <a href="./plp-hockey.html" class="active">Hockey Equipment</a>
+                        <a href="./plp-shoes.html">Athletic Shoes</a>
+                    </div>
+                </div>
+                <div class="cart-container">
+                    <button id="cart-toggle" class="cart-btn">
+                        🛒 Cart (<span id="cart-count">0</span>)
+                    </button>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Cart Sidebar -->
+    <div id="cart-sidebar" class="cart-sidebar">
+        <div class="cart-content">
+            <div class="cart-header">
+                <h3>Shopping Cart</h3>
+                <button id="cart-close" class="cart-close">&times;</button>
+            </div>
+            <div id="cart-items" class="cart-items"></div>
+            <div class="cart-footer">
+                <div class="cart-total">
+                    Total: $<span id="cart-total">0.00</span>
+                </div>
+                <button id="checkout-btn" class="checkout-btn">Complete Purchase</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="search-hero">
+            <h2>Hockey Equipment</h2>
+            <p>Professional hockey gear for players of all levels</p>
+        </div>
+
+        <atomic-commerce-interface
+            organization-id="coveodocumentationtest"
+            tracking-id="commerce-docs-demo"
+            type="product-listing"
+            language-assets-path="./lang"
+            icon-assets-path="./assets"
+        >
+            <atomic-commerce-layout>
+                <atomic-layout-section section="facets">
+                    <atomic-commerce-facets></atomic-commerce-facets>
+                </atomic-layout-section>
+                <atomic-layout-section section="main">
+                    <atomic-layout-section section="status">
+                        <atomic-commerce-breadbox></atomic-commerce-breadbox>
+                        <atomic-commerce-query-summary></atomic-commerce-query-summary>
+                        <atomic-commerce-sort-dropdown></atomic-commerce-sort-dropdown>
+                        <atomic-commerce-refine-toggle></atomic-commerce-refine-toggle>
+                    </atomic-layout-section>
+                    <atomic-layout-section section="products">
+                        <atomic-commerce-product-list
+                            display="grid"
+                            density="normal"
+                            image-size="large"
+                        >
+                            <atomic-product-template>
+                                <template>
+                                    <atomic-product-section-name>
+                                        <atomic-product-link class="product-link"></atomic-product-link>
+                                    </atomic-product-section-name>
+                                    <atomic-product-section-visual>
+                                        <atomic-product-image field="ec_thumbnails"></atomic-product-image>
+                                    </atomic-product-section-visual>
+                                    <atomic-product-section-metadata>
+                                        <atomic-product-text field="ec_brand" class="product-brand"></atomic-product-text>
+                                        <atomic-product-rating field="ec_rating"></atomic-product-rating>
+                                    </atomic-product-section-metadata>
+                                    <atomic-product-section-emphasized>
+                                        <atomic-product-price currency="CAD" class="product-price"></atomic-product-price>
+                                    </atomic-product-section-emphasized>
+                                    <atomic-product-section-children>
+                                        <button class="add-to-cart-btn" onclick="addToCart(this)">Add to Cart</button>
+                                    </atomic-product-section-children>
+                                </template>
+                            </atomic-product-template>
+                        </atomic-commerce-product-list>
+                        <atomic-commerce-query-error></atomic-commerce-query-error>
+                        <atomic-commerce-no-products></atomic-commerce-no-products>
+                    </atomic-layout-section>
+                    <atomic-layout-section section="pagination">
+                        <atomic-commerce-load-more-products></atomic-commerce-load-more-products>
+                    </atomic-layout-section>
+                </atomic-layout-section>
+            </atomic-commerce-layout>
+        </atomic-commerce-interface>
+    </main>
+
+    <script src="./js/cart.js"></script>
+    <script src="./js/coveo-analytics.js"></script>
+    <script>
+        (async () => {
+            await customElements.whenDefined('atomic-commerce-interface');
+            
+            const commerceInterface = document.querySelector('atomic-commerce-interface');
+            
+            await commerceInterface.initialize({
+                accessToken: 'xxd749992c-d0b5-475f-95e6-671793e6c94a',
+                organizationId: 'coveodocumentationtest',
+                environment: 'prod',
+                platform: 'cloud',
+                analytics: {
+                    trackingId: 'commerce-docs-demo',
+                    analyticsMode: 'next'
+                },
+                context: {
+                    language: 'en',
+                    country: 'CA',
+                    currency: 'CAD',
+                    view: {
+                        url: 'https://sports-store.com/hockey'
+                    },
+                    user: {
+                        userAgent: navigator.userAgent
+                    }
+                }
+            });
+
+            // Initialize cart and analytics
+            initializeCart(commerceInterface);
+            initializeCoveoAnalytics(commerceInterface);
+            
+            // Setup product link clicks
+            setupProductLinks();
+
+            // Track page view
+            trackPageViewEvent('product-listing', window.location.href);
+
+            commerceInterface.executeFirstRequest();
+        })();
+
+        // Function to handle product links to PDP
+        function setupProductLinks() {
+            document.addEventListener('click', (e) => {
+                if (e.target.closest('.product-link')) {
+                    e.preventDefault();
+                    const productLink = e.target.closest('.product-link');
+                    const productData = getProductDataFromElement(productLink);
+                    if (productData) {
+                        window.location.href = `./pdp.html?id=${encodeURIComponent(productData.id)}`;
+                    }
+                }
+            });
+        }
+
+        // Function to extract product data from DOM element
+        function getProductDataFromElement(element) {
+            const productContainer = element.closest('atomic-product-template').parentElement;
+            try {
+                const productElement = productContainer.querySelector('atomic-product-template');
+                if (productElement && productElement.product) {
+                    return {
+                        id: productElement.product.permanentid || productElement.product.uniqueId,
+                        name: productElement.product.ec_name || productElement.product.title,
+                        price: productElement.product.ec_price,
+                        image: productElement.product.ec_thumbnails?.[0],
+                        brand: productElement.product.ec_brand
+                    };
+                }
+            } catch (error) {
+                console.warn('Could not extract product data:', error);
+            }
+            return null;
+        }
+
+        // Function to add product to cart
+        window.addToCart = function(button) {
+            const productData = getProductDataFromElement(button);
+            if (productData) {
+                addProductToCart(productData);
+                trackAddToCartEvent(productData);
+                
+                button.textContent = 'Added!';
+                setTimeout(() => {
+                    button.textContent = 'Add to Cart';
+                }, 1500);
+            }
+        };
+    </script>
+</body>
+</html>
