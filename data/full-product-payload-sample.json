@@ -14,10 +14,10 @@
             "gender": "Men",
             "price": 28.0,
             "ec_images": [
-                "https://raw.githubusercontent.com/rtherien/commerce-docs-demo-environment/main/assets/red-soccer-shoes.png"
+                "https://raw.githubusercontent.com/rtherien/commerce-docs-demo-environment/main/website/assets/images/red-soccer-shoes.png"
             ],
             "ec_thumbnails": [
-                "https://raw.githubusercontent.com/rtherien/commerce-docs-demo-environment/main/assets/red-soccer-shoes.png"
+                "https://raw.githubusercontent.com/rtherien/commerce-docs-demo-environment/main/website/assets/images/red-soccer-shoes.png"
             ],
             "ec_in_stock": true,
             "ec_category": "Soccer Shoes",
@@ -38,10 +38,10 @@
             "gender": "Men",
             "price": 28.0,
             "ec_images": [
-                "https://raw.githubusercontent.com/rtherien/commerce-docs-demo-environment/main/assets/blue-soccer-shoes.png"
+                "https://raw.githubusercontent.com/rtherien/commerce-docs-demo-environment/main/website/assets/images/blue-soccer-shoes.png"
             ],
             "ec_thumbnails": [
-                "https://raw.githubusercontent.com/rtherien/commerce-docs-demo-environment/main/assets/blue-soccer-shoes.png"
+                "https://raw.githubusercontent.com/rtherien/commerce-docs-demo-environment/main/website/assets/images/blue-soccer-shoes.png"
             ],
             "ec_category": "Soccer Shoes",
             "department": "Shoes",
@@ -61,10 +61,10 @@
             "gender": "Men",
             "price": 28.0,
             "ec_images": [
-                "https://raw.githubusercontent.com/rtherien/commerce-docs-demo-environment/main/assets/yellow-soccer-shoes.jpg"
+                "https://raw.githubusercontent.com/rtherien/commerce-docs-demo-environment/main/website/assets/images/yellow-soccer-shoes.jpg"
             ],
             "ec_thumbnails": [
-                "https://raw.githubusercontent.com/rtherien/commerce-docs-demo-environment/main/assets/yellow-soccer-shoes.jpg"
+                "https://raw.githubusercontent.com/rtherien/commerce-docs-demo-environment/main/website/assets/images/yellow-soccer-shoes.jpg"
             ],
             "ec_category": "Soccer Shoes",
             "department": "Shoes",
@@ -84,10 +84,10 @@
             "gender": "Men",
             "price": 28.0,
             "ec_images": [
-                "https://raw.githubusercontent.com/rtherien/commerce-docs-demo-environment/main/assets/black-soccer-shoes.jpg"
+                "https://raw.githubusercontent.com/rtherien/commerce-docs-demo-environment/main/website/assets/images/black-soccer-shoes.jpg"
             ],
             "ec_thumbnails": [
-                "https://raw.githubusercontent.com/rtherien/commerce-docs-demo-environment/main/assets/black-soccer-shoes.jpg"
+                "https://raw.githubusercontent.com/rtherien/commerce-docs-demo-environment/main/website/assets/images/black-soccer-shoes.jpg"
             ],
             "ec_category": "Soccer Shoes",
             "department": "Shoes",
@@ -107,10 +107,10 @@
             "gender": "Men",
             "price": 228.0,
             "ec_images": [
-                "https://raw.githubusercontent.com/rtherien/commerce-docs-demo-environment/main/assets/black-hockey-stick.jpg"
+                "https://raw.githubusercontent.com/rtherien/commerce-docs-demo-environment/main/website/assets/images/black-hockey-stick.jpg"
             ],
             "ec_thumbnails": [
-                "https://raw.githubusercontent.com/rtherien/commerce-docs-demo-environment/main/assets/black-hockey-stick.jpg"
+                "https://raw.githubusercontent.com/rtherien/commerce-docs-demo-environment/main/website/assets/images/black-hockey-stick.jpg"
             ],
             "ec_category": "Hockey sticks",
             "department": "Hockey",
@@ -130,10 +130,10 @@
             "gender": "Men",
             "price": 228.0,
             "ec_images": [
-                "https://raw.githubusercontent.com/rtherien/commerce-docs-demo-environment/main/assets/red-hockey-stick.jpg"
+                "https://raw.githubusercontent.com/rtherien/commerce-docs-demo-environment/main/website/assets/images/red-hockey-stick.jpg"
             ],
             "ec_thumbnails": [
-                "https://raw.githubusercontent.com/rtherien/commerce-docs-demo-environment/main/assets/red-hockey-stick.jpg"
+                "https://raw.githubusercontent.com/rtherien/commerce-docs-demo-environment/main/website/assets/images/red-hockey-stick.jpg"
             ],
             "ec_category": "Hockey sticks",
             "department": "Hockey",
@@ -153,10 +153,10 @@
             "gender": "Men",
             "price": 399.0,
             "ec_images": [
-                "https://raw.githubusercontent.com/rtherien/commerce-docs-demo-environment/main/assets/golf-driver.jpg"
+                "https://raw.githubusercontent.com/rtherien/commerce-docs-demo-environment/main/website/assets/images/golf-driver.jpg"
             ],
             "ec_thumbnails": [
-                "https://raw.githubusercontent.com/rtherien/commerce-docs-demo-environment/main/assets/golf-driver.jpg"
+                "https://raw.githubusercontent.com/rtherien/commerce-docs-demo-environment/main/website/assets/images/golf-driver.jpg"
             ],
             "ec_category": "Golf drivers",
             "department": "Golf",

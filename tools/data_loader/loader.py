@@ -19,6 +19,23 @@ from urllib.parse import urljoin
 
 import requests
 
+# Try to load environment variables from .env file
+try:
+    from dotenv import load_dotenv
+    # Load .env from project root
+    project_root = Path(__file__).parent.parent.parent
+    load_dotenv(project_root / '.env')
+except ImportError:
+    # dotenv not available, try manual parsing
+    project_root = Path(__file__).parent.parent.parent
+    env_file = project_root / '.env'
+    if env_file.exists():
+        with open(env_file) as f:
+            for line in f:
+                if line.strip() and not line.startswith('#') and '=' in line:
+                    key, value = line.strip().split('=', 1)
+                    os.environ[key] = value
+
 
 class CoveoLoader:
     """Handles Coveo Commerce API operations for catalog data updates."""
@@ -27,15 +44,15 @@ class CoveoLoader:
         """Initialize the loader with configuration."""
         # Handle both relative and absolute paths for config
         if not os.path.isabs(config_path):
-            # Look for config in project root
-            project_root = Path(__file__).parent.parent
+            # Look for config in project root (two levels up from this file)
+            project_root = Path(__file__).parent.parent.parent
             config_path = project_root / config_path
         
         self.config = self._load_config(config_path)
         self.base_url = "https://api.cloud.coveo.com/push/v1"
         
         # Set data directory relative to project root
-        project_root = Path(__file__).parent.parent
+        project_root = Path(__file__).parent.parent.parent
         self.test_payloads_dir = project_root / "data"
         
         # Validate required configuration
