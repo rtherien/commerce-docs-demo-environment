@@ -540,86 +540,21 @@ atomic-product-template:hover {
     color: var(--accent-color);
 }
 
-/* Product Variants Section */
+/* Product Grouping Section */
 .product-variants {
-    margin-top: auto;
-    border-top: 1px solid var(--border-color);
-    padding-top: 1rem;
+    margin-top: 0.75rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid #eee;
 }
 
-.variant-label {
-    font-size: 0.85rem;
+/* Native Atomic Commerce Product Children Styling */
+atomic-product-section-children {
+    margin-top: 0.75rem;
+}
+
+atomic-product-children {
+    font-size: 0.8rem;
     color: #666;
-    margin-bottom: 0.5rem;
-    font-weight: 500;
-}
-
-.variant-swatches {
-    display: flex;
-    gap: 0.5rem;
-    flex-wrap: wrap;
-    align-items: center;
-}
-
-.variant-swatch {
-    position: relative;
-    cursor: pointer;
-    border: 2px solid transparent;
-    border-radius: 6px;
-    padding: 4px;
-    transition: all 0.3s ease;
-    background: #f8f9fa;
-    min-width: 60px;
-    text-align: center;
-}
-
-.variant-swatch:hover {
-    border-color: var(--primary-color);
-    background: white;
-    box-shadow: 0 2px 8px rgba(44, 90, 160, 0.2);
-}
-
-.variant-image {
-    width: 50px;
-    height: 50px;
-    object-fit: cover;
-    border-radius: 4px;
-    margin-bottom: 4px;
-}
-
-.variant-name {
-    font-size: 0.7rem;
-    color: #333;
-    font-weight: 500;
-    line-height: 1.2;
-    max-width: 60px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
-/* Color-based variant styling */
-.variant-swatch[title*="Red"] {
-    border-color: #e74c3c;
-}
-
-.variant-swatch[title*="Blue"] {
-    border-color: #3498db;
-}
-
-.variant-swatch[title*="Yellow"] {
-    border-color: #f1c40f;
-}
-
-.variant-swatch[title*="Black"] {
-    border-color: #2c3e50;
-}
-
-.variant-swatch[title*="Red"]:hover,
-.variant-swatch[title*="Blue"]:hover,
-.variant-swatch[title*="Yellow"]:hover,
-.variant-swatch[title*="Black"]:hover {
-    transform: scale(1.05);
 }
 
 /* Hide variant section if no children */
@@ -635,23 +570,5 @@ atomic-product-section-children:empty {
     
     .product-main-image atomic-product-image {
         max-height: 150px;
-    }
-    
-    .variant-swatches {
-        gap: 0.25rem;
-    }
-    
-    .variant-swatch {
-        min-width: 45px;
-    }
-    
-    .variant-image {
-        width: 35px;
-        height: 35px;
-    }
-    
-    .variant-name {
-        font-size: 0.6rem;
-        max-width: 45px;
     }
 }
