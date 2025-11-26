@@ -45,19 +45,29 @@
                             <atomic-commerce-product-list>
                                 <atomic-product-template>
                                     <template>
-                                        <atomic-product-section-name>
-                                            <atomic-product-link></atomic-product-link>
-                                        </atomic-product-section-name>
-                                        <atomic-product-section-visual>
-                                            <atomic-product-image field="ec_images"></atomic-product-image>
-                                        </atomic-product-section-visual>
-                                        <atomic-product-section-metadata>
-                                            <atomic-product-text field="ec_brand"></atomic-product-text>
-                                            <atomic-product-text field="ec_category"></atomic-product-text>
-                                        </atomic-product-section-metadata>
-                                        <atomic-product-section-emphasized>
-                                            <atomic-product-price currency="CAD"></atomic-product-price>
-                                        </atomic-product-section-emphasized>
+                                        <div class="grouped-product-card">
+                                            <atomic-product-section-visual class="product-main-image">
+                                                <atomic-product-image field="ec_images"></atomic-product-image>
+                                            </atomic-product-section-visual>
+                                            
+                                            <atomic-product-section-name class="product-title">
+                                                <atomic-product-link></atomic-product-link>
+                                            </atomic-product-section-name>
+                                            
+                                            <atomic-product-section-metadata class="product-details">
+                                                <atomic-product-text field="ec_brand" class="product-brand"></atomic-product-text>
+                                                <atomic-product-text field="ec_category" class="product-category"></atomic-product-text>
+                                            </atomic-product-section-metadata>
+                                            
+                                            <atomic-product-section-emphasized class="product-pricing">
+                                                <atomic-product-price currency="CAD"></atomic-product-price>
+                                            </atomic-product-section-emphasized>
+                                            
+                                            <!-- Native Atomic Commerce Product Grouping -->
+                                            <atomic-product-section-children class="product-variants">
+                                                <atomic-product-children label="Also available in:"></atomic-product-children>
+                                            </atomic-product-section-children>
+                                        </div>
                                     </template>
                                 </atomic-product-template>
                             </atomic-commerce-product-list>
