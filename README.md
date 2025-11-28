@@ -1,281 +1,270 @@
 # Coveo Commerce Demo Environment
 
-A complete Coveo Commerce implementation featuring a data loader tool and a fully functional e-commerce website with search, product listings, cart functionality, and comprehensive analytics tracking.
+A simple, ready-to-use online store that shows how Coveo Commerce works. Perfect for testing, learning, and demonstrating Coveo's e-commerce search features.
 
-## 🌟 What's Included
+## 🌟 What You'll Get
 
-### 🔧 **Data Loader Tool**
+### 🛒 **A Complete Online Store**
+- A working website with search functionality
+- Product pages for golf, hockey, and shoes
+- Shopping cart that remembers your items
+- Mobile-friendly design
 
-- Upload product data to Coveo Commerce
-- Interactive command-line interface
-- Safe update and full load operations
-- Automatic data validation
-
-### 🛒 **Complete E-commerce Website**
-
-- Search-focused homepage with global product search
-- Product listing pages (PLPs) for different categories
-- Dynamic product detail pages (PDPs)
-- Shopping cart with persistent storage
-- Purchase completion with Coveo analytics tracking
-- Responsive design for mobile and desktop
+### 🔧 **Easy Product Management**
+- Simple tool to add your products to the store
+- No coding required - just follow the steps
+- Two ways to update: safely add products or replace everything
 
 ---
 
-## 🚀 Quick Setup (5 minutes)
+## 🚀 Easy Setup Guide (Anyone Can Do This!)
 
-### 1. Download and Setup
+### Step 1: Download and Run Setup
 
-```bash
-git clone https://github.com/rtherien/commerce-docs-demo-environment.git
-cd commerce-docs-demo-environment
-./scripts/setup-secure.sh
-```
+1. **Download the demo**:
+   - Go to: https://github.com/rtherien/commerce-docs-demo-environment
+   - Click the green "Code" button
+   - Select "Download ZIP"
+   - Unzip the file somewhere easy to find (like your Desktop)
 
-### 2. Get Your Coveo Information
+2. **Open Terminal and navigate to the folder**:
+   - Open Terminal (Mac) or Command Prompt (Windows)
+   - Navigate to the folder you unzipped
 
-Go to [Coveo Administration Console](https://platform.cloud.coveo.com/) and find:
+3. **Set up the demo configuration**:
+   ```bash
+   cp .env.demo .env
+   ./scripts/setup-secure.sh
+   ```
 
-- **Organization ID**: On your main dashboard
-- **Source ID**: Go to Sources → Find your commerce source → Copy the ID
-- **API Key**: Go to API Keys → Create New Key (select "Push" permission)
+✅ **That's it!** The demo is pre-configured to work right away - no account setup needed.
 
-### 3. Configure Environment
+### Step 2: Add Sample Products
 
-```bash
-cp .env.example .env
-nano .env  # Edit this file with your Coveo info
-```
+Time to put some products in your store! We'll start with sample products:
 
-Your `.env` file should look like:
+1. **Activate the tool**:
+   ```bash
+   source coveo-env/bin/activate
+   ```
+   (You'll see your command prompt change - this is normal!)
 
-```env
-COVEO_ORGANIZATION_ID=your-org-name
-COVEO_SOURCE_ID=your-source-id-here
-COVEO_ACCESS_TOKEN=your-api-key-here
-COVEO_IMAGE_BASE_URL=../assets/images  # For local development
-```
+2. **Load the sample products**:
+   ```bash
+   ./coveo-loader --file full-product-payload-sample.json --operation load
+   ```
 
-> 💡 **Image Configuration**: The demo uses flexible image hosting. For local development, use `../assets/images`. For GitHub hosting, use `https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_REPO/main/website/assets/images`. See [Image Hosting Guide](docs/image-hosting.md) for details.
+3. **Wait for it to finish**:
+   - You'll see messages about uploading products
+   - When it says "Success!" you're done
+   - This usually takes 1-2 minutes
 
-### 4. Load Sample Data
+🎉 **Your store now has products!** Let's see them in action.
 
-```bash
-source coveo-env/bin/activate
-./coveo-loader --file full-product-payload-sample.json --operation load
-```
+### Step 3: Open Your Store
 
-> 💡 **New Template System**: We now use `full-product-payload-sample.json` which automatically uses your configured image URLs. No more manual URL updates needed!
+Now for the fun part - seeing your store work:
 
-### 5. Run the Website
+1. **Start the store**:
+   ```bash
+   python -m http.server 8000
+   ```
+   
+   **Don't see python?** Try this instead:
+   ```bash
+   python3 -m http.server 8000
+   ```
 
-```bash
-# Start local web server (required for Coveo APIs)
-python -m http.server 8000
-# or
-npx serve .
-```
+2. **Open your web browser** and go to:
+   ```
+   http://localhost:8000
+   ```
 
-Open `http://localhost:8000` in your browser. You'll be redirected to the sports store demo.
+3. **You should see**:
+   - A working online store
+   - A search box you can type in
+   - Products you can click on
+   - Categories in the menu (Golf, Hockey, Shoes)
+
+🎉 **Congratulations!** Your Coveo Commerce demo is running!
 
 ---
 
-## 📋 Data Loader Usage
+## 📦 Managing Your Products (No Coding Required!)
 
-### Interactive Mode (Recommended)
+### The Easy Way: Interactive Menu
+
+The simplest way to manage products is using the interactive menu:
+
+1. **Open Terminal** and navigate to your demo folder
+2. **Activate the tool**:
+   ```bash
+   source coveo-env/bin/activate
+   ```
+3. **Start the menu**:
+   ```bash
+   ./coveo-loader
+   ```
+4. **Follow the prompts**:
+   - Pick a file from the list (use arrow keys, press Enter)
+   - Choose "Update" or "Load" (see below for which to pick)
+   - Wait for it to finish!
+
+### Understanding Update vs Load
+
+**🟢 UPDATE (Recommended - Safe Option)**
+- **What it does**: Adds new products and updates existing ones
+- **What it keeps**: All your existing products stay
+- **When to use**: When you want to add more products or change some details
+- **Example**: You have 100 products, add a file with 20 more → You'll have 120 products
+
+**🔴 LOAD (Use Carefully - Replaces Everything)**
+- **What it does**: Removes ALL existing products and replaces them
+- **What it keeps**: Nothing - completely fresh start  
+- **When to use**: When you want to completely start over
+- **Example**: You have 100 products, load a file with 20 → You'll have only those 20 products
+
+### Command Line Method (For Advanced Users)
+
+If you prefer typing commands:
 
 ```bash
-./coveo-loader
-```
-
-1. Pick a data file from the list
-2. Choose "Update" (safe) or "Load" (replaces everything)
-3. Done!
-
-### Command Line Mode
-
-```bash
-# See available data files
+# See what product files are available
 ./coveo-loader --list
 
-# Upload specific file (safe update)
-./coveo-loader --file full-product-payload-sample.json --operation update
+# Add products safely (recommended)
+./coveo-loader --file your-products.json --operation update
 
-# Replace all data (careful!)
-./coveo-loader --file full-product-payload-sample.json --operation load
+# Replace all products (be careful!)
+./coveo-loader --file your-products.json --operation load
 ```
 
-### Data File Format
+### Adding Your Own Products
 
-Place your product data files (JSON format) in the `data/` folder. See `data/full-product-payload-sample.json` for the expected format.
+1. **Create a product file**:
+   - Look at `data/full-product-payload-sample.json` to see the format
+   - Copy that file and modify it with your products
+   - Save it in the `data/` folder
 
----
-
-## 🛒 E-commerce Website Features
-
-### 🏠 Homepage Search (`website/pages/index.html`)
-
-- Global search functionality across all products
-- Advanced faceting and filtering capabilities
-- Sort options and pagination
-- Direct add-to-cart from search results
-
-### 📱 Product Categories
-
-Navigate through product categories via dropdown menu:
-
-- **Golf Equipment** (`website/pages/plp-golf.html`)
-- **Hockey Equipment** (`website/pages/plp-hockey.html`)
-- **Athletic Shoes** (`website/pages/plp-shoes.html`)
-
-### 🔍 Product Detail Pages (`website/pages/pdp.html`)
-
-- Dynamic URL-based product lookup (`pdp.html?id=PRODUCT_ID`)
-- Full product information and images
-- Related products recommendations
-- Add to cart functionality
-
-### 🛒 Shopping Cart System
-
-- **Persistent cart** using localStorage
-- Add/remove items with quantity controls
-- Real-time price calculations (CAD)
-- Slide-out cart sidebar
-- **Complete purchase simulation** with Coveo analytics
-
-### 📊 Analytics & Tracking
-
-The website tracks comprehensive e-commerce events:
-
-- **Page Views**: Navigation and browsing
-- **Product Views**: Product detail page visits
-- **Add to Cart**: Cart interactions
-- **Purchase Events**: Completed transactions
-- **Search Events**: Query interactions
-- **Facet Usage**: Filter selections
+2. **Upload your products**:
+   - Use the interactive menu method above
+   - Choose your file from the list
+   - Select "Update" to add them safely
 
 ---
 
-## 📁 Repository Structure
+## 🧪 Testing Your Changes
 
-```
-├── index.html                    # Landing page with auto-redirect
-├── coveo-loader                  # Data upload CLI tool
-├── requirements.txt              # Python dependencies
-├── .env.example                  # Environment configuration template
-├── website/                      # Complete e-commerce website
-│   ├── pages/
-│   │   ├── index.html           # Main search homepage
-│   │   ├── pdp.html             # Product detail page template
-│   │   ├── plp-golf.html        # Golf equipment listing
-│   │   ├── plp-hockey.html      # Hockey equipment listing
-│   │   └── plp-shoes.html       # Athletic shoes listing
-│   ├── styles/
-│   │   └── main.css             # Complete website styling
-│   ├── js/
-│   │   ├── cart.js              # Shopping cart functionality
-│   │   └── coveo-analytics.js   # Analytics tracking
-│   └── assets/
-│       └── images/              # Product images and assets
-├── tools/                        # Development and data tools
-│   └── data_loader/
-│       └── loader.py            # Python data loader implementation
-├── data/
-│   └── *.json                   # Product data files
-├── scripts/
-│   ├── setup.sh                 # Basic setup script
-│   └── setup-secure.sh          # Secure setup with virtual env
-└── docs/                        # Documentation files
-```
+After you add or update products, here's how to see if everything worked:
 
----
+### 1. Check the Search Page
 
-## 🔧 Technical Implementation
+1. **Go to your store**: `http://localhost:8000`
+2. **Try searching**:
+   - Type a product name in the search box
+   - Try searching for brands, colors, or categories
+   - Your new products should appear in results
 
-### Coveo Configuration
+3. **Test the filters**:
+   - Use the filters on the left side
+   - Try different categories, prices, brands
+   - Make sure your products show up in the right categories
 
-- **Organization ID**: `coveodocumentationtest` (demo)
-- **Tracking ID**: `commerce-docs-demo`
-- **Environment**: Production
-- **Currency**: Canadian Dollar (CAD)
-- **Platform**: Coveo Cloud
+### 2. Check Product Listing Pages (PLPs)
 
-### Cart Management
+Product Listing Pages show products by category. Test each one:
 
-- **Persistence**: localStorage for cross-session cart
-- **Structure**: JSON-based with product metadata
-- **Updates**: Real-time UI synchronization
-- **Checkout**: Simulated transaction flow
+1. **Golf Products**:
+   - Click "Golf" in the menu, or go to: `http://localhost:8000/website/pages/simple-plp-golf.html`
+   - You should see golf clubs, balls, accessories
 
-### Analytics Integration
+2. **Hockey Products**:
+   - Click "Hockey" in the menu, or go to: `http://localhost:8000/website/pages/simple-plp-hockey.html`
+   - You should see sticks, skates, protective gear
 
-- **Platform**: Coveo Atomic Commerce Analytics
-- **Events**: Complete e-commerce event tracking
-- **Correlation**: Proper user journey tracking
-- **Error Handling**: Graceful fallbacks for analytics failures
+3. **Shoes**:
+   - Click "Shoes" in the menu, or go to: `http://localhost:8000/website/pages/simple-plp-shoes.html`
+   - You should see running shoes, cleats, boots
 
----
+### 3. Test Individual Product Pages
 
-## 🌐 Browser Compatibility
+1. **Click on any product** from search or category pages
+2. **Check that you see**:
+   - Product images
+   - Product name and description
+   - Price
+   - "Add to Cart" button works
+   - Related products at the bottom
 
-- **Modern Browsers**: Chrome, Firefox, Safari, Edge (latest versions)
-- **Requirements**: ES6+ JavaScript support
-- **Design**: Fully responsive (mobile and desktop)
-- **Dependencies**: JavaScript enabled required for functionality
+### 4. Test the Shopping Cart
 
----
+1. **Add products to cart** from any page
+2. **Check the cart**:
+   - Click the cart icon (top right)
+   - Your products should be listed
+   - Quantities and prices should be correct
+   - Try removing items
 
-## ⚠️ Important Notes
+### Common Issues and Solutions
 
-### Data Operations
+**❌ Products not showing up?**
+- Wait 2-3 minutes after uploading (Coveo needs time to process)
+- Try refreshing the browser page
+- Make sure the upload completed successfully (look for "Success!" message)
 
-- **Update**: Safely adds/changes products, preserves existing data
-- **Load**: Completely replaces ALL products with new data
-- **Security**: API keys stored locally and never committed to git
+**❌ Images not loading?**
+- This is normal for the demo - images are placeholders
+- Your real products can use real image URLs
 
-### Local Development
+**❌ Search not working?**
+- Make sure your web server is running (`python -m http.server 8000`)
+- Check the browser console for error messages (F12 → Console tab)
 
-- **Web Server Required**: Coveo APIs require serving over HTTP/HTTPS
-- **Python Option**: `python -m http.server 8000`
-- **Node.js Options**: `npx serve .` or `npx http-server`
-- **Access**: Open `http://localhost:8000` after starting server
+**❌ Categories empty?**
+- Make sure your products have the right category field
+- Check the sample file to see how categories should be formatted
 
 ---
 
-## 📚 Documentation & Resources
+## 💡 What This Demo Shows
 
-- 📖 **Getting Started**: [docs/getting-started.md](docs/getting-started.md)
-- 🔧 **API Documentation**: [docs/api.md](docs/api.md)
-- 🚀 **Image Hosting**: [docs/image-hosting.md](docs/image-hosting.md)
-- 🔍 **Troubleshooting**: [docs/troubleshooting.md](docs/troubleshooting.md)
+This online store demonstrates all the key features of Coveo Commerce:
 
-### External Resources
+### 🔍 **Smart Search**
+- Search for products by name, brand, color, or description
+- Intelligent suggestions and auto-complete
+- Fast, relevant results every time
 
+### 🏷️ **Product Categories**
+- **Golf Equipment**: Clubs, balls, bags, and accessories
+- **Hockey Equipment**: Sticks, skates, helmets, and gear
+- **Athletic Shoes**: Running, training, and sport-specific footwear
+
+### 🛒 **Shopping Experience**
+- Product detail pages with full information
+- Shopping cart that remembers your selections
+- Mobile-friendly design that works on any device
+
+### 📊 **Behind the Scenes**
+- Every click and search is tracked for analytics
+- Real-time inventory and product updates
+- Scalable system that grows with your business
+
+---
+
+## 🤝 Need Help?
+
+### For Non-Technical Users:
+- 📧 **Questions about setup**: Create an issue with "help wanted" label
+- 🐛 **Something not working**: Describe what you expected vs what happened
+- 💡 **Ideas for improvement**: We'd love to hear them!
+
+### For Developers:
+- 📖 **Technical docs**: Check the `docs/` folder for troubleshooting
+- 🐛 **Issues or bugs**: Report them on GitHub
+- 🚀 **Advanced usage**: Check the source code in `tools/`
+
+### Useful Resources:
 - [Coveo Commerce Documentation](https://docs.coveo.com/en/p8bg0188/coveo-for-commerce/build-search-interfaces)
-- [Coveo Analytics Events](https://docs.coveo.com/en/p9499444/coveo-for-commerce/event-tracking-with-atomic)
-- [Product Listing Pages](https://docs.coveo.com/en/p8dg0472/coveo-for-commerce/build-product-listing-pages)
-- [Authentication Guide](https://docs.coveo.com/en/o8ld0051/coveo-for-commerce/authenticate-commerce-requests)
-
----
-
-## 🆘 Support & Contributing
-
-- 🐛 **Report Issues**: [GitHub Issues](https://github.com/rtherien/commerce-docs-demo-environment/issues)
-- 💡 **Feature Requests**: [GitHub Discussions](https://github.com/rtherien/commerce-docs-demo-environment/discussions)
-- 📧 **Questions**: Create an issue with the `question` label
-
----
-
-## ✅ Key Features Demonstrated
-
-- ✅ **Search Interface**: Full-text search with Coveo Atomic
-- ✅ **Product Listing Pages**: Category-specific product displays
-- ✅ **Product Detail Pages**: Individual product views with details
-- ✅ **Shopping Cart**: Complete cart functionality with persistence
-- ✅ **Purchase Tracking**: Full e-commerce analytics pipeline
-- ✅ **Responsive Design**: Mobile and desktop compatibility
-- ✅ **Navigation System**: Dropdown menu and category organization
-- ✅ **Event Tracking**: Comprehensive user interaction analytics
-- ✅ **Data Management**: Product upload and management tools
-
-This demo provides a complete, production-ready foundation for Coveo Commerce implementations.
+- [Report Issues](https://github.com/rtherien/commerce-docs-demo-environment/issues)
+- [Ask Questions](https://github.com/rtherien/commerce-docs-demo-environment/discussions)

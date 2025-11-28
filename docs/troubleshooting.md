@@ -1,96 +1,15 @@
 # Troubleshooting
 
-This guide helps you resolve common issues when using the Coveo Commerce API Loader.
+This guide helps you resolve common issues when using the Coveo Commerce Demo.
 
-## Common Error Messages
+## Setup Issues
 
-### "Module not found: requests"
+### "Permission denied: ./scripts/setup-secure.sh"
 
-**Problem**: Python requests library not installed.
-
-**Solution**: 
+**Solution**: Make the script executable:
 ```bash
-source coveo-env/bin/activate
-pip install requests
+chmod +x ./scripts/setup-secure.sh
 ```
-
-Or run the setup script:
-```bash
-./scripts/setup.sh
-```
-
-### "Configuration file not found"
-
-**Problem**: `config.json` file doesn't exist.
-
-**Solution**:
-```bash
-cp config.template.json config.json
-# Edit config.json with your credentials
-```
-
-### "Authentication failed (401)"
-
-**Problem**: Invalid or expired access token.
-
-**Solutions**:
-1. Verify your API key in the Coveo Admin Console
-2. Generate a new API key if expired
-3. Check the `access_token` field in `config.json`
-
-### "Access forbidden (403)"
-
-**Problem**: API key lacks push privileges.
-
-**Solutions**:
-1. Go to Coveo Admin Console → **Administration** → **API Keys**
-2. Edit your API key to include **Push** privileges
-3. Ensure the key has access to your specific source
-
-### "Resource not found (404)"
-
-**Problem**: Incorrect organization ID or source ID.
-
-**Solutions**:
-1. Verify `organization_id` in Coveo Admin Console → **Settings** → **Organization**
-2. Verify `source_id` in **Content** → **Sources** → click your source
-3. Check for typos in `config.json`
-
-### "Payload too large (413)"
-
-**Problem**: File exceeds 256 MB limit.
-
-**Solutions**:
-1. Split your payload into smaller files (<256 MB each)
-2. Remove unnecessary fields from your items
-3. Use multiple smaller update operations instead of one large load
-
-### "Rate limit exceeded (429)"
-
-**Problem**: Too many requests sent to the API.
-
-**Solutions**:
-1. Wait for the time specified in the error message
-2. Reduce the frequency of your requests
-3. Check API limits for your organization type
-
-## API Limits Reference
-
-| Limit | Production | Non-Production |
-|-------|------------|----------------|
-| Stream API calls/day | 15,000 | 10,000 |
-| Burst limit (5 min) | 250 | 150 |
-| Max file size | 256 MB | 256 MB |
-| Max item size | 3 MB | 3 MB |
-
-## Virtual Environment Issues
-
-### "Command not found: ./coveo-loader"
-
-**Solutions**:
-1. Make the script executable: `chmod +x coveo-loader`
-2. Use Python directly: `python src/loader.py --help`
-3. Re-run setup: `./scripts/setup.sh`
 
 ### "Python command not found"
 
@@ -101,88 +20,115 @@ cp config.template.json config.json
 2. On macOS with Homebrew: `brew install python3`
 3. Verify installation: `python3 --version`
 
-## Payload Issues
+### "Module not found: requests"
 
-### "Invalid JSON in payload file"
+**Problem**: Virtual environment not activated or dependencies not installed.
 
-**Problem**: Malformed JSON in your payload file.
+**Solution**: 
+```bash
+source coveo-env/bin/activate
+pip install -r requirements.txt
+```
 
-**Solutions**:
-1. Validate JSON using an online JSON validator
-2. Check for missing commas, quotes, or brackets
-3. Ensure UTF-8 encoding for files with special characters
+Or re-run the setup:
+```bash
+./scripts/setup-secure.sh
+```
 
-### "No items in payload"
+## Product Loading Issues
 
-**Problem**: Empty or incorrectly structured payload.
+### "Configuration file not found"
 
-**Solutions**:
-1. Ensure payload has `addOrUpdate` array with items
-2. Check the [payload format guide](payload-format.md)
-3. Verify `documentId` and `objecttype` fields are present
+**Problem**: `.env` file doesn't exist.
 
-### "DocumentId format error"
+**Solution**:
+```bash
+cp .env.demo .env
+```
 
-**Problem**: Invalid `documentId` format.
-
-**Solutions**:
-1. Use proper URI format: `product://unique-id`
-2. Ensure IDs are unique within the payload
-3. Avoid special characters that aren't URI-encoded
-
-## Network and Connectivity
-
-### "Connection timeout"
-
-**Problem**: Network connectivity issues.
+### "No items uploaded" or "Upload failed"
 
 **Solutions**:
-1. Check your internet connection
-2. Verify firewall isn't blocking HTTPS requests
-3. Try again later if Coveo services are experiencing issues
+1. Make sure you're in the right directory
+2. Activate the virtual environment: `source coveo-env/bin/activate`
+3. Check that the data file exists: `ls data/`
+4. Try the interactive loader: `./coveo-loader`
 
-### "SSL Certificate errors"
-
-**Problem**: SSL/TLS certificate validation failing.
-
-**Solutions**:
-1. Update your Python requests library: `pip install --upgrade requests`
-2. Update certificates: `pip install --upgrade certifi`
-3. Check your system date/time is correct
-
-## Performance Issues
-
-### "Upload taking too long"
+### "Command not found: ./coveo-loader"
 
 **Solutions**:
-1. Reduce payload size by splitting into smaller files
-2. Remove unnecessary fields from items
-3. Use update operations instead of load operations
-4. Check your internet connection speed
+1. Make the script executable: `chmod +x coveo-loader`
+2. Make sure you're in the project root directory
+3. Re-run setup: `./scripts/setup-secure.sh`
 
-### "High memory usage"
+## Website Issues
+
+### "Search not working" 
 
 **Solutions**:
-1. Process smaller batches of data
-2. Use streaming for very large files
-3. Close and restart the script between large operations
+1. Make sure your web server is running: `python -m http.server 8000`
+2. Wait 2-3 minutes after uploading products (Coveo needs time to process)
+3. Try refreshing the browser page
+4. Check browser console for errors (F12 → Console tab)
+
+### "Products not showing up"
+
+**Solutions**:
+1. Wait 2-3 minutes after uploading (processing time)
+2. Try refreshing the browser
+3. Check that the upload completed successfully (look for "Success!" message)
+4. Try loading products again: `./coveo-loader --file full-product-payload-sample.json --operation load`
+
+### "Images not loading"
+
+**Expected behavior**: This is normal for the demo - images are placeholders. The important thing is that product information, search, and cart functionality work.
+
+### "Categories empty"
+
+**Solutions**:
+1. Make sure you loaded the sample data: `./coveo-loader --file full-product-payload-sample.json --operation load`
+2. Wait a few minutes for processing
+3. Check that you're going to the right URLs:
+   - Golf: `http://localhost:8000/website/pages/simple-plp-golf.html`
+   - Hockey: `http://localhost:8000/website/pages/simple-plp-hockey.html`  
+   - Shoes: `http://localhost:8000/website/pages/simple-plp-shoes.html`
+
+### "localhost:8000 not accessible"
+
+**Solutions**:
+1. Make sure the web server is running: `python -m http.server 8000` or `python3 -m http.server 8000`
+2. Check that port 8000 isn't being used by another application
+3. Try a different port: `python -m http.server 8001` and use `http://localhost:8001`
 
 ## Getting More Help
 
 If you're still experiencing issues:
 
-1. **Check logs** in Coveo Admin Console → **Content** → **Logs** → **Log Browser**
-2. **Review API documentation**: [Coveo Stream API Docs](https://docs.coveo.com/en/p4eb0129/)
-3. **Community support**: [Coveo Community Forum](https://community.coveo.com/)
-4. **Contact support**: If you have a Coveo subscription with support
+1. **Check the terminal output** for error messages
+2. **Try the interactive loader**: `./coveo-loader` and follow the prompts
+3. **Report issues**: [Create a GitHub issue](https://github.com/rtherien/commerce-docs-demo-environment/issues) with:
+   - What you were trying to do
+   - What error message you got
+   - Your operating system (Mac, Windows, Linux)
 
-## Debug Mode
+## Quick Reset
 
-To get more detailed error information, edit the script and add debug logging:
+If everything seems broken, try a complete reset:
 
-```python
-import logging
-logging.basicConfig(level=logging.DEBUG)
+```bash
+# Remove the virtual environment
+rm -rf coveo-env
+
+# Re-run setup
+cp .env.demo .env
+./scripts/setup-secure.sh
+
+# Load sample data
+source coveo-env/bin/activate
+./coveo-loader --file full-product-payload-sample.json --operation load
+
+# Start the website
+python -m http.server 8000
 ```
 
-This will show detailed HTTP requests and responses for troubleshooting.
+Then go to `http://localhost:8000` in your browser.

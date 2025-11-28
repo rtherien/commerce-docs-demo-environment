@@ -2,8 +2,9 @@
 .env
 .env.local
 .env.*.local
-config.json
-*.local.json
+
+# Keep the demo configuration file
+!.env.demo
 
 # Virtual Environments
 .venv/
