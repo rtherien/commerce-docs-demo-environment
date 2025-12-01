@@ -19,53 +19,38 @@ A simple, ready-to-use online store that shows how Coveo Commerce works. Perfect
 
 ## 🚀 Easy Setup Guide (Anyone Can Do This!)
 
-### Step 1: Download and Run Setup
+### Step 1: Setup Configuration
 
-1. **Download the demo**:
-   - Go to: https://github.com/rtherien/commerce-docs-demo-environment
-   - Click the green "Code" button
-   - Select "Download ZIP"
-   - Unzip the file somewhere easy to find (like your Desktop)
+1. **Get your demo API key**:
+   - Access the coveodocumentationtest organization and create an API key for the commerce-documentation-catalog-source source.
 
-2. **Open Terminal and navigate to the folder**:
-   - Open Terminal (Mac) or Command Prompt (Windows)
-   - Navigate to the folder you unzipped
-
-3. **Set up the demo configuration**:
+2. **Set up the configuration**:
+   - Copy the demo configuration:
    ```bash
    cp .env.demo .env
+   ```
+   - Open the `.env` file in any text editor
+   - Replace `your-source-api-key-here` with the API Token you created
+   - Save the file
+
+3. **Run the setup**:
+   ```bash
    ./scripts/setup-secure.sh
    ```
 
-✅ **That's it!** The demo is pre-configured to work right away - no account setup needed.
+✅ **Setup complete!** You're ready to explore the demo store.
 
-### Step 2: Add Sample Products
+### Step 2: View the Demo Store
 
-Time to put some products in your store! We'll start with sample products:
+The demo already has products loaded! Let's see them:
 
-1. **Activate the tool**:
+1. **Open the development environment**:
    ```bash
    source coveo-env/bin/activate
    ```
    (You'll see your command prompt change - this is normal!)
 
-2. **Load the sample products**:
-   ```bash
-   ./coveo-loader --file full-product-payload-sample.json --operation load
-   ```
-
-3. **Wait for it to finish**:
-   - You'll see messages about uploading products
-   - When it says "Success!" you're done
-   - This usually takes 1-2 minutes
-
-🎉 **Your store now has products!** Let's see them in action.
-
-### Step 3: Open Your Store
-
-Now for the fun part - seeing your store work:
-
-1. **Start the store**:
+2. **Start the store**:
    ```bash
    python -m http.server 8000
    ```
@@ -75,7 +60,18 @@ Now for the fun part - seeing your store work:
    python3 -m http.server 8000
    ```
 
-2. **Open your web browser** and go to:
+3. **Open your web browser** and go to:
+   ```
+   http://localhost:8000
+   ```
+
+4. **Explore the features**:
+   - Search for products in the search box
+   - Browse categories (Golf, Hockey, Shoes) from the menu
+   - Click on products to see detail pages
+   - Add items to your cart and test checkout
+
+🎉 **You're now exploring a live Coveo Commerce demo!**
    ```
    http://localhost:8000
    ```
@@ -90,39 +86,40 @@ Now for the fun part - seeing your store work:
 
 ---
 
-## 📦 Managing Your Products (No Coding Required!)
+## 📦 Want to Add Your Own Products? (Optional!)
 
-### The Easy Way: Interactive Menu
+The demo store already has products, but you can experiment by adding your own:
 
-The simplest way to manage products is using the interactive menu:
+### Quick Product Loading
 
-1. **Open Terminal** and navigate to your demo folder
-2. **Activate the tool**:
+1. **Activate the tool**:
    ```bash
    source coveo-env/bin/activate
    ```
-3. **Start the menu**:
+
+2. **Use the interactive menu**:
    ```bash
    ./coveo-loader
    ```
-4. **Follow the prompts**:
+
+3. **Follow the prompts**:
    - Pick a file from the list (use arrow keys, press Enter)
-   - Choose "Update" or "Load" (see below for which to pick)
+   - Choose "Update" to safely add products, or "Load" to replace everything
    - Wait for it to finish!
 
-### Understanding Update vs Load
+### Understanding Your Options
 
 **🟢 UPDATE (Recommended - Safe Option)**
 - **What it does**: Adds new products and updates existing ones
-- **What it keeps**: All your existing products stay
-- **When to use**: When you want to add more products or change some details
-- **Example**: You have 100 products, add a file with 20 more → You'll have 120 products
+- **What it keeps**: All existing demo products stay
+- **When to use**: When you want to experiment with adding more products
+- **Example**: Demo has 50 products, add a file with 20 more → You'll have 70 products
 
 **🔴 LOAD (Use Carefully - Replaces Everything)**
 - **What it does**: Removes ALL existing products and replaces them
 - **What it keeps**: Nothing - completely fresh start  
-- **When to use**: When you want to completely start over
-- **Example**: You have 100 products, load a file with 20 → You'll have only those 20 products
+- **When to use**: When you want to completely start over with your own product set
+- **Example**: Demo has 50 products, load a file with 20 → You'll have only those 20 products
 
 ### Command Line Method (For Advanced Users)
 
@@ -153,75 +150,91 @@ If you prefer typing commands:
 
 ---
 
-## 🧪 Testing Your Changes
+## 🧪 Exploring the Demo Features
 
-After you add or update products, here's how to see if everything worked:
+Here's what you can test in the demo store:
 
-### 1. Check the Search Page
+### 1. Search Functionality
 
 1. **Go to your store**: `http://localhost:8000`
 2. **Try searching**:
-   - Type a product name in the search box
+   - Type product names like "golf", "hockey stick", or "shoes"
    - Try searching for brands, colors, or categories
-   - Your new products should appear in results
+   - Notice how results appear instantly and are highly relevant
 
 3. **Test the filters**:
    - Use the filters on the left side
    - Try different categories, prices, brands
-   - Make sure your products show up in the right categories
+   - See how the results update dynamically
 
-### 2. Check Product Listing Pages (PLPs)
+### 2. Product Listing Pages (PLPs)
 
-Product Listing Pages show products by category. Test each one:
+Explore products organized by category:
 
 1. **Golf Products**:
    - Click "Golf" in the menu, or go to: `http://localhost:8000/website/pages/simple-plp-golf.html`
-   - You should see golf clubs, balls, accessories
+   - Browse golf clubs, balls, accessories
 
 2. **Hockey Products**:
    - Click "Hockey" in the menu, or go to: `http://localhost:8000/website/pages/simple-plp-hockey.html`
-   - You should see sticks, skates, protective gear
+   - Explore sticks, skates, protective gear
 
 3. **Shoes**:
    - Click "Shoes" in the menu, or go to: `http://localhost:8000/website/pages/simple-plp-shoes.html`
-   - You should see running shoes, cleats, boots
+   - Check out running shoes, cleats, boots
 
-### 3. Test Individual Product Pages
+### 3. Product Detail Pages
 
 1. **Click on any product** from search or category pages
-2. **Check that you see**:
-   - Product images
-   - Product name and description
-   - Price
-   - "Add to Cart" button works
-   - Related products at the bottom
+2. **Explore the features**:
+   - Product images and descriptions
+   - Price and availability
+   - "Add to Cart" functionality
+   - Related products recommendations at the bottom
 
-### 4. Test the Shopping Cart
+### 4. Shopping Cart Experience
 
 1. **Add products to cart** from any page
-2. **Check the cart**:
+2. **Test the cart features**:
    - Click the cart icon (top right)
-   - Your products should be listed
-   - Quantities and prices should be correct
-   - Try removing items
+   - View your selected products
+   - Adjust quantities
+   - Remove items
+   - Experience the checkout flow
+
+### If You Added Your Own Products
+
+After uploading new products, wait 2-3 minutes for processing, then:
+
+- **Search for your new products** by name, brand, or category
+- **Check the appropriate category pages** to ensure they appear correctly
+- **Test that product detail pages** load properly
+- **Verify cart functionality** works with your products
 
 ### Common Issues and Solutions
 
-**❌ Products not showing up?**
+**❌ Products not showing up after upload?**
 - Wait 2-3 minutes after uploading (Coveo needs time to process)
 - Try refreshing the browser page
 - Make sure the upload completed successfully (look for "Success!" message)
+- Verify your API key is correct in the `.env` file
+
+**❌ "Authentication failed" or "Access denied"?**
+- Double-check the API Token in your `.env` file
+- Make sure you created the API key for the correct source
+- Contact the demo provider if you need help creating the API key
 
 **❌ Images not loading?**
 - This is normal for the demo - images are placeholders
-- Your real products can use real image URLs
+- Focus on the search, filtering, and cart functionality
 
 **❌ Search not working?**
 - Make sure your web server is running (`python -m http.server 8000`)
 - Check the browser console for error messages (F12 → Console tab)
 
 **❌ Categories empty?**
-- Make sure your products have the right category field
+- The demo should have products by default
+- If you uploaded your own data, make sure products have the right category field
 - Check the sample file to see how categories should be formatted
 
 ---
@@ -250,21 +263,3 @@ This online store demonstrates all the key features of Coveo Commerce:
 - Real-time inventory and product updates
 - Scalable system that grows with your business
 
----
-
-## 🤝 Need Help?
-
-### For Non-Technical Users:
-- 📧 **Questions about setup**: Create an issue with "help wanted" label
-- 🐛 **Something not working**: Describe what you expected vs what happened
-- 💡 **Ideas for improvement**: We'd love to hear them!
-
-### For Developers:
-- 📖 **Technical docs**: Check the `docs/` folder for troubleshooting
-- 🐛 **Issues or bugs**: Report them on GitHub
-- 🚀 **Advanced usage**: Check the source code in `tools/`
-
-### Useful Resources:
-- [Coveo Commerce Documentation](https://docs.coveo.com/en/p8bg0188/coveo-for-commerce/build-search-interfaces)
-- [Report Issues](https://github.com/rtherien/commerce-docs-demo-environment/issues)
-- [Ask Questions](https://github.com/rtherien/commerce-docs-demo-environment/discussions)

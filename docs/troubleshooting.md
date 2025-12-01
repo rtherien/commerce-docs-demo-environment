@@ -46,6 +46,8 @@ Or re-run the setup:
 cp .env.demo .env
 ```
 
+Then edit the `.env` file to add your API key.
+
 ### "No items uploaded" or "Upload failed"
 
 **Solutions**:
