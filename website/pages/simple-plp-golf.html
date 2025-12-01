@@ -41,13 +41,13 @@
                             <atomic-commerce-product-list>
                                 <atomic-product-template>
                                     <template>
-                                        <div class="grouped-product-card">
+                                        <div class="grouped-product-card" onclick="handleProductClick(this)" data-product-id="${ec_product_id}" data-click-uri="${clickUri}">
                                             <atomic-product-section-visual class="product-main-image">
                                                 <atomic-product-image field="ec_images"></atomic-product-image>
                                             </atomic-product-section-visual>
                                             
                                             <atomic-product-section-name class="product-title">
-                                                <atomic-product-link></atomic-product-link>
+                                                <atomic-product-text field="ec_name" class="product-link"></atomic-product-text>
                                             </atomic-product-section-name>
                                             
                                             <atomic-product-section-metadata class="product-details">
@@ -111,6 +111,68 @@
                 console.log('SIMPLE GOLF PLP - Products found:', event.detail?.response?.products?.length || 0);
             });
         })();
+
+        // Handle product clicks with proper event logging
+        function handleProductClick(element) {
+            const productId = element.getAttribute('data-product-id');
+            const clickUri = element.getAttribute('data-click-uri');
+            
+            console.log('Product clicked on golf PLP:', productId);
+            
+            // Log click event to Coveo Analytics following commerce protocol
+            logCommerceClickEvent(productId, clickUri, 'golf_category');
+            
+            // Navigate to product detail page
+            window.location.href = `product-detail.html?id=${encodeURIComponent(productId)}`;
+        }
+
+        function logCommerceClickEvent(productId, clickUri, contextPage) {
+            console.log('Logging commerce click event for product:', productId);
+            
+            // Get the commerce interface for proper event context
+            const commerceInterface = document.querySelector('atomic-commerce-interface');
+            
+            try {
+                // Log using Coveo Analytics API following commerce event protocol
+                fetch('https://analytics.cloud.coveo.com/rest/organizations/coveodocumentationtest/analytics/click', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': 'Bearer xxd749992c-d0b5-475f-95e6-671793e6c94a',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        language: 'en',
+                        userAgent: navigator.userAgent,
+                        customData: {
+                            context_website: 'sports-store.com',
+                            context_page: contextPage || 'product_listing',
+                            ec_product_id: productId,
+                            clickUri: clickUri || '',
+                            searchHub: 'commerce-docs-demo',
+                            category: 'golf'
+                        },
+                        anonymous: true,
+                        location: window.location.href,
+                        referrer: document.referrer || '',
+                        title: document.title,
+                        actionCause: 'documentClick',
+                        searchQueryUid: commerceInterface?.state?.searchResponseId || '',
+                        queryPipeline: 'default'
+                    })
+                }).then(response => {
+                    if (response.ok) {
+                        console.log('Click event logged successfully');
+                    } else {
+                        console.warn('Failed to log click event:', response.status);
+                    }
+                }).catch(error => {
+                    console.error('Error logging click event:', error);
+                });
+                
+            } catch (error) {
+                console.error('Error in click event logging:', error);
+            }
+        }
     </script>
 </body>
 </html>
