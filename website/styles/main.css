@@ -562,6 +562,26 @@ atomic-product-section-children:empty {
     display: none;
 }
 
+/* Atomic Product Link Styles - now wraps product name */
+atomic-product-link {
+    text-decoration: none;
+    color: var(--primary-color);
+    font-weight: 600;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+atomic-product-link:hover {
+    color: #1e3d6f;
+    text-decoration: underline;
+}
+
+/* Style the product name text inside the link */
+atomic-product-section-name atomic-product-text {
+    font-size: 1.1rem;
+    line-height: 1.3;
+}
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
     .grouped-product-card {
@@ -570,5 +590,9 @@ atomic-product-section-children:empty {
     
     .product-main-image atomic-product-image {
         max-height: 150px;
+    }
+    
+    atomic-product-section-name atomic-product-text {
+        font-size: 1rem;
     }
 }
