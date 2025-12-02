@@ -473,6 +473,18 @@ atomic-product-template:hover {
 }
 
 /* Product Grouping and Variant Styles */
+atomic-product-link {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.3s ease;
+}
+
+atomic-product-link:hover {
+    text-decoration: none;
+    color: inherit;
+}
+
 .grouped-product-card {
     display: flex;
     flex-direction: column;
@@ -482,9 +494,10 @@ atomic-product-template:hover {
     border-radius: 8px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     transition: all 0.3s ease;
+    cursor: pointer;
 }
 
-.grouped-product-card:hover {
+atomic-product-link:hover .grouped-product-card {
     box-shadow: 0 4px 16px rgba(0,0,0,0.15);
     transform: translateY(-2px);
 }

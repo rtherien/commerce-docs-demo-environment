@@ -41,6 +41,8 @@
                 <div class="product-info">
                     <h3>Product Information:</h3>
                     <p><strong>Product ID:</strong> <span id="product-id">Loading...</span></p>
+                    <p><strong>Product Name:</strong> <span id="product-name">Loading...</span></p>
+                    <p><strong>Brand:</strong> <span id="product-brand">Loading...</span></p>
                     <p><strong>Category:</strong> <span id="product-category">Loading...</span></p>
                     <p><strong>Source Page:</strong> <span id="source-page">Loading...</span></p>
                 </div>
@@ -56,6 +58,28 @@
     <script>
         // Extract product information from URL
         function getProductInfoFromURL() {
+            // Try query parameters
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('name')) {
+                return {
+                    productId: urlParams.get('id') || 'unknown',
+                    productName: urlParams.get('name') || 'Unknown Product',
+                    productBrand: urlParams.get('brand') || 'Unknown Brand',
+                    category: urlParams.get('category') || 'unknown'
+                };
+            }
+            
+            // Fallback to old format
+            if (urlParams.get('id')) {
+                return {
+                    productId: urlParams.get('id'),
+                    productName: urlParams.get('name') || 'Unknown Product',
+                    productBrand: 'Unknown Brand',
+                    category: urlParams.get('category') || 'unknown'
+                };
+            }
+            
+            // Fallback to path parsing (old format)
             const url = window.location.pathname;
             const segments = url.split('/');
             
@@ -69,27 +93,29 @@
             else if (url.includes('/shoes/')) category = 'shoes';
             else if (url.includes('/search/')) category = 'search';
             
-            return { productId, category };
+            return { productId, productName: 'Unknown Product', productBrand: 'Unknown Brand', category };
         }
 
         // Simulate add to cart action
         function simulateAddToCart() {
-            const { productId, category } = getProductInfoFromURL();
+            const { productId, productName, productBrand, category } = getProductInfoFromURL();
             
-            alert(`Demo: Added product ${productId} to cart!\n\nIn a real implementation, this would:\n- Update cart state\n- Send cart analytics event\n- Show cart confirmation`);
+            alert(`Demo: Added "${productName}" to cart!\n\nIn a real implementation, this would:\n- Update cart state\n- Send cart analytics event\n- Show cart confirmation`);
             
-            console.log('🛒 Simulated add to cart:', { productId, category });
+            console.log('🛒 Simulated add to cart:', { productId, productName, productBrand, category });
         }
 
         // Initialize page
         document.addEventListener('DOMContentLoaded', () => {
-            const { productId, category } = getProductInfoFromURL();
+            const { productId, productName, productBrand, category } = getProductInfoFromURL();
             
             document.getElementById('product-id').textContent = productId;
+            document.getElementById('product-name').textContent = productName;
+            document.getElementById('product-brand').textContent = productBrand;
             document.getElementById('product-category').textContent = category;
             document.getElementById('source-page').textContent = document.referrer || 'Direct access';
             
-            console.log('📄 Product detail page loaded:', { productId, category });
+            console.log('📄 Product detail page loaded:', { productId, productName, productBrand, category });
             console.log('🔍 Referrer:', document.referrer);
         });
     </script>

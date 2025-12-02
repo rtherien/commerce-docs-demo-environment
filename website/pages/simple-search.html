@@ -31,6 +31,10 @@
                         <atomic-commerce-search-box></atomic-commerce-search-box>
                     </atomic-layout-section>
                     
+                    <atomic-layout-section section="facets">
+                        <atomic-commerce-facets></atomic-commerce-facets>
+                    </atomic-layout-section>
+                    
                     <atomic-layout-section section="main">
                         <atomic-layout-section section="status">
                             <atomic-commerce-query-summary></atomic-commerce-query-summary>
@@ -47,7 +51,7 @@
                                             </atomic-product-section-visual>
                                             
                                             <atomic-product-section-name class="product-title">
-                                                <atomic-product-link href="product-detail-simple.html/search/${ec_product_id}" class="product-link">
+                                                <atomic-product-link href="product-detail-simple.html?id=${ec_product_id}&name=${ec_name}&category=${ec_category}" class="product-link">
                                                     <atomic-product-text field="ec_name"></atomic-product-text>
                                                 </atomic-product-link>
                                             </atomic-product-section-name>
@@ -81,100 +85,37 @@
     </div>
 
     <script>
-        console.log('Starting simple search page...');
-        
         (async () => {
-            try {
-                console.log('Waiting for atomic-commerce-interface to be defined...');
-                await customElements.whenDefined('atomic-commerce-interface');
-                console.log('atomic-commerce-interface is now defined');
-                
-                const commerceInterface = document.querySelector('atomic-commerce-interface');
-                console.log('Commerce interface element:', commerceInterface);
-                
-                console.log('Initializing interface...');
-                await commerceInterface.initialize({
-                    accessToken: 'xxd749992c-d0b5-475f-95e6-671793e6c94a',
-                    organizationId: 'coveodocumentationtest',
-                    environment: 'prod',
-                    analytics: {
-                        trackingId: 'commerce-docs-demo'
-                    },
-                    context: {
-                        language: 'en',
-                        country: 'CA',
-                        currency: 'CAD',
-                        view: {
-                            url: 'https://sports-store.com/search'
-                        }
+            await customElements.whenDefined('atomic-commerce-interface');
+            
+            const commerceInterface = document.querySelector('atomic-commerce-interface');
+            
+            await commerceInterface.initialize({
+                accessToken: 'xx2a24e7d1-8dca-482e-a7c7-d49fe39aac30',
+                organizationId: 'coveodocumentationtest',
+                environment: 'prod',
+                analytics: {
+                    trackingId: 'commerce-docs-demo'
+                },
+                context: {
+                    language: 'en',
+                    country: 'CA',
+                    currency: 'CAD',
+                    view: {
+                        url: 'https://sports-store.com/search'
                     }
-                });
-                console.log('Interface initialized successfully');
+                }
+            });
 
-                // Add response listener
-                commerceInterface.addEventListener('responseReceived', (event) => {
-                    const products = event.detail?.response?.products || [];
-                    console.log(`Found ${products.length} products:`, products.map(p => p.ec_name));
-                });
+            // Execute first request to show all products
+            await commerceInterface.executeFirstRequest({
+                q: '*'
+            });
 
-                // Execute initial search to show products by default
-                console.log('Executing initial search to show all products...');
-                await commerceInterface.executeFirstRequest();
-                console.log('Initial search completed');
-
-                console.log('Interface ready - you can now search for products');
-                
-                // Add comprehensive event debugging
-                commerceInterface.addEventListener('analyticsActionCause', (event) => {
-                    console.log('🎯 Analytics Event Fired:', event.detail);
-                });
-
-                // Listen for all possible events on the commerce interface
-                const eventTypes = ['click', 'clickEvent', 'analyticsEvent', 'commerce-click', 'product-click'];
-                eventTypes.forEach(eventType => {
-                    commerceInterface.addEventListener(eventType, (event) => {
-                        console.log(`📊 ${eventType}:`, event.detail);
-                    });
-                });
-
-                // Listen for click events on product links and log but allow navigation
-                document.addEventListener('click', (event) => {
-                    const productLink = event.target.closest('atomic-product-link');
-                    if (productLink) {
-                        console.log('🖱️ Product link clicked:', productLink);
-                        console.log('🔗 Link href:', productLink.getAttribute('href'));
-                        
-                        const productCard = productLink.closest('div[class*=\"product\"]');
-                        if (productCard) {
-                            console.log('📦 Product card found:', productCard);
-                        }
-                        
-                        // Allow the click to proceed but add a small delay to see logs
-                        setTimeout(() => {
-                            console.log('⏰ Click processed, checking for analytics...');
-                        }, 100);
-                    }
-                });
-
-                // Monitor for any analytics events sent to Coveo
-                const originalFetch = window.fetch;
-                window.fetch = function(...args) {
-                    if (args[0] && args[0].includes && args[0].includes('analytics.cloud.coveo.com')) {
-                        console.log('📡 Analytics request detected:', args[0]);
-                        if (args[1] && args[1].body) {
-                            try {
-                                console.log('📊 Analytics payload:', JSON.parse(args[1].body));
-                            } catch (e) {
-                                console.log('📊 Analytics payload (raw):', args[1].body);
-                            }
-                        }
-                    }
-                    return originalFetch.apply(this, args);
-                };
-                
-            } catch (error) {
-                console.error('Error in simple search initialization:', error);
-            }
+            // Debug response
+            commerceInterface.addEventListener('responseReceived', (event) => {
+                console.log('SEARCH PAGE - Products found:', event.detail?.response?.products?.length || 0);
+            });
         })();
     </script>
 </body>

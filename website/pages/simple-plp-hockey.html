@@ -47,7 +47,7 @@
                                             </atomic-product-section-visual>
                                             
                             <atomic-product-section-name class="product-title">
-                                <atomic-product-link href="product-detail-simple.html/hockey/${ec_product_id}" class="product-link">
+                                <atomic-product-link href="product-detail-simple.html?id=${ec_product_id}&name=${ec_name}&category=hockey" class="product-link">
                                     <atomic-product-text field="ec_name"></atomic-product-text>
                                 </atomic-product-link>
                             </atomic-product-section-name>                                            <atomic-product-section-metadata class="product-details">
@@ -85,7 +85,7 @@
             const commerceInterface = document.querySelector('atomic-commerce-interface');
             
             await commerceInterface.initialize({
-                accessToken: 'xxd749992c-d0b5-475f-95e6-671793e6c94a',
+                accessToken: 'xx2a24e7d1-8dca-482e-a7c7-d49fe39aac30',
                 organizationId: 'coveodocumentationtest',
                 environment: 'prod',
                 analytics: {
@@ -109,6 +109,21 @@
             // Debug response
             commerceInterface.addEventListener('responseReceived', (event) => {
                 console.log('SIMPLE HOCKEY PLP - Products found:', event.detail?.response?.products?.length || 0);
+            });
+            
+            // Add demo click tracking
+            document.addEventListener('click', (event) => {
+                const productLink = event.target.closest('atomic-product-link');
+                if (productLink) {
+                    const href = productLink.getAttribute('href');
+                    const productText = productLink.querySelector('atomic-product-text');
+                    const productName = productText ? productText.textContent : 'Unknown Product';
+                    
+                    console.log('🎯 Hockey Product clicked:', { name: productName, href: href });
+                    
+                    // Log that click tracking is working (navigation will happen normally)
+                    console.log('🏒 Hockey product click tracked - navigating to:', href);
+                }
             });
         })();
     </script>
