@@ -27,6 +27,42 @@
                 }
             });
             searchInterface.executeFirstRequest();
+            
+            // Add click handler for product navigation
+            document.addEventListener('click', (event) => {
+                console.log('Click detected on:', event.target);
+                
+                const productLink = event.target.closest('atomic-product-link');
+                console.log('Product link found:', productLink);
+                
+                if (productLink) {
+                    event.preventDefault(); // Prevent default Coveo behavior
+                    console.log('Preventing default and handling navigation...');
+                    
+                    // Get product information from the clicked element
+                    const productSection = productLink.closest('atomic-product-template').parentElement;
+                    console.log('Product section:', productSection);
+                    
+                    const productNameEl = productSection.querySelector('atomic-product-text[field="ec_name"]');
+                    const productBrandEl = productSection.querySelector('atomic-product-text[field="ec_brand"]');
+                    const productCategoryEl = productSection.querySelector('atomic-product-text[field="ec_category"]');
+                    
+                    console.log('Product elements:', { productNameEl, productBrandEl, productCategoryEl });
+                    
+                    const productName = productNameEl?.textContent || 'Unknown';
+                    const productBrand = productBrandEl?.textContent || '';
+                    const productCategory = productCategoryEl?.textContent || '';
+                    
+                    console.log('Product info:', { productName, productBrand, productCategory });
+                    
+                    // Create URL for product detail page
+                    const productUrl = `product-detail-simple.html?name=${encodeURIComponent(productName)}&brand=${encodeURIComponent(productBrand)}&category=${encodeURIComponent(productCategory)}`;
+                    console.log('Navigating to:', productUrl);
+                    
+                    // Navigate to product detail page
+                    window.location.href = productUrl;
+                }
+            });
         })();
     </script>
 </head>
@@ -70,7 +106,9 @@
                                 <atomic-product-template>
                                     <template>
                                         <atomic-product-section-name id="product-name-section">
-                                            <atomic-product-link href="product-detail-simple.html?id=${ec_product_id}&name=${ec_name}&category=${ec_category}" class="font-bold"></atomic-product-link>
+                                            <atomic-product-link class="font-bold">
+                                                <atomic-product-text field="ec_name"></atomic-product-text>
+                                            </atomic-product-link>
                                         </atomic-product-section-name>
                                         <atomic-product-section-visual>
                                             <atomic-product-field-condition if-defined="ec_thumbnails">

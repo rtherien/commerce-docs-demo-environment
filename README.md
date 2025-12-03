@@ -25,18 +25,18 @@ This demo showcases a sports equipment store with:
    cd commerce-docs-demo-environment
    ```
 
-2. **Serve the website**
-   You can use any web server. For example with Python:
+2. **Open directly in browser**
+   Simply open `website/pages/simple-search.html` in your web browser by:
+   - Double-clicking the file, or
+   - Right-click → "Open with" → your preferred browser, or
+   - Drag and drop the file into your browser window
+
+   **Optional: Use a local server**
+   If you prefer using a local server (useful for development):
    ```bash
    python3 -m http.server 8000
+   # Then visit http://localhost:8000/website/pages/simple-search.html
    ```
-   Or with Node.js:
-   ```bash
-   npx serve .
-   ```
-
-3. **Open in browser**
-   Navigate to `http://localhost:8000/website/pages/simple-search.html`
 
 ## File Structure
 
