@@ -1,0 +1,30 @@
+{
+  "coveo": {
+    "api_base_url": "https://api.cloud.coveo.com",
+    "organization_id": "YOUR_ORGANIZATION_ID",
+    "api_key": "YOUR_API_KEY",
+    "source_id": "YOUR_SOURCE_ID",
+    "use_virtual_hosted_style_url": true
+  },
+  "limits": {
+    "max_file_size_mb": 256,
+    "max_item_size_mb": 3,
+    "api_calls_per_day": 15000,
+    "api_calls_per_5min": 250,
+    "upload_timeout_minutes": 60
+  },
+  "default_settings": {
+    "chunk_large_files": true,
+    "verify_uploads": true,
+    "delete_old_items": true,
+    "compress_uploads": false,
+    "retry_attempts": 3,
+    "retry_delay_seconds": 5
+  },
+  "data_paths": {
+    "complete_payload": "data/complete-payload.json",
+    "catalog_schema": "data/catalog-schema.json",
+    "partial_updates": "data/",
+    "temp_directory": "temp/"
+  }
+}

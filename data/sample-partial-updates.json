@@ -1,0 +1,34 @@
+{
+  "partialUpdate": [
+    {
+      "documentId": "https://sports.barca.group/pdp/SP00003_00001",
+      "operator": "fieldValueReplace",
+      "field": "ec_price",
+      "value": 15.99
+    },
+    {
+      "documentId": "https://sports.barca.group/pdp/SP00003_00002", 
+      "operator": "fieldValueReplace",
+      "field": "ec_price",
+      "value": 18.99
+    },
+    {
+      "documentId": "https://sports.barca.group/pdp/SP00003_00001",
+      "operator": "fieldValueReplace", 
+      "field": "ec_promo_price",
+      "value": 2500
+    },
+    {
+      "documentId": "store://s000001",
+      "operator": "arrayAppend",
+      "field": "ec_available_items", 
+      "value": ["SP00001_00003", "SP00001_00004"]
+    },
+    {
+      "documentId": "https://sports.barca.group/pdp/SP00002_00001",
+      "operator": "fieldValueReplace",
+      "field": "ec_in_stock",
+      "value": "FALSE"
+    }
+  ]
+}
