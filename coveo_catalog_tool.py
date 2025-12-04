@@ -20,7 +20,7 @@ import json
 from datetime import datetime, timezone, timedelta
 
 # Add the src directory to the path to import utilities
-sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'src'))
+sys.path.append(os.path.join(os.path.dirname(__file__), 'src'))
 
 try:
     from coveo_utils import CoveoUploader, CoveoAPIClient, validate_config, format_file_size

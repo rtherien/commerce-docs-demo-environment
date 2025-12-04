@@ -58,7 +58,7 @@ pip install requests
 ### 3. Test Configuration
 
 ```bash
-python coveo_catalog_tool.py config test
+python3 coveo_catalog_tool.py config test
 ```
 
 ## Usage Examples
@@ -69,13 +69,13 @@ Upload your complete catalog data:
 
 ```bash
 # Upload your existing complete payload
-python coveo_catalog_tool.py full-update --file data/complete-payload.json
+python3 coveo_catalog_tool.py full-update --file data/complete-payload.json
 
 # Upload without deleting old items
-python coveo_catalog_tool.py full-update --file data/complete-payload.json --no-delete-old
+python3 coveo_catalog_tool.py full-update --file data/complete-payload.json --no-delete-old
 
 # Upload without verification (faster)
-python coveo_catalog_tool.py full-update --file data/complete-payload.json --no-verify
+python3 coveo_catalog_tool.py full-update --file data/complete-payload.json --no-verify
 ```
 
 ### Partial Updates
