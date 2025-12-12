@@ -49,19 +49,17 @@ pip install requests python-dotenv
 
 ### 2. Configure API Access
 
-**Security Note:** If you're updating from a previous version with hardcoded API keys, create a new API key in your Coveo administration console and revoke the old one for security.
-
 **Create a `.env` file** in the project root:
 ```bash
 # Coveo API Configuration
 COVEO_API_KEY=your-new-api-key-here
-COVEO_ORGANIZATION_ID=your-org-id-here
-COVEO_SOURCE_ID=your-source-id-here
+COVEO_ORGANIZATION_ID=coveodocumentationtest
+COVEO_SOURCE_ID=coveodocumentationtest-w33goww7m52uyful5vbormci4y
 ```
 
+The default setup uses the coveodocumentationtest organization and the commerce-documentation-catalog-source source. You can update the values if you want to use your own org and/or source.
+
 **Important Security Notes:**
-- ✅ The `.env` file is already in `.gitignore` so your credentials won't be committed to Git
-- ✅ Python scripts automatically load environment variables from `.env` file
 - ⚠️ Generate a new API key with appropriate permissions in your Coveo admin console
 - ⚠️ Never commit API keys to version control
 
