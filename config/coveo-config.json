@@ -1,9 +1,9 @@
 {
   "coveo": {
     "api_base_url": "https://api.cloud.coveo.com",
-    "organization_id": "coveodocumentationtest",
-    "api_key": "xx8414eba3-34f0-4fcf-b5f2-0504e382da54",
-    "source_id": "coveodocumentationtest-w33goww7m52uyful5vbormci4y",
+    "organization_id": "${COVEO_ORGANIZATION_ID}",
+    "api_key": "${COVEO_API_KEY}",
+    "source_id": "${COVEO_SOURCE_ID}",
     "use_virtual_hosted_style_url": true
   },
   "limits": {

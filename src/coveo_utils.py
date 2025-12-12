@@ -15,6 +15,7 @@ import requests
 from typing import Dict, List, Optional, Tuple, Any
 from datetime import datetime, timezone
 import math
+from dotenv import load_dotenv
 
 
 class CoveoAPIClient:
@@ -34,14 +35,38 @@ class CoveoAPIClient:
         }
         
     def _load_config(self, config_path: str) -> Dict:
-        """Load configuration from JSON file."""
+        """Load configuration from JSON file with environment variable substitution."""
+        # Load environment variables from .env file
+        load_dotenv()
+        
         try:
             with open(config_path, 'r') as f:
-                return json.load(f)
+                config_content = f.read()
+                
+            # Replace environment variable placeholders
+            import re
+            def replace_env_vars(match):
+                var_name = match.group(1)
+                env_value = os.getenv(var_name)
+                if env_value is None:
+                    raise ValueError(f"Environment variable {var_name} is not set")
+                return env_value
+            
+            # Replace ${VAR_NAME} with actual environment variable values
+            config_content = re.sub(r'\$\{([^}]+)\}', replace_env_vars, config_content)
+            
+            return json.loads(config_content)
+            
         except FileNotFoundError:
             raise FileNotFoundError(f"Configuration file not found: {config_path}")
         except json.JSONDecodeError as e:
             raise ValueError(f"Invalid JSON in configuration file: {e}")
+        except ValueError as e:
+            if "Environment variable" in str(e):
+                print(f"❌ {e}")
+                print("Make sure you have a .env file with all required environment variables.")
+                print("Required variables: COVEO_API_KEY, COVEO_ORGANIZATION_ID, COVEO_SOURCE_ID")
+            raise e
     
     def _retry_request(self, func, *args, **kwargs) -> requests.Response:
         """Retry a request with exponential backoff."""

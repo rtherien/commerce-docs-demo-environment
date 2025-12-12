@@ -1,0 +1,10 @@
+{
+  "partialUpdate": [
+    {
+      "documentId": "https://sports.barca.group/pdp/SP04071_00002", 
+      "operator": "fieldValueReplace", 
+      "field": "ec_name", 
+      "value": "Blue Lace Wedge Sandal" 
+    }
+  ]
+}
