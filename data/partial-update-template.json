@@ -1,10 +1,17 @@
 {
   "partialUpdate": [
     {
-      "documentId": "https://sports.barca.group/pdp/SP04071_00002", 
-      "operator": "fieldValueReplace", 
-      "field": "ec_name", 
-      "value": "Blue Lace Wedge Sandal" 
+      "documentId": "<DOCUMENT_ID>", 
+      "operator": "<OPERATOR>", 
+      "field": "<FIELD_NAME>", 
+      "value": "<VALUE>" 
     }
   ]
 }
+
+// Replace the placeholders with actual values when performing partial updates
+// <DOCUMENT_ID>: The unique identifier of the document to be updated
+// <OPERATOR>: The update operation to perform:
+//    - arrayAppend: adds items
+//    - arrayRemove: removes items
+//    - fieldValueReplace: replaces the entire field value

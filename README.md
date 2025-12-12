@@ -71,6 +71,33 @@ COVEO_SOURCE_ID=your-source-id-here
 python3 coveo_catalog_tool.py status --last-hour
 ```
 
+### 4. VS Code Tasks (Optional)
+
+For easier workflow, VS Code tasks are available to run common operations with interactive prompts:
+
+**To use VS Code tasks:**
+1. Open Command Palette (`Cmd+Shift+P` / `Ctrl+Shift+P`)
+2. Type "Tasks: Run Task"
+3. Select from available Coveo tasks:
+   - **Coveo: Full Catalog Update** - Upload complete catalog (prompts for file path)
+   - **Coveo: Full Catalog Update (No Delete)** - Upload without deleting old items
+   - **Coveo: Full Catalog Update (Fast - No Verify)** - Quick upload without verification
+   - **Coveo: Partial Update from File** - Run partial updates (prompts for file path)
+   - **Coveo: Validate File** - Validate any data file (prompts for file path)
+   - **Coveo: Check Status (Last Hour)** - View recent operations
+   - **Coveo: List Available Data Files** - See all data files
+   - **Coveo: Setup Virtual Environment** - Initial project setup
+   - **Coveo: Update Example - Price Change** - Demo price update (prompts for product ID and price)
+   - **Coveo: Update Example - Stock Status** - Demo stock update (prompts for product ID and stock status)
+
+**Interactive Features:**
+- 📁 **File path prompts** - Specify which data file to use (defaults to `data/complete-payload.json`)
+- 🎯 **Product ID prompts** - Enter specific product URLs for individual updates
+- 💰 **Price input** - Enter new prices for product updates
+- 📦 **Stock status picker** - Choose In Stock/Out of Stock from a dropdown
+
+All tasks automatically activate the virtual environment and deactivate it when complete.
+
 ## Usage Examples
 
 ### Full Catalog Update

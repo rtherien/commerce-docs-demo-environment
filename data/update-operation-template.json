@@ -1,0 +1,36 @@
+{
+  "addOrUpdate": [ 
+    {
+      "objecttype": "Product",
+      "documentId": "product://010",
+      "ec_name": "Sneaker 010",
+      "ec_product_id": "010",
+      "ec_category": "Sneakers",
+      "gender": "Unisex",
+      "departement": "Shoes"
+    },
+    {
+      "objecttype": "Product",
+      "documentId": "product://011",
+      "ec_name": "Sneaker 011",
+      "ec_product_id": "011",
+      "ec_category": "Sneakers",
+      "gender": "Unisex",
+      "departement": "Shoes"
+    },
+    {
+      "objecttype": "Variant",
+      "documentId": "variant://010-blue",
+      "ec_name": "Sneaker 010 Royal Blue",
+      "ec_product_id": "010",
+      "ec_variant_id": "010-blue",
+      "width": "wide",
+      "productSize": "9"
+    }
+  ],
+  "delete": [ 
+    {
+      "documentId": "store://s000001"
+    }
+  ]
+}
