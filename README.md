@@ -145,122 +145,17 @@ python coveo_catalog_tool.py status --date "2023-12-04"
    
    The website pages automatically use your frontend access token from the `.env` file:
    
-   **Automatic Token Updates (Recommended)**
+   **Automatic Token Updates (Required - One Time)**
    ```bash
    # Update all HTML files with your frontend token
-   source .venv/bin/activate
    python3 update_html_tokens.py
-   deactivate
    ```
    
    **Manual Setup (Alternative)**
    - Open each HTML file in `website/pages/`
    - Replace the `accessToken` value with your `COVEO_FRONTEND_ACCESS_TOKEN`
-   
-   **Production Deployment**
-   - Use a web server framework (Express.js, Flask, etc.) that can inject environment variables into HTML templates
-   - This is recommended for production deployments where you need secure environment variable handling
 
 2. **View in Browser**
-   - Open `website/pages/simple-search.html` directly in browser, or
-   - Use local server: `python3 -m http.server 8000` then visit http://localhost:8000/website/pages/
-
-### Website Structure
-
-```
-├── website/
-│   ├── pages/
-│   │   ├── simple-search.html           # Main search page  
-│   │   ├── simple-plp-adidas.html       # Adidas brand page
-│   │   ├── simple-plp-steve-madden.html # Steve Madden brand page
-│   │   ├── simple-plp-ecco.html         # Ecco brand page  
-│   │   ├── simple-plp-dooney-bourke.html# Dooney & Bourke brand page
-│   │   ├── simple-plp-nike.html         # Nike brand page
-│   │   └── product-detail-simple.html   # Product detail page
-│   ├── styles/
-│   │   └── main.css                     # Custom styling
-│   └── js/
-│       └── cart.js                      # Cart functionality
-├── data/                                # Product catalog data
-└── config/                              # API configuration
-```
-
-## Configuration
-
-The demo now uses environment variables for security:
-- **Stream API Key** (`COVEO_API_KEY`): For backend catalog operations (stored in `.env` file, not in Git)
-- **Frontend Access Token** (`COVEO_FRONTEND_ACCESS_TOKEN`): For HTML search pages (stored in `.env` file, not in Git)
-- **Organization ID**: Loaded from `COVEO_ORGANIZATION_ID`
-- **Source ID**: Loaded from `COVEO_SOURCE_ID`  
-- **Environment**: `prod`
-- **Analytics Tracking ID**: `commerce-docs-demo`
-- **Currency**: CAD (Canadian Dollars)
-
-### Token Management
-
-Use the included `update_html_tokens.py` script to automatically update all HTML files with your frontend token:
-```bash
-python3 update_html_tokens.py
-```
-
-This script reads `COVEO_FRONTEND_ACCESS_TOKEN` from your `.env` file and updates all HTML pages in `website/pages/`.
-
-## Security Features
-
-- ✅ **API keys in environment variables** (not hardcoded)
-- ✅ **`.env` file in `.gitignore`** (credentials not committed)
-- ✅ **Automatic environment loading** in Python tools
-- ⚠️ **HTML pages require manual API key setup** (browsers can't access env vars)
-
-## How It Works
-
-### Search Page (`simple-search.html`)
-- Uses `type="search"` interface
-- Includes search box with recent queries and suggestions
-- Shows all products by default
-- Supports full-text search and faceted filtering
-
-### Product Listing Pages
-- Use `type="product-listing"` interface
-- Pre-filtered for specific categories (shoes, hockey, golf)
-- Include faceted navigation and sorting
-- Show category-specific products
-
-### Product Templates
-All pages use the official Coveo product template structure:
-- `atomic-product-section-name` - Product name with clickable link
-- `atomic-product-section-visual` - Product images
-- `atomic-product-section-metadata` - Brand and category information
-- `atomic-product-section-emphasized` - Pricing
-- `atomic-product-section-children` - Product variants
-
-## Customization
-
-To customize for your own organization:
-
-1. **Update your `.env` file** with your credentials:
-   ```bash
-   COVEO_API_KEY=your-new-api-key
-   COVEO_ORGANIZATION_ID=your-org-id  
-   COVEO_SOURCE_ID=your-source-id
-   ```
-
-2. **For HTML pages**, update the configuration:
-   ```javascript
-   await searchInterface.initialize({
-       accessToken: 'your-access-token',
-       organizationId: 'your-org-id',
-       // ... other settings
-   });
-   ```
-
-3. Modify the product template structure as needed
-4. Update styling in `website/styles/main.css`
-5. Replace product data and images
-
-## Important Files
-
-- **`.env`** - Your API credentials (create this file)
-- **`config/coveo-config.json`** - Configuration template with env var placeholders
-- **`coveo_catalog_tool.py`** - Main Python tool for catalog management
-- **`src/coveo_utils.py`** - Core utilities with environment variable support
+   - Simply open any HTML file directly in your browser (e.g., double-click `website/pages/simple-search.html`)
+   - No local server needed - the HTML files work standalone once tokens are embedded
+   - Optional: Use local server if you prefer: `python3 -m http.server 8000` then visit http://localhost:8000/website/pages/

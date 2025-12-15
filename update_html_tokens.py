@@ -5,15 +5,26 @@ Generate HTML files with environment variables
 
 import os
 import re
-from dotenv import load_dotenv
+
+def load_env_file(env_file_path='.env'):
+    """Load environment variables from .env file"""
+    env_vars = {}
+    if os.path.exists(env_file_path):
+        with open(env_file_path, 'r') as f:
+            for line in f:
+                line = line.strip()
+                if line and not line.startswith('#') and '=' in line:
+                    key, value = line.split('=', 1)
+                    env_vars[key.strip()] = value.strip()
+    return env_vars
 
 def update_html_files():
     """Update HTML files to use environment variable for access token"""
-    load_dotenv()
+    env_vars = load_env_file()
     
-    access_token = os.getenv('COVEO_FRONTEND_ACCESS_TOKEN')
+    access_token = env_vars.get('COVEO_FRONTEND_ACCESS_TOKEN')
     if not access_token:
-        print("❌ COVEO_FRONTEND_ACCESS_TOKEN not found in environment variables")
+        print("❌ COVEO_FRONTEND_ACCESS_TOKEN not found in .env file")
         return False
     
     html_files = [
