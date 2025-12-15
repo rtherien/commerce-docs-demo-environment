@@ -52,7 +52,8 @@ pip install requests python-dotenv
 **Create a `.env` file** in the project root:
 ```bash
 # Coveo API Configuration
-COVEO_API_KEY=your-new-api-key-here
+COVEO_API_KEY=your-stream-api-key-here
+COVEO_FRONTEND_ACCESS_TOKEN=your-frontend-access-token-here
 COVEO_ORGANIZATION_ID=coveodocumentationtest
 COVEO_SOURCE_ID=coveodocumentationtest-w33goww7m52uyful5vbormci4y
 ```
@@ -60,7 +61,9 @@ COVEO_SOURCE_ID=coveodocumentationtest-w33goww7m52uyful5vbormci4y
 The default setup uses the coveodocumentationtest organization and the commerce-documentation-catalog-source source. You can update the values if you want to use your own org and/or source.
 
 **Important Security Notes:**
-- ⚠️ Generate a new API key with appropriate permissions in your Coveo admin console
+- ⚠️ Generate two API keys with appropriate permissions in your Coveo admin console:
+  - `COVEO_API_KEY`: For backend operations (Stream API, catalog management)
+  - `COVEO_FRONTEND_ACCESS_TOKEN`: For frontend search interfaces (HTML pages)
 - ⚠️ Never commit API keys to version control
 
 ### 3. Test Configuration
@@ -121,18 +124,6 @@ python3 coveo_catalog_tool.py full-update --file data/complete-payload.json --no
 python coveo_catalog_tool.py partial-update --file data/sample-partial-updates.json
 ```
 
-#### Quick Command Line Operations
-```bash
-# Update product price
-python coveo_catalog_tool.py partial-update --operation update_price --document-id "https://sports.barca.group/pdp/SP00003_00001" --price 29.99
-
-# Update stock status
-python coveo_catalog_tool.py partial-update --operation update_stock --document-id "https://sports.barca.group/pdp/SP00003_00001" --in-stock false
-
-# Update product rating
-python coveo_catalog_tool.py partial-update --operation update_rating --document-id "https://sports.barca.group/pdp/SP00003_00001" --rating 4.5
-```
-
 ### Monitoring and Status
 
 ```bash
@@ -146,80 +137,27 @@ python coveo_catalog_tool.py status --last-hour
 python coveo_catalog_tool.py status --date "2023-12-04"
 ```
 
-### File Management
-
-```bash
-# List available data files
-python coveo_catalog_tool.py list
-
-# Validate your data files
-python coveo_catalog_tool.py validate --file data/complete-payload.json
-
-# Validate all data files
-python coveo_catalog_tool.py validate
-```
-
-## Understanding Your Data Structure
-
-Your `complete-payload.json` file uses this format:
-
-```json
-{
-  "AddOrUpdate": [
-    {
-      "DocumentId": "https://sports.barca.group/pdp/SP00003_00001",
-      "FileExtension": "html", 
-      "ObjectType": "Product",
-      "ec_name": "Aqua Trampoline",
-      "ec_price": 3000,
-      "ec_brand": "HO Sports"
-    }
-  ]
-}
-```
-
-The tool automatically converts this to Coveo API format (`addOrUpdate` with `documentId` and `objecttype`).
-
-## Large File Handling
-
-Your `complete-payload.json` is 5.6MB, which is well under the 256MB chunk limit, so it will upload as a single file. However, if you have larger files, the tool automatically:
-
-1. **Analyzes file size** and determines if chunking is needed
-2. **Splits large files** into multiple chunks based on item count
-3. **Uploads chunks sequentially** with progress tracking
-4. **Aggregates results** from all chunks
-
-## API Rate Limits
-
-The tool respects Coveo API limits:
-
-- **15,000 API calls per day** (production)
-- **250 calls per 5 minutes** (burst limit)  
-- **96 upload operations per day**
-- **256MB max file size** (handled via chunking)
-
-Rate limiting is handled automatically with exponential backoff.
-
 ## Website Demo
 
 ### Quick Launch
 
 1. **For Frontend Demo (HTML Pages)**
    
-   The website pages now use placeholder API keys for security. To use them:
+   The website pages automatically use your frontend access token from the `.env` file:
    
-   **Option 1: Manual Setup (Development)**
-   - Open each HTML file in `website/pages/`
-   - Replace `accessToken: ""` with your actual API key
-   
-   **Option 2: Local Server (Recommended)**
+   **Automatic Token Updates (Recommended)**
    ```bash
-   # Create a simple config file for the web pages
-   echo 'const COVEO_CONFIG = { accessToken: "your-api-key-here" };' > website/js/config.js
-   # Then update HTML files to use this config
+   # Update all HTML files with your frontend token
+   source .venv/bin/activate
+   python3 update_html_tokens.py
+   deactivate
    ```
    
-   **Option 3: Server-side Rendering (Production)**
+   **Manual Setup (Alternative)**
+   - Open each HTML file in `website/pages/`
+   - Replace the `accessToken` value with your `COVEO_FRONTEND_ACCESS_TOKEN`
+   
+   **Production Deployment**
    - Use a web server framework (Express.js, Flask, etc.) that can inject environment variables into HTML templates
    - This is recommended for production deployments where you need secure environment variable handling
 
@@ -250,12 +188,22 @@ Rate limiting is handled automatically with exponential backoff.
 ## Configuration
 
 The demo now uses environment variables for security:
-- **API credentials** are stored in `.env` file (not in Git)
+- **Stream API Key** (`COVEO_API_KEY`): For backend catalog operations (stored in `.env` file, not in Git)
+- **Frontend Access Token** (`COVEO_FRONTEND_ACCESS_TOKEN`): For HTML search pages (stored in `.env` file, not in Git)
 - **Organization ID**: Loaded from `COVEO_ORGANIZATION_ID`
 - **Source ID**: Loaded from `COVEO_SOURCE_ID`  
 - **Environment**: `prod`
 - **Analytics Tracking ID**: `commerce-docs-demo`
 - **Currency**: CAD (Canadian Dollars)
+
+### Token Management
+
+Use the included `update_html_tokens.py` script to automatically update all HTML files with your frontend token:
+```bash
+python3 update_html_tokens.py
+```
+
+This script reads `COVEO_FRONTEND_ACCESS_TOKEN` from your `.env` file and updates all HTML pages in `website/pages/`.
 
 ## Security Features
 
@@ -316,22 +264,3 @@ To customize for your own organization:
 - **`config/coveo-config.json`** - Configuration template with env var placeholders
 - **`coveo_catalog_tool.py`** - Main Python tool for catalog management
 - **`src/coveo_utils.py`** - Core utilities with environment variable support
-
-## Technology Stack
-
-- **Coveo Atomic Commerce v3** - UI components from CDN
-- **Vanilla JavaScript** - No additional frameworks
-- **HTML5 & CSS3** - Standard web technologies
-- **Coveo Commerce API** - Product search and analytics
-
-## Browser Support
-
-- Chrome (recommended)
-- Firefox
-- Safari
-- Edge
-
-## License
-
-This project is for demonstration purposes only.
-

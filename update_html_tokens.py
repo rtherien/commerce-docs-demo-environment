@@ -11,9 +11,9 @@ def update_html_files():
     """Update HTML files to use environment variable for access token"""
     load_dotenv()
     
-    access_token = os.getenv('COVEO_API_KEY')
+    access_token = os.getenv('COVEO_FRONTEND_ACCESS_TOKEN')
     if not access_token:
-        print("❌ COVEO_API_KEY not found in environment variables")
+        print("❌ COVEO_FRONTEND_ACCESS_TOKEN not found in environment variables")
         return False
     
     html_files = [
