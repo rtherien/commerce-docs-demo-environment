@@ -25,8 +25,8 @@ def update_html_files():
         'website/pages/simple-plp-nike.html'
     ]
     
-    # Pattern to find the hardcoded access token
-    pattern = r'accessToken:\s*["\'][^"\']+["\']'
+    # Pattern to find the hardcoded access token (including empty strings)
+    pattern = r'accessToken:\s*["\'][^"\']*["\']'
     replacement = f'accessToken: "{access_token}"'
     
     for file_path in html_files:
