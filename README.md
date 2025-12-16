@@ -159,3 +159,19 @@ python coveo_catalog_tool.py status --date "2023-12-04"
    - Simply open any HTML file directly in your browser (e.g., double-click `website/pages/simple-search.html`)
    - No local server needed - the HTML files work standalone once tokens are embedded
    - Optional: Use local server if you prefer: `python3 -m http.server 8000` then visit http://localhost:8000/website/pages/
+
+## 🚀 Quick Start with VS Code Task
+
+You can start the demo server easily using a pre-configured VS Code task:
+
+1. Open the Command Palette (`Cmd+Shift+P` or `Ctrl+Shift+P`)
+2. Type `Tasks: Run Task` and select it
+3. Choose **Start Demo Server**
+
+This will launch the local server in the background and print the demo URLs in the terminal. You can now open the demo pages in your browser:
+- Main Search: http://localhost:8080/
+- Nike Products: http://localhost:8080/pages/simple-plp-nike.html
+- Adidas Products: http://localhost:8080/pages/simple-plp-adidas.html
+- Product Detail: http://localhost:8080/pages/product.html?id=PRODUCT_ID
+
+Press Ctrl+C in the terminal to stop the server.
