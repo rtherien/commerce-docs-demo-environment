@@ -26,8 +26,8 @@
                 analytics: {trackingId: 'commerce-docs-demo'},
                 context: {
                     language: 'en',
-                    country: 'US',
-                    currency: 'USD',
+                    country: 'CA',
+                    currency: 'CAD',
                     view: {url: window.location.href}
                 }
             });
@@ -230,8 +230,39 @@
                 // Product details
                 this.renderProductDetails();
 
-                // Atomic Commerce Interface will handle analytics automatically
-                // Product view tracking happens via the interface
+                // Track product view
+                this.trackProductView();
+            }
+
+            async trackProductView() {
+                const product = this.productData.raw;
+                
+                try {
+                    const productInterface = document.querySelector('#product-interface');
+                    
+                    // Wait for engine to be ready
+                    if (productInterface) {
+                        // Small delay to ensure engine is initialized
+                        await new Promise(resolve => setTimeout(resolve, 100));
+                        
+                        if (productInterface.engine && productInterface.engine.relay) {
+                            // Send product view event
+                            await productInterface.engine.relay.emit('ec.productView', {
+                                currency: 'CAD',
+                                product: {
+                                    productId: product.ec_product_id || this.productId,
+                                    name: product.ec_name,
+                                    price: product.ec_price
+                                }
+                            });
+                            console.log('📊 Product view tracked:', product.ec_name);
+                        } else {
+                            console.error('Engine or relay not available yet');
+                        }
+                    }
+                } catch (error) {
+                    console.error('Error tracking product view:', error);
+                }
             }
 
             logProductViewAtomic(rawProduct) {
@@ -362,17 +393,16 @@
                         const productInterface = document.querySelector('#product-interface');
                         
                         if (productInterface && productInterface.engine) {
-                            // Use the analytics API to log commerce event
+                            // Use the analytics API to log commerce event with correct structure
                             await productInterface.engine.relay.emit('ec.cartAction', {
-                                cart: {
-                                    item: {
-                                        productId: product.ec_product_id || this.productId,
-                                        name: product.ec_name,
-                                        price: product.ec_price,
-                                        quantity: quantity
-                                    }
+                                currency: 'CAD',
+                                action: 'add',
+                                product: {
+                                    productId: product.ec_product_id || this.productId,
+                                    name: product.ec_name,
+                                    price: product.ec_price
                                 },
-                                type: 'add'
+                                quantity: quantity
                             });
                             console.log('🛒 Cart action tracked:', {
                                 productName: product.ec_name,

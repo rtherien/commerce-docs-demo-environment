@@ -26,8 +26,8 @@
                 analytics: {trackingId: 'commerce-docs-demo'},
                 context: {
                     language: 'en',
-                    country: 'US',
-                    currency: 'USD',
+                    country: 'CA',
+                    currency: 'CAD',
                     view: {url: window.location.href}
                 }
             });
@@ -161,6 +161,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
+        // Cart Page Controller - Version 2.0 (Updated for correct purchase event format)
         class CartPageController {
             constructor() {
                 this.cart = [];
@@ -304,21 +305,25 @@
                     const cartInterface = document.querySelector('#cart-interface');
                     
                     if (cartInterface && cartInterface.engine) {
-                        await cartInterface.engine.relay.emit('ec.purchase', {
+                        const purchasePayload = {
+                            currency: 'CAD',
                             transaction: {
                                 id: 'order_' + Date.now(),
-                                revenue: total,
-                                tax: tax,
-                                shipping: shipping
+                                revenue: total
                             },
                             products: this.cart.map(item => ({
-                                productId: item.productId,
-                                name: item.name,
-                                price: item.price,
-                                quantity: item.quantity,
-                                brand: item.brand
+                                product: {
+                                    productId: item.productId,
+                                    name: item.name,
+                                    price: item.price
+                                },
+                                quantity: item.quantity
                             }))
-                        });
+                        };
+                        
+                        console.log('📦 Sending purchase event:', purchasePayload);
+                        
+                        await cartInterface.engine.relay.emit('ec.purchase', purchasePayload);
 
                         console.log('✅ Purchase event tracked:', {
                             total: total,
