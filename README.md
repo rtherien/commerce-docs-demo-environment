@@ -1,177 +1,126 @@
 # Coveo Commerce Catalog Management Tool
 
-A comprehensive Python toolkit for managing Coveo commerce catalog data using the Stream API. This tool supports large file uploads with automatic chunking, partial updates, and operation monitoring - specifically designed to work with your existing data files like `data/complete-payload.json`.
-
-## Features
-
-### ✅ Full Catalog Updates
-- Upload complete catalog data with automatic chunking for large files (>256MB)
-- Support for your existing data format (`AddOrUpdate` arrays)
-- Automatic deletion of old items
-- Upload verification and monitoring
-
-### ✅ Partial Catalog Updates
-- Price updates, inventory changes, field replacements
-- Array operations (add/remove items from arrays)
-- Dictionary field updates
-- Command-line quick operations
-
-### ✅ Operation Monitoring
-- Track upload status and indexing progress
-- Detailed error reporting and warnings
-- Batch and individual item processing status
-- Historical operation summaries
-
-### ✅ Large File Support
-- Automatic chunking for files exceeding 256MB
-- Your 5.6MB `complete-payload.json` will be handled efficiently
-- Progress tracking during chunked uploads
-
-### ✅ Secure Configuration
-- Environment variable support for API keys
-- No hardcoded credentials in code
-- `.env` file support with automatic loading
+A Python toolkit for managing Coveo commerce catalog data using the Stream API. Features large file uploads with automatic chunking, partial updates, and operation monitoring.
 
 ## Quick Start
 
-### 1. Setup Environment
+### 1. Setup Virtual Environment
 
-**Create a virtual environment (recommended):**
+**Run VS Code Task:**
+- Command Palette (`Cmd+Shift+P`) → "Tasks: Run Task" → **Coveo: Setup Virtual Environment**
+
+### 2. Configure API Credentials
+
+Create a `.env` file in the project root:
 ```bash
-python3 -m venv .venv
-source .venv/bin/activate  # On Windows: .venv\Scripts\activate
-```
-
-**Install dependencies:**
-```bash
-pip install requests python-dotenv
-```
-
-### 2. Configure API Access
-
-**Create a `.env` file** in the project root:
-```bash
-# Coveo API Configuration
 COVEO_API_KEY=your-stream-api-key-here
 COVEO_FRONTEND_ACCESS_TOKEN=your-frontend-access-token-here
 COVEO_ORGANIZATION_ID=coveodocumentationtest
 COVEO_SOURCE_ID=coveodocumentationtest-w33goww7m52uyful5vbormci4y
 ```
 
-The default setup uses the coveodocumentationtest organization and the commerce-documentation-catalog-source source. You can update the values if you want to use your own org and/or source.
+⚠️ **Never commit API keys to version control**
 
-**Important Security Notes:**
-- ⚠️ Generate two API keys with appropriate permissions in your Coveo admin console:
-  - `COVEO_API_KEY`: For backend operations (Stream API, catalog management)
-  - `COVEO_FRONTEND_ACCESS_TOKEN`: For frontend search interfaces (HTML pages)
-- ⚠️ Never commit API keys to version control
+### 3. You're Ready!
 
-### 3. Test Configuration
+See the workflows below for common tasks.
 
-```bash
-python3 coveo_catalog_tool.py status --last-hour
-```
+## VS Code Tasks
 
-### 4. VS Code Tasks (Optional)
+All tasks: Command Palette (`Cmd+Shift+P`) → "Tasks: Run Task" → Select task
 
-For easier workflow, VS Code tasks are available to run common operations with interactive prompts:
+**How to run tasks:** Command Palette (`Cmd+Shift+P`) → "Tasks: Run Task" → Select task
 
-**To use VS Code tasks:**
-1. Open Command Palette (`Cmd+Shift+P` / `Ctrl+Shift+P`)
-2. Type "Tasks: Run Task"
-3. Select from available Coveo tasks:
-   - **Coveo: Full Catalog Update** - Upload complete catalog (prompts for file path)
-   - **Coveo: Full Catalog Update (No Delete)** - Upload without deleting old items
-   - **Coveo: Full Catalog Update (Fast - No Verify)** - Quick upload without verification
-   - **Coveo: Partial Update from File** - Run partial updates (prompts for file path)
-   - **Coveo: Validate File** - Validate any data file (prompts for file path)
-   - **Coveo: Check Status (Last Hour)** - View recent operations
-   - **Coveo: List Available Data Files** - See all data files
-   - **Coveo: Setup Virtual Environment** - Initial project setup
-   - **Coveo: Update Example - Price Change** - Demo price update (prompts for product ID and price)
-   - **Coveo: Update Example - Stock Status** - Demo stock update (prompts for product ID and stock status)
+### 📤 Upload Complete Catalog
+**Task:** `Coveo: Full Catalog Update`
+- Prompts for file path (default: `data/complete-payload.json`)
+- Automatically chunks large files and verifies upload
 
-**Interactive Features:**
-- 📁 **File path prompts** - Specify which data file to use (defaults to `data/complete-payload.json`)
-- 🎯 **Product ID prompts** - Enter specific product URLs for individual updates
-- 💰 **Price input** - Enter new prices for product updates
-- 📦 **Stock status picker** - Choose In Stock/Out of Stock from a dropdown
+**Variants:**
+- `Coveo: Full Catalog Update (No Delete)` - Keep existing items
+- `Coveo: Full Catalog Update (Fast - No Verify)` - Skip verification
 
-All tasks automatically activate the virtual environment and deactivate it when complete.
+### 💰 Update Product Prices
+**Task:** `Coveo: Update Example - Price Change`
+- Enter product URL and new price
+- Instant partial update
 
-## Usage Examples
+### 📦 Update Stock Status
+**Task:** `Coveo: Update Example - Stock Status`
+- Enter product URL and select stock status
+- Instant partial update
 
-### Full Catalog Update
+### 📝 Partial Updates from File
+**Task:** `Coveo: Partial Update from File`
+- Prompts for JSON file with partial updates
+- Supports price changes, inventory updates, field replacements
 
-Upload your complete catalog data:
+### ✅ Validate Data Files
+**Task:** `Coveo: Validate File`
+- Checks file structure and compatibility
+- Reports file size and potential issues
 
-```bash
-# Upload your existing complete payload
-python3 coveo_catalog_tool.py full-update --file data/complete-payload.json
+### 🔍 Check Recent Operations
+**Task:** `Coveo: Check Status (Last Hour)`
+- View recent uploads and their status
+- Only works after performing at least one operation
 
-# Upload without deleting old items
-python3 coveo_catalog_tool.py full-update --file data/complete-payload.json --no-delete-old
+### 📁 List Data Files
+**Task:** `Coveo: List Available Data Files`
+- Shows all JSON files in `data/` directory
 
-# Upload without verification (faster)
-python3 coveo_catalog_tool.py full-update --file data/complete-payload.json --no-verify
-```
+### 🌐 Start Website Demo
+**Task:** `Start Demo Server`
 
-### Partial Updates
-
-#### From File
-```bash
-# Use the sample partial updates
-python coveo_catalog_tool.py partial-update --file data/sample-partial-updates.json
-```
-
-### Monitoring and Status
-
-```bash
-# Monitor a specific operation (you get the ordering ID from upload response)
-python coveo_catalog_tool.py monitor --ordering-id 1716387965000
-
-# Get status for last hour
-python coveo_catalog_tool.py status --last-hour
-
-# Get status for specific date
-python coveo_catalog_tool.py status --date "2023-12-04"
-```
-
-## Website Demo
-
-### Quick Launch
-
-1. **For Frontend Demo (HTML Pages)**
-   
-   The website pages automatically use your frontend access token from the `.env` file:
-   
-   **Automatic Token Updates (Required - One Time)**
+1. **Update HTML files** (one-time):
    ```bash
-   # Update all HTML files with your frontend token
    python3 update_html_tokens.py
    ```
-   
-   **Manual Setup (Alternative)**
-   - Open each HTML file in `website/pages/`
-   - Replace the `accessToken` value with your `COVEO_FRONTEND_ACCESS_TOKEN`
 
-2. **View in Browser**
-   - Simply open any HTML file directly in your browser (e.g., double-click `website/pages/simple-search.html`)
-   - No local server needed - the HTML files work standalone once tokens are embedded
-   - Optional: Use local server if you prefer: `python3 -m http.server 8000` then visit http://localhost:8000/website/pages/
+2. **Run the task** to start the server
 
-## 🚀 Quick Start with VS Code Task
+3. **Open in browser:**
+   - Main Search: http://localhost:8080/
+   - Nike: http://localhost:8080/pages/simple-plp-nike.html
+   - Adidas: http://localhost:8080/pages/simple-plp-adidas.html
+   - Steve Madden: http://localhost:8080/pages/simple-plp-steve-madden.html
 
-You can start the demo server easily using a pre-configured VS Code task:
+4. **Stop:** Press `Ctrl+C` in terminal
 
-1. Open the Command Palette (`Cmd+Shift+P` or `Ctrl+Shift+P`)
-2. Type `Tasks: Run Task` and select it
-3. Choose **Start Demo Server**
+---
 
-This will launch the local server in the background and print the demo URLs in the terminal. You can now open the demo pages in your browser:
-- Main Search: http://localhost:8080/
-- Nike Products: http://localhost:8080/pages/simple-plp-nike.html
-- Adidas Products: http://localhost:8080/pages/simple-plp-adidas.html
-- Product Detail: http://localhost:8080/pages/product.html?id=PRODUCT_ID
+## Command Line Reference (Advanced)
 
-Press Ctrl+C in the terminal to stop the server.
+### Setup
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+pip install requests python-dotenv
+```
+
+### Catalog Operations
+```bash
+# Full update
+python3 coveo_catalog_tool.py full-update --file data/complete-payload.json
+
+# Partial update
+python3 coveo_catalog_tool.py partial-update --file data/partial-update-template.json
+python3 coveo_catalog_tool.py partial-update --operation update_price --document-id "URL" --price 29.99
+
+# Monitoring
+python3 coveo_catalog_tool.py status --last-hour
+python3 coveo_catalog_tool.py monitor --ordering-id 1716387965000
+
+# Validation
+python3 coveo_catalog_tool.py validate --file data/complete-payload.json
+python3 coveo_catalog_tool.py list
+```
+
+### Website Demo
+```bash
+# Update tokens
+python3 update_html_tokens.py
+
+# Start server
+python3 scripts/start_demo_server.py
+```
