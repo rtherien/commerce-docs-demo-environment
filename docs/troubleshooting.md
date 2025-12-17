@@ -26,13 +26,8 @@ chmod +x ./scripts/setup-secure.sh
 
 **Solution**: 
 ```bash
-source coveo-env/bin/activate
-pip install -r requirements.txt
-```
-
-Or re-run the setup:
-```bash
-./scripts/setup-secure.sh
+source .venv/bin/activate
+pip install requests python-dotenv
 ```
 
 ## Product Loading Issues
@@ -52,9 +47,9 @@ Then edit the `.env` file to add your API key.
 
 **Solutions**:
 1. Make sure you're in the right directory
-2. Activate the virtual environment: `source coveo-env/bin/activate`
+2. Activate the virtual environment: `source .venv/bin/activate`
 3. Check that the data file exists: `ls data/`
-4. Try the interactive loader: `./coveo-loader`
+4. Validate your data file: `python3 coveo_catalog_tool.py validate --file data/complete-payload.json`
 
 ### "Command not found: ./coveo-loader"
 
@@ -107,8 +102,9 @@ Then edit the `.env` file to add your API key.
 If you're still experiencing issues:
 
 1. **Check the terminal output** for error messages
-2. **Try the interactive loader**: `./coveo-loader` and follow the prompts
-3. **Report issues**: [Create a GitHub issue](https://github.com/rtherien/commerce-docs-demo-environment/issues) with:
+2. **Validate your data files**: `python3 coveo_catalog_tool.py validate`
+3. **Check operation status**: `python3 coveo_catalog_tool.py status --last-hour`
+4. **Report issues**: [Create a GitHub issue](https://github.com/rtherien/commerce-docs-demo-environment/issues) with:
    - What you were trying to do
    - What error message you got
    - Your operating system (Mac, Windows, Linux)
@@ -119,18 +115,24 @@ If everything seems broken, try a complete reset:
 
 ```bash
 # Remove the virtual environment
-rm -rf coveo-env
+rm -rf .venv
 
-# Re-run setup
-cp .env.demo .env
-./scripts/setup-secure.sh
+# Create fresh virtual environment
+python3 -m venv .venv
+source .venv/bin/activate
+pip install requests python-dotenv
+
+# Verify your .env file has credentials
+cat .env
+
+# Test configuration
+python3 coveo_catalog_tool.py config test
 
 # Load sample data
-source coveo-env/bin/activate
-./coveo-loader --file full-product-payload-sample.json --operation load
+python3 coveo_catalog_tool.py full-update --file data/complete-payload.json
 
-# Start the website
-python -m http.server 8000
+# Start the demo server
+python3 scripts/start_demo_server.py
 ```
 
-Then go to `http://localhost:8000` in your browser.
+Then go to `http://localhost:8080` in your browser.
