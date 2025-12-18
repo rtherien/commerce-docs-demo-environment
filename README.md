@@ -87,6 +87,16 @@ All tasks: Command Palette (`Cmd+Shift+P`) → "Tasks: Run Task" → Select task
 
 4. **Stop:** Press `Ctrl+C` in terminal
 
+### 🤖 Traffic Simulator
+**Tasks:**
+- `Traffic Simulator` - Generate real API traffic
+- `Traffic Simulator (Verbose)` - Detailed logging
+- `Traffic Simulator (Dry Run)` - Test without API calls
+
+When prompted, choose session count (10, 50, 100, 250, 500, 1000, or custom).
+
+Auto-discovers PLP pages and scales as you add new ones. Requires `COVEO_FRONTEND_ACCESS_TOKEN` in `.env`.
+
 ---
 
 ## Command Line Reference (Advanced)
@@ -124,3 +134,17 @@ python3 update_html_tokens.py
 # Start server
 python3 scripts/start_demo_server.py
 ```
+
+### Traffic Simulator
+```bash
+# Generate traffic
+python3 scripts/traffic_simulator_api.py --sessions 100
+
+# With verbose output
+python3 scripts/traffic_simulator_api.py --sessions 100 --verbose
+
+# Dry run (test mode)
+python3 scripts/traffic_simulator_api.py --sessions 10 --dry-run
+```
+
+Or use VS Code tasks (recommended) - see section above.
