@@ -19,17 +19,24 @@ import os
 import argparse
 import re
 import glob
+import logging
 from typing import List, Dict, Optional, Tuple
 from urllib.parse import quote
 from dotenv import load_dotenv
 import requests
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from threading import Lock
-from concurrent.futures import ThreadPoolExecutor, as_completed
 from html.parser import HTMLParser
 
 # Load environment variables
 load_dotenv()
+
+# Configure logging
+logging.basicConfig(
+    level=logging.WARNING,
+    format='%(levelname)s: %(message)s'
+)
+logger = logging.getLogger(__name__)
 
 
 class PLPParser(HTMLParser):
@@ -88,30 +95,51 @@ class CoveoCommerceAPISimulator:
     AVG_ITEMS_IN_CART = 2.1
     AVG_SEARCHES_PER_SESSION = 1.8
     
+    # API Timeouts
+    API_TIMEOUT = 10
+    ANALYTICS_TIMEOUT = 5
+    
+    # HTTP retry configuration
+    MAX_RETRIES = 3
+    POOL_CONNECTIONS = 10
+    USER_AGENT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36'
+    
     def __init__(self, verbose: bool = False, dry_run: bool = False, max_workers: int = 10):
         """Initialize the simulator with optional parallel execution"""
         self.verbose = verbose
         self.dry_run = dry_run
         self.max_workers = max_workers
         
+        # Configure logging level
+        if verbose:
+            logger.setLevel(logging.INFO)
+        
+        # Coveo configuration with validation
+        self.access_token = os.getenv('COVEO_FRONTEND_ACCESS_TOKEN', '').strip()
+        self.org_id = os.getenv('COVEO_ORGANIZATION_ID', 'coveodocumentationtest').strip()
+        self.tracking_id = 'commerce-docs-demo'
+        self.base_url = 'http://localhost:8080'
+        
+        # Validate required configuration
+        if not self.dry_run and not self.access_token:
+            logger.warning("COVEO_FRONTEND_ACCESS_TOKEN not set - enabling dry run mode")
+            self.dry_run = True
+        
+        if not self.org_id:
+            raise ValueError("COVEO_ORGANIZATION_ID must be set in .env file")
+        
         # HTTP session for connection pooling (massive performance boost)
         self.session = requests.Session()
         adapter = requests.adapters.HTTPAdapter(
-            pool_connections=max_workers,
+            pool_connections=max(self.POOL_CONNECTIONS, max_workers),
             pool_maxsize=max_workers * 2,
-            max_retries=3
+            max_retries=self.MAX_RETRIES
         )
         self.session.mount('https://', adapter)
         self.session.mount('http://', adapter)
         
         # Thread lock for stats updates
         self.stats_lock = Lock()
-        
-        # Coveo configuration
-        self.access_token = os.getenv('COVEO_FRONTEND_ACCESS_TOKEN')
-        self.org_id = os.getenv('COVEO_ORGANIZATION_ID', 'coveodocumentationtest')
-        self.tracking_id = 'commerce-docs-demo'
-        self.base_url = 'http://localhost:8080'
         
         # Commerce API endpoints
         self.platform_url = f"https://platform.cloud.coveo.com/rest/organizations/{self.org_id}"
@@ -120,6 +148,12 @@ class CoveoCommerceAPISimulator:
         
         # Analytics Event Protocol endpoint - organization-specific
         self.analytics_endpoint = f"https://analytics.cloud.coveo.com/rest/organizations/{self.org_id}/events/v1"
+        
+        # Common headers for API requests
+        self.api_headers = {
+            'Authorization': f'Bearer {self.access_token}',
+            'Content-Type': 'application/json'
+        }
         
         # Discover PLP pages
         self.plp_pages = self._discover_plp_pages()
@@ -154,6 +188,28 @@ class CoveoCommerceAPISimulator:
         with self.stats_lock:
             self.stats[key] += amount
     
+    def _log_api_error(self, api_name: str, status_code: int, response_text: str):
+        """Centralized API error logging"""
+        error_msg = f"{api_name} API error {status_code}: {response_text[:200]}"
+        if self.verbose:
+            logger.warning(error_msg)
+        else:
+            logger.debug(error_msg)
+    
+    def _log_api_exception(self, api_name: str, exception: Exception):
+        """Centralized API exception logging"""
+        error_msg = f"{api_name} API exception: {str(exception)}"
+        if self.verbose:
+            logger.warning(error_msg)
+        else:
+            logger.debug(error_msg)
+    
+    def cleanup(self):
+        """Clean up resources (close HTTP session)"""
+        if hasattr(self, 'session'):
+            self.session.close()
+            logger.info("HTTP session closed")
+    
     def _discover_plp_pages(self) -> List[Dict]:
         """Auto-discover and parse PLP pages from website/pages"""
         plp_pages = []
@@ -185,11 +241,10 @@ class CoveoCommerceAPISimulator:
                     
                     if self.verbose:
                         filter_info = f"filter: @ec_brand=\"{parser.brand_filter}\"" if parser.brand_filter else "no filter (uses listing config)"
-                        print(f"   Found PLP: {brand_name} ({filter_info})")
+                        logger.info(f"   Found PLP: {brand_name} ({filter_info})")
             
             except Exception as e:
-                if self.verbose:
-                    print(f"   Warning: Could not parse {filepath}: {e}")
+                logger.warning(f"   Could not parse {filepath}: {e}")
         
         if plp_pages and not self.verbose:
             print(f"✓ Discovered {len(plp_pages)} PLP page(s): {', '.join([p['brand'] for p in plp_pages])}")
@@ -199,10 +254,6 @@ class CoveoCommerceAPISimulator:
     
     def _make_search_request(self, query: str, client_id: str) -> Dict:
         """Make a Commerce API search request and return products with searchUid"""
-        headers = {
-            'Authorization': f'Bearer {self.access_token}',
-            'Content-Type': 'application/json'
-        }
         
         payload = {
             'url': 'https://sports-store.com/search',
@@ -221,14 +272,12 @@ class CoveoCommerceAPISimulator:
         
         if self.dry_run:
             if self.verbose:
-                print(f"    [DRY RUN] Would search for: '{query}'")
-            return {'products': [], 'totalCount': 0, 'searchUid': ''}
+                logger.info(f"    [DRY RUN] Would search for: '{query}'")
+            return {'results': [], 'totalCount': 0, 'searchUid': ''}
         
         try:
-            response = self.session.post(self.search_endpoint, headers=headers, json=payload, timeout=10)
-            
-            if self.verbose and response.status_code != 200:
-                print(f"    ⚠️  Search API error {response.status_code}: {response.text[:300]}")
+            response = self.session.post(self.search_endpoint, headers=self.api_headers, 
+                                        json=payload, timeout=self.API_TIMEOUT)
             
             if response.status_code == 200:
                 self._increment_stat('search_api_calls')
@@ -237,8 +286,8 @@ class CoveoCommerceAPISimulator:
                 response_id = data.get('responseId', '')
                 
                 # Log if responseId is missing
-                if not response_id and self.verbose:
-                    print(f"    ⚠️  Warning: Search API did not return a responseId!")
+                if not response_id:
+                    logger.warning("    Search API did not return a responseId!")
                 
                 # Send search event to analytics
                 if response_id:
@@ -255,21 +304,15 @@ class CoveoCommerceAPISimulator:
                     'searchUid': response_id
                 }
             else:
-                if self.verbose:
-                    print(f"    Search API error: {response.status_code} - {response.text[:200]}")
+                self._log_api_error('Search', response.status_code, response.text)
                 return {'results': [], 'totalCount': 0, 'searchUid': ''}
         
         except Exception as e:
-            if self.verbose:
-                print(f"    Search API exception: {e}")
+            self._log_api_exception('Search', e)
             return {'results': [], 'totalCount': 0, 'searchUid': ''}
     
     def _make_listing_request(self, plp: Dict, client_id: str) -> Dict:
         """Make a Commerce API listing request for a PLP and return products with searchUid"""
-        headers = {
-            'Authorization': f'Bearer {self.access_token}',
-            'Content-Type': 'application/json'
-        }
         
         # Ensure the URL is properly encoded (though it should already be clean)
         # The url field becomes analytics.documentLocation and must be a valid URI
@@ -295,11 +338,12 @@ class CoveoCommerceAPISimulator:
         
         if self.dry_run:
             if self.verbose:
-                print(f"    [DRY RUN] Would load PLP: {plp['brand']}")
+                logger.info(f"    [DRY RUN] Would load PLP: {plp['brand']}")
             return {'results': [], 'totalCount': 0, 'searchUid': ''}
         
         try:
-            response = self.session.post(self.listing_endpoint, headers=headers, json=payload, timeout=10)
+            response = self.session.post(self.listing_endpoint, headers=self.api_headers, 
+                                        json=payload, timeout=self.API_TIMEOUT)
             
             if response.status_code == 200:
                 self._increment_stat('listing_api_calls')
@@ -322,13 +366,11 @@ class CoveoCommerceAPISimulator:
                     'searchUid': response_id
                 }
             else:
-                # Always log API errors
-                print(f"\n⚠️  Listing API error: {response.status_code} - {response.text[:300]}")
+                logger.error(f"Listing API error: {response.status_code} - {response.text[:300]}")
                 return {'results': [], 'totalCount': 0, 'searchUid': ''}
         
         except Exception as e:
-            # Always log exceptions
-            print(f"\n⚠️  Listing API exception: {e}")
+            logger.error(f"Listing API exception: {e}")
             return {'results': [], 'totalCount': 0, 'searchUid': ''}
     
     def _send_event_protocol(self, event_type: str, event_data: Dict, client_id: str) -> bool:
@@ -344,15 +386,10 @@ class CoveoCommerceAPISimulator:
         """
         if self.dry_run:
             if self.verbose:
-                print(f"    [DRY RUN] Would send {event_type} event")
+                logger.info(f"    [DRY RUN] Would send {event_type} event")
             return True
         
         try:
-            headers = {
-                'Authorization': f'Bearer {self.access_token}',
-                'Content-Type': 'application/json'
-            }
-            
             # Get current timestamp in milliseconds
             timestamp = int(time.time() * 1000)
             
@@ -388,16 +425,14 @@ class CoveoCommerceAPISimulator:
                 # Click events REQUIRE a valid responseId - if we don't have one, skip the click event
                 # This prevents Coveo from silently dropping the event due to invalid responseId
                 if not response_id:
-                    if self.verbose:
-                        print(f"    ⚠️  Skipping click event - no responseId available")
+                    logger.warning("    Skipping click event - no responseId available")
                     return False
                 
                 # Validate UUID format
                 try:
                     uuid.UUID(response_id)
                 except (ValueError, AttributeError):
-                    if self.verbose:
-                        print(f"    ⚠️  Skipping click event - invalid responseId format: {response_id}")
+                    logger.warning(f"    Skipping click event - invalid responseId format: {response_id}")
                     return False
                 
                 event = {
@@ -410,7 +445,7 @@ class CoveoCommerceAPISimulator:
                             'trackingId': self.tracking_id
                         },
                         'source': ['traffic-simulator@1.0.0'],
-                        'userAgent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36',
+                        'userAgent': self.USER_AGENT,
                         'clientId': client_id
                     },
                     'product': {
@@ -436,7 +471,7 @@ class CoveoCommerceAPISimulator:
                             'trackingId': self.tracking_id
                         },
                         'source': ['traffic-simulator@1.0.0'],
-                        'userAgent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36',
+                        'userAgent': self.USER_AGENT,
                         'clientId': client_id
                     },
                     'currency': 'CAD',
@@ -460,7 +495,7 @@ class CoveoCommerceAPISimulator:
                             'trackingId': self.tracking_id
                         },
                         'source': ['traffic-simulator@1.0.0'],
-                        'userAgent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36',
+                        'userAgent': self.USER_AGENT,
                         'clientId': client_id
                     },
                     'action': 'add',
@@ -486,7 +521,7 @@ class CoveoCommerceAPISimulator:
                             'trackingId': self.tracking_id
                         },
                         'source': ['traffic-simulator@1.0.0'],
-                        'userAgent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36',
+                        'userAgent': self.USER_AGENT,
                         'clientId': client_id
                     },
                     'currency': 'CAD',
@@ -505,28 +540,27 @@ class CoveoCommerceAPISimulator:
                 }
                 events.append(event)
             
-            response = self.session.post(self.analytics_endpoint, headers=headers, json=events, timeout=5)
+            response = self.session.post(self.analytics_endpoint, headers=self.api_headers, 
+                                        json=events, timeout=self.ANALYTICS_TIMEOUT)
             
             if response.status_code in [200, 201, 204]:
                 self._increment_stat('analytics_events')
                 if self.verbose:
-                    print(f"    ✓ {event_type} event sent successfully")
+                    logger.info(f"    ✓ {event_type} event sent successfully")
                 return True
             else:
-                if self.verbose:
-                    print(f"    ⚠️ Event API error ({event_type}): {response.status_code} - {response.text[:200]}")
+                self._log_api_error(f'Event ({event_type})', response.status_code, response.text)
                 return False
         
         except Exception as e:
-            if self.verbose:
-                print(f"    Event API exception ({event_type}): {e}")
+            self._log_api_exception(f'Event ({event_type})', e)
             return False
     
     def simulate_bounce_session(self):
         """Simulate a bounced session"""
         if self.verbose:
-            print("  Session: Bounce (no interaction)")
-        self.stats['bounces'] += 1
+            logger.info("  Session: Bounce (no interaction)")
+        self._increment_stat('bounces')
     
     def simulate_search_session(self, client_id: str):
         """
@@ -534,7 +568,7 @@ class CoveoCommerceAPISimulator:
         User performs 1-3 searches and may click on products and add to cart.
         """
         if self.verbose:
-            print("  Session: Search & Browse")
+            logger.info("  Session: Search & Browse")
         
         num_searches = max(1, int(random.gauss(self.AVG_SEARCHES_PER_SESSION, 0.5)))
         
@@ -543,7 +577,7 @@ class CoveoCommerceAPISimulator:
             self._increment_stat('search_queries')
             
             if self.verbose:
-                print(f"    → Searching: '{query}'")
+                logger.info(f"    → Searching: '{query}'")
             
             # Make actual search API call
             results = self._make_search_request(query, client_id)
@@ -552,7 +586,7 @@ class CoveoCommerceAPISimulator:
             search_uid = results.get('searchUid', '')
             
             if self.verbose:
-                print(f"      Found {total_results} results")
+                logger.info(f"      Found {total_results} results")
             
             # Maybe click on results
             if products and random.random() < self.SEARCH_CLICK_RATE:
@@ -581,8 +615,8 @@ class CoveoCommerceAPISimulator:
         self._increment_stat('plp_visits')
         
         if self.verbose:
-            print(f"  Session: Browse PLP - {plp['brand']}")
-            print(f"    → Loading: {plp['url']}")
+            logger.info(f"  Session: Browse PLP - {plp['brand']}")
+            logger.info(f"    → Loading: {plp['url']}")
         
         # Make actual listing API call
         results = self._make_listing_request(plp, client_id)
@@ -591,7 +625,7 @@ class CoveoCommerceAPISimulator:
         search_uid = results.get('searchUid', '')
         
         if self.verbose:
-            print(f"      Found {total_results} {plp['brand']} products")
+            logger.info(f"      Found {total_results} {plp['brand']} products")
         
         # Maybe click on products
         if products and random.random() < self.BROWSE_CLICK_RATE:
@@ -625,7 +659,7 @@ class CoveoCommerceAPISimulator:
         
         if self.verbose:
             source = f"search: '{query}'" if from_search else "listing"
-            print(f"      → Clicked: {product_name} ({product_brand}) from {source}")
+            logger.info(f"      → Clicked: {product_name} ({product_brand}) from {source}")
         
         # Send ec.productClick event
         # Properly encode the URL to ensure it's a valid URI
@@ -671,7 +705,7 @@ class CoveoCommerceAPISimulator:
         product_brand = product.get('ec_brand', 'Unknown')
         
         if self.verbose:
-            print(f"      💰 Added to cart: {product_name}")
+            logger.info(f"      💰 Added to cart: {product_name}")
         
         # Send ec.cartAction event
         self._send_event_protocol('addToCart', {
@@ -692,7 +726,7 @@ class CoveoCommerceAPISimulator:
             self._increment_stat('total_revenue', cart_total)
             
             if self.verbose:
-                print(f"      ✓ PURCHASE: ${cart_total:.2f} CAD ({quantity} items)")
+                logger.info(f"      ✓ PURCHASE: ${cart_total:.2f} CAD ({quantity} items)")
             
             # Send ec.purchase event
             self._send_event_protocol('purchase', {
@@ -757,7 +791,7 @@ class CoveoCommerceAPISimulator:
                     try:
                         future.result()
                     except Exception as e:
-                        print(f"\n⚠️  Session error: {e}")
+                        logger.error(f"Session error: {e}")
         else:
             # Sequential execution (for verbose mode or single worker)
             for i in range(num_sessions):
@@ -767,6 +801,9 @@ class CoveoCommerceAPISimulator:
                 self.simulate_session()
         
         elapsed = time.time() - start_time
+        
+        # Clean up resources
+        self.cleanup()
         
         # Print results
         print(f"\n\n✅ Simulation Complete!")
