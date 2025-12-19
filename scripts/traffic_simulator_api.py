@@ -23,6 +23,9 @@ from typing import List, Dict, Optional, Tuple
 from urllib.parse import quote
 from dotenv import load_dotenv
 import requests
+from concurrent.futures import ThreadPoolExecutor, as_completed
+from threading import Lock
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from html.parser import HTMLParser
 
 # Load environment variables
@@ -85,10 +88,24 @@ class CoveoCommerceAPISimulator:
     AVG_ITEMS_IN_CART = 2.1
     AVG_SEARCHES_PER_SESSION = 1.8
     
-    def __init__(self, verbose: bool = False, dry_run: bool = False):
-        """Initialize the simulator"""
+    def __init__(self, verbose: bool = False, dry_run: bool = False, max_workers: int = 10):
+        """Initialize the simulator with optional parallel execution"""
         self.verbose = verbose
         self.dry_run = dry_run
+        self.max_workers = max_workers
+        
+        # HTTP session for connection pooling (massive performance boost)
+        self.session = requests.Session()
+        adapter = requests.adapters.HTTPAdapter(
+            pool_connections=max_workers,
+            pool_maxsize=max_workers * 2,
+            max_retries=3
+        )
+        self.session.mount('https://', adapter)
+        self.session.mount('http://', adapter)
+        
+        # Thread lock for stats updates
+        self.stats_lock = Lock()
         
         # Coveo configuration
         self.access_token = os.getenv('COVEO_FRONTEND_ACCESS_TOKEN')
@@ -116,7 +133,7 @@ class CoveoCommerceAPISimulator:
             'black', 'white', 'blue', 'red', 'waterproof'
         ]
         
-        # Statistics
+        # Statistics (thread-safe updates via _increment_stat)
         self.stats = {
             'sessions': 0,
             'bounces': 0,
@@ -131,6 +148,11 @@ class CoveoCommerceAPISimulator:
             'total_revenue': 0,
             'analytics_events': 0
         }
+    
+    def _increment_stat(self, key: str, amount: float = 1):
+        """Thread-safe stats increment"""
+        with self.stats_lock:
+            self.stats[key] += amount
     
     def _discover_plp_pages(self) -> List[Dict]:
         """Auto-discover and parse PLP pages from website/pages"""
@@ -203,13 +225,13 @@ class CoveoCommerceAPISimulator:
             return {'products': [], 'totalCount': 0, 'searchUid': ''}
         
         try:
-            response = requests.post(self.search_endpoint, headers=headers, json=payload, timeout=10)
+            response = self.session.post(self.search_endpoint, headers=headers, json=payload, timeout=10)
             
             if self.verbose and response.status_code != 200:
                 print(f"    ⚠️  Search API error {response.status_code}: {response.text[:300]}")
             
             if response.status_code == 200:
-                self.stats['search_api_calls'] += 1
+                self._increment_stat('search_api_calls')
                 data = response.json()
                 products = data.get('products', [])
                 response_id = data.get('responseId', '')
@@ -277,10 +299,10 @@ class CoveoCommerceAPISimulator:
             return {'results': [], 'totalCount': 0, 'searchUid': ''}
         
         try:
-            response = requests.post(self.listing_endpoint, headers=headers, json=payload, timeout=10)
+            response = self.session.post(self.listing_endpoint, headers=headers, json=payload, timeout=10)
             
             if response.status_code == 200:
-                self.stats['listing_api_calls'] += 1
+                self._increment_stat('listing_api_calls')
                 data = response.json()
                 products = data.get('products', [])
                 response_id = data.get('responseId', '')
@@ -483,10 +505,10 @@ class CoveoCommerceAPISimulator:
                 }
                 events.append(event)
             
-            response = requests.post(self.analytics_endpoint, headers=headers, json=events, timeout=5)
+            response = self.session.post(self.analytics_endpoint, headers=headers, json=events, timeout=5)
             
             if response.status_code in [200, 201, 204]:
-                self.stats['analytics_events'] += 1
+                self._increment_stat('analytics_events')
                 if self.verbose:
                     print(f"    ✓ {event_type} event sent successfully")
                 return True
@@ -518,7 +540,7 @@ class CoveoCommerceAPISimulator:
         
         for _ in range(num_searches):
             query = random.choice(self.search_queries)
-            self.stats['search_queries'] += 1
+            self._increment_stat('search_queries')
             
             if self.verbose:
                 print(f"    → Searching: '{query}'")
@@ -556,7 +578,7 @@ class CoveoCommerceAPISimulator:
             return self.simulate_search_session(client_id)
         
         plp = random.choice(self.plp_pages)
-        self.stats['plp_visits'] += 1
+        self._increment_stat('plp_visits')
         
         if self.verbose:
             print(f"  Session: Browse PLP - {plp['brand']}")
@@ -592,8 +614,8 @@ class CoveoCommerceAPISimulator:
         Simulate a user clicking on a product and viewing its details.
         Sends both ec.productClick and ec.productView events.
         """
-        self.stats['clicks'] += 1
-        self.stats['product_views'] += 1
+        self._increment_stat('clicks')
+        self._increment_stat('product_views')
         
         product_name = product.get('ec_name', product.get('title', 'Unknown'))
         product_brand = product.get('ec_brand', 'Unknown')
@@ -641,7 +663,7 @@ class CoveoCommerceAPISimulator:
         Simulate adding a product to cart with potential purchase completion.
         Sends ec.cartAction event and possibly ec.purchase event based on cart abandonment rate.
         """
-        self.stats['add_to_carts'] += 1
+        self._increment_stat('add_to_carts')
         
         product_name = product.get('ec_name', product.get('title', 'Unknown'))
         price = product.get('ec_price', 0)
@@ -666,8 +688,8 @@ class CoveoCommerceAPISimulator:
             quantity = max(1, int(random.gauss(self.AVG_ITEMS_IN_CART, 0.7)))
             cart_total = price * quantity
             
-            self.stats['purchases'] += 1
-            self.stats['total_revenue'] += cart_total
+            self._increment_stat('purchases')
+            self._increment_stat('total_revenue', cart_total)
             
             if self.verbose:
                 print(f"      ✓ PURCHASE: ${cart_total:.2f} CAD ({quantity} items)")
@@ -689,7 +711,7 @@ class CoveoCommerceAPISimulator:
         Simulate a single user session with realistic behavior patterns.
         Session type is determined by industry benchmark rates (bounce, search, or browse).
         """
-        self.stats['sessions'] += 1
+        self._increment_stat('sessions')
         client_id = str(uuid.uuid4())
         
         # Determine session type
@@ -701,9 +723,6 @@ class CoveoCommerceAPISimulator:
             self.simulate_search_session(client_id)
         else:
             self.simulate_plp_browse_session(client_id)
-        
-        # Delay between sessions
-        time.sleep(random.uniform(0.2, 0.5))
     
     def run(self, num_sessions: int):
         """Run the traffic simulator"""
@@ -724,11 +743,28 @@ class CoveoCommerceAPISimulator:
         
         start_time = time.time()
         
-        for i in range(num_sessions):
-            if (i + 1) % 10 == 0 and not self.verbose:
-                print(f"Progress: {i + 1}/{num_sessions} sessions", end='\r')
-            
-            self.simulate_session()
+        if self.max_workers > 1 and not self.verbose:
+            # Parallel execution for better performance
+            print(f"   Using {self.max_workers} parallel workers\n")
+            with ThreadPoolExecutor(max_workers=self.max_workers) as executor:
+                futures = [executor.submit(self.simulate_session) for _ in range(num_sessions)]
+                
+                completed = 0
+                for future in as_completed(futures):
+                    completed += 1
+                    if completed % 10 == 0 or completed == num_sessions:
+                        print(f"Progress: {completed}/{num_sessions} sessions", end='\r')
+                    try:
+                        future.result()
+                    except Exception as e:
+                        print(f"\n⚠️  Session error: {e}")
+        else:
+            # Sequential execution (for verbose mode or single worker)
+            for i in range(num_sessions):
+                if (i + 1) % 10 == 0 and not self.verbose:
+                    print(f"Progress: {i + 1}/{num_sessions} sessions", end='\r')
+                
+                self.simulate_session()
         
         elapsed = time.time() - start_time
         
@@ -790,6 +826,8 @@ Requirements:
     
     parser.add_argument('--sessions', type=int, default=100,
                        help='Number of sessions to simulate (default: 100)')
+    parser.add_argument('--workers', type=int, default=10,
+                       help='Parallel workers for faster execution (default: 10, use 1 for sequential)')
     parser.add_argument('--verbose', action='store_true',
                        help='Show detailed session activity')
     parser.add_argument('--dry-run', action='store_true',
@@ -797,7 +835,10 @@ Requirements:
     
     args = parser.parse_args()
     
-    simulator = CoveoCommerceAPISimulator(verbose=args.verbose, dry_run=args.dry_run)
+    # Force sequential execution if verbose mode is enabled (cleaner output)
+    max_workers = 1 if args.verbose else args.workers
+    
+    simulator = CoveoCommerceAPISimulator(verbose=args.verbose, dry_run=args.dry_run, max_workers=max_workers)
     simulator.run(args.sessions)
 
 
