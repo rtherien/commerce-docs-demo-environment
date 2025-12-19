@@ -73,14 +73,14 @@ class CoveoCommerceAPISimulator:
     - 2.5% purchase conversion (accounting for 69.8% cart abandonment)
     """
     
-    # Industry benchmark conversion rates
+    # Industry benchmark conversion rates (increased for more data)
     BOUNCE_RATE = 0.47
     SEARCH_RATE = 0.65
     BROWSE_RATE = 0.35
     SEARCH_CLICK_RATE = 0.35
     BROWSE_CLICK_RATE = 0.25
-    ADD_TO_CART_RATE = 0.09
-    CART_ABANDONMENT_RATE = 0.698
+    ADD_TO_CART_RATE = 0.18  # Increased from 0.09
+    CART_ABANDONMENT_RATE = 0.50  # Reduced from 0.698
     AVG_PRODUCTS_VIEWED = 3.2
     AVG_ITEMS_IN_CART = 2.1
     AVG_SEARCHES_PER_SESSION = 1.8
